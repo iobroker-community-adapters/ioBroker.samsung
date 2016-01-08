@@ -1,0 +1,25 @@
+{
+  "common": {
+    "name": "samsung",
+    "version": "0.0.1",
+    "title": "Samsung TV Adapter",
+    "desc": {
+      "en": "ioBroker samsung Adapter",
+      "de": "ioBroker Samsung Adapter",
+      "ru": "ioBroker Samsung драйвер как образец"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "samsung.png",
+    "extIcon": "https://raw.githubusercontent.com/soef/iobroker.samsung/master/admin/samsung.png",
+    "readme": "https://github.com/ioBroker/ioBroker.samsung/blob/master/README.md",
+    "loglevel": "info",
+    "type": "hardware"
+  },
+  "native": {
+    "IP": "192.168.1.63"
+  },
+  "objects": [
+
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "iobroker.samsung",
+  "version": "0.0.1",
+  "description": "ioBroker Samsung Adapter",
+  "author": {
+    "name": "Author Name",
+    "email": "email@mail.com"
+  },
+  "contributors": [
+    {
+      "name": "Author Name",
+      "email": "email@mail.com"
+    }
+  ],
+  "homepage": "https://github.com/ioBroker/ioBroker.samsung",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "samsung",
+    "Smart Home",
+    "home automation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.samsung"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+      "samsung-remote": "^1.2.5"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.samsung/issues"
+  },
+  "readmeFilename": "README.md"
+}
