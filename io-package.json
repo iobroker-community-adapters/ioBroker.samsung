@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "title": "Samsung TV Adapter",
     "desc": {
       "en": "ioBroker samsung Adapter",
@@ -12,7 +12,7 @@
     "mode": "daemon",
     "icon": "samsung.png",
     "extIcon": "https://raw.githubusercontent.com/soef/iobroker.samsung/master/admin/samsung.png",
-    "readme": "https://github.com/ioBroker/ioBroker.samsung/blob/master/README.md",
+    "readme": "https://github.com/soef/iobroker.samsung/blob/master/README.md",
     "loglevel": "info",
     "type": "hardware"
   },
