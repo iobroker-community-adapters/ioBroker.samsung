@@ -1,12 +1,10 @@
 ![Logo](admin/samsung.png)
-# ioBroker.samsung
-=================
-
+Samsung Adapter for ioBroker
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015 Author Name<email@mail.com>
+Copyright (c) 2015 soef <soef@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
