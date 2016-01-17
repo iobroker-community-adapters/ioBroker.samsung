@@ -1,5 +1,6 @@
 ![Logo](admin/samsung.png)
 Samsung Adapter for ioBroker
+=============================
 
 ## License
 The MIT License (MIT)
