@@ -1,18 +1,18 @@
 {
   "name": "iobroker.samsung",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "ioBroker Samsung Adapter",
   "author": {
-    "name": "Author Name",
-    "email": "email@mail.com"
+    "name": "soef",
+    "email": "soef@gmx.net"
   },
   "contributors": [
     {
-      "name": "Author Name",
-      "email": "email@mail.com"
+      "name": "soef",
+      "email": "soef@gmx.net"
     }
   ],
-  "homepage": "https://github.com/ioBroker/ioBroker.samsung",
+  "homepage": "https://github.com/soef/iobroker.samsung",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -22,15 +22,17 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.samsung"
+    "url": "https://github.com/soef/iobroker.samsung"
   },
   "dependencies": {
+      "samsung-remote": "^1.2.5"
   },
   "devDependencies": {
       "samsung-remote": "^1.2.5"
   },
   "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.samsung/issues"
+    "url": "https://github.com/soef/iobroker.samsung/issues"
   },
   "readmeFilename": "README.md"
 }
+
