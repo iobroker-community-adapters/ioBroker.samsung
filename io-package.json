@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "title": "Samsung TV Adapter",
     "desc": {
       "en": "ioBroker samsung Adapter",

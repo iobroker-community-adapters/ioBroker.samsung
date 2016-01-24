@@ -1,8 +1,29 @@
 ![Logo](admin/samsung.png)
-Samsung Adapter for ioBroker
-=============================
+## ioBroker.samsung
 
-## License
+Adapter for Samsung TVs
+
+#### Configuration
+Enter the IP of your Samsung TV
+
+#### Installation
+via ioBroker Admin.
+
+Otherweise execute the following command in the iobroker root directory (e.g. in /opt/iobroker)
+```
+iobroker install samsung
+```
+or
+```
+npm install iobroker.samsung 
+```
+
+#### Requirements
+Samsung TV
+
+After installation, you have to confirm the new connection on your TV
+
+### License
 The MIT License (MIT)
 
 Copyright (c) 2015 soef <soef@gmx.net>
