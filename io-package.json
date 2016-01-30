@@ -1,25 +1,35 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "title": "Samsung TV Adapter",
     "desc": {
-      "en": "ioBroker samsung Adapter",
-      "de": "ioBroker Samsung Adapter",
-      "ru": "ioBroker Samsung драйвер как образец"
+      "en": "Control Samsung TV devices",
+      "de": "Steuert Samsung TV Geräte",
+      "ru": "Control Samsung TV devices"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
     "icon": "samsung.png",
     "extIcon": "https://raw.githubusercontent.com/soef/iobroker.samsung/master/admin/samsung.png",
     "readme": "https://github.com/soef/iobroker.samsung/blob/master/README.md",
+    "license": "MIT",
     "loglevel": "info",
+    "keywords": [
+      "ioBroker",
+      "samsung",
+      "samsung remote",
+      "samsunf tv",
+      "Smart Home",
+      "home automation"
+    ],
+    "enabled": false,
+    "nondeletable": true,
     "type": "hardware"
   },
   "native": {
     "IP": "192.168.1.63"
   },
   "objects": [
-
   ]
 }
