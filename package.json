@@ -1,6 +1,6 @@
 {
   "name": "iobroker.samsung",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Samsung Adapter",
   "author": {
     "name": "soef",
@@ -30,11 +30,11 @@
       "samsung-remote": "^1.2.5"
   },
   "devDependencies": {
-      "samsung-remote": "^1.2.5"
   },
   "bugs": {
     "url": "https://github.com/soef/iobroker.samsung/issues"
   },
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "main": "samsung.js"
 }
 
