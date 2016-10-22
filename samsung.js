@@ -104,7 +104,7 @@ function main() {
         }
     }
 
-    remote = new SamsungRemote({ip: adapter.config.IP});
+    remote = new SamsungRemote({ip: adapter.config.ip});
 
     adapter.setObjectNotExists('command', {
         type: 'state',
