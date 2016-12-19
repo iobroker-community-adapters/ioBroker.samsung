@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.0.11",
+    "version": "0.0.12",
     "title": "Samsung TV Adapter",
     "desc": {
       "en": "Control Samsung TV devices",
