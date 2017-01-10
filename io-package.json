@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "title": "Samsung TV Adapter",
     "desc": {
       "en": "Control Samsung TV devices",
@@ -24,7 +24,7 @@
       "home automation"
     ],
     "enabled": false,
-    "nondeletable": true,
+    "nondeletable": false,
     "type": "hardware"
   },
   "native": {
