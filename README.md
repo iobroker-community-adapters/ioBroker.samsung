@@ -6,6 +6,8 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/7ggeh5c3b1mcgoe9?svg=true)](https://ci.appveyor.com/project/soef/iobroker-samsung-3vcui)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/soef/iobroker.samsung/blob/master/LICENSE)
 
+<!--[![Node](https://img.shields.io/badge/node-%3E=4.4-red.svg?style=flat-square)](https://www.npmjs.com/packages/soef)-->
+
 #### Description
 
 Adapter for Samsung TVs
@@ -26,7 +28,8 @@ npm install iobroker.samsung
 ```
 
 #### Requirements
-Samsung TV before 2014/15
+Samsung TV before 2014<br>
+Support for devices since 2016 (version 0.2.0, experimental)
 
 After installation, you have to confirm the new connection on your TV
 

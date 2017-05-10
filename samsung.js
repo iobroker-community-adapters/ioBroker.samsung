@@ -1,11 +1,40 @@
 "use strict";
 
-var utils = require(__dirname + '/lib/utils'); 
-//var adapter = utils.adapter('samsung');
-var Keys = require('./keys');
-var SamsungRemote = require('samsung-remote');
-var remote;
+var utils = require(__dirname + '/lib/utils'),
+    SamsungRemote = require('samsung-remote'),
+    Samsung2016 = require (__dirname + '/lib/samsung-2016'),
+    ping = require (__dirname + '/lib/ping'),
+    Keys = require('./keys')
+;
 
+var remote, remote2016;
+var powerOnOffState = 'Power.checkOnOff';
+
+
+function isOn (callback) {
+    ping.probe(adapter.config.ip, { timeout: 500 }, function(err, res) {
+         callback (!err && res && res.alive);
+    })
+}
+
+var checkOnOffTimer;
+function checkPowerOnOff () {
+    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
+    var cnt = 0, lastOn;
+    (function check() {
+        isOn (function (on) {
+            if (lastOn !== on) {
+                if (on) adapter.setState (powerOnOffState, 'ON', true); // uppercase indicates final on state.
+                adapter.setState (powerOnOffState, on ? 'on' : 'off', true);
+                lastOn = on;
+            }
+            if (!on) {
+                if (cnt < 10) checkOnOffTimer = setTimeout (check, 1000);
+                else adapter.setState (powerOnOffState, 'OFF', true); // uppercase indicates final off state.
+            }
+        });
+    })();
+}
 
 var adapter = utils.adapter({
     name: 'samsung',
@@ -33,12 +62,27 @@ var adapter = utils.adapter({
             if (as[0] + '.' + as[1] != adapter.namespace) return;
             switch (as[2]) {
                 case 'command':
-                    send(state.val, function callback(err) {
+                    send (state.val, function callback (err) {
                         if (err) {
                         } else {
                         }
                     });
                     break;
+    
+                case 'Power':
+                    switch (as[3]) {
+                        // case 'powerOn':
+                        //     send('KEY_POWERON');
+                        //     return;
+                        // case 'powerOff':
+                        //     send('KEY_POWEROFF');
+                        //     return;
+                        case 'checkOnOff':
+                        case 'checkOn':
+                            checkPowerOnOff();
+                            return;
+                        default: // let fall through for others
+                    }
 
                 default:
                     adapter.getObject(id, function (err, obj) {
@@ -65,18 +109,19 @@ function send(command, callback) {
         adapter.log.error("Empty commands will not be excecuted.");
         return;
     }
-    remote.send(command, callback);
+    remote.send(command, callback || function nop () {});
 }
 
 
-function createObj(name, val, type) {
+function createObj(name, val, type, role) {
     
+    if (role === undefined) role = type !== "channel" ? "button" : "";
     adapter.setObjectNotExists(name, {
         type: type,
         common: {
             name: name,
             type: 'boolean',
-            role: type !== "channel" ? "button" : "",
+            role: role,
             def: false,
             read: true,
             write: true,
@@ -87,7 +132,6 @@ function createObj(name, val, type) {
         if (type !== "channel") adapter.setState(name, false, true);
     });
 }
-
 
 function main() {
     
@@ -103,8 +147,17 @@ function main() {
             createObj(channel + '.' + Keys[key], key, "state");
         }
     }
-
-    remote = new SamsungRemote({ip: adapter.config.ip});
+    createObj('Power.checkOn', '', 'state', 'state');
+    remote = new SamsungRemote( { ip: adapter.config.ip } );
+    
+    remote2016 = new Samsung2016( { ip: adapter.config.ip, timeout: 2000 } );
+    remote2016.onError = function (error) {
+    }.bind (remote2016);
+    remote2016.send(undefined, function(err, data) {
+        if (err === 'success') {
+            remote = remote2016;
+        }
+    });
 
     adapter.setObjectNotExists('command', {
         type: 'state',
@@ -120,7 +173,18 @@ function main() {
     }, "", function (err, obj) {
         adapter.setState("command", "", true/*{ ack: true }*/);
     });
-
+    adapter.setObjectNotExists(powerOnOffState, {
+        type: 'state',
+        common: {
+            name: 'Teterminates Power state',
+            type: 'string',
+            role: 'state',
+            desc: "checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status"
+        },
+        native: {}
+    }, "", function (err, obj) {
+        adapter.setState(powerOnOffState, "", true/*{ ack: true }*/);
+    });
+    checkPowerOnOff();
     adapter.subscribeStates('*');
 }
-

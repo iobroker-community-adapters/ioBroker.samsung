@@ -1,7 +1,17 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.1.1",
+    "version": "0.2.1",
+    "news": {
+      "0.2.1": {
+        "en": "Added isOnOff state",
+        "de": "isOnOff state hinzugefügt."
+      },
+      "0.2.0": {
+        "en": "Added support for devices since 2016 (experimental)",
+        "de": "Unterstützung für Geräte ab 2016 (nicht getestet)"
+      }
+    },
     "title": "Samsung TV Adapter",
     "desc": {
       "en": "Control Samsung TV devices",
