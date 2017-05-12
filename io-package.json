@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.2.3",
+    "version": "0.2.4",
     "news": {
+      "0.2.4": {
+        "en": "Support for 2016 devices removed for Node version lower 4.0.0",
+        "de": "Unterstützung für 2016er Geräte entfernt wenn Node version kleiner 4.0.0."
+      },
       "0.2.3": {
         "en": "const declaration changed to var",
         "de": "const Deklaration nach var geändert."

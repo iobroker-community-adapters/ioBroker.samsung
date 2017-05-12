@@ -2,10 +2,14 @@
 
 var utils = require(__dirname + '/lib/utils'),
     SamsungRemote = require('samsung-remote'),
-    Samsung2016 = require (__dirname + '/lib/samsung-2016'),
     ping = require (__dirname + '/lib/ping'),
     Keys = require('./keys')
 ;
+
+var nodeVersion4 = minNodeVersion('4.0.0');
+if (nodeVersion4)  {
+    var Samsung2016 = require (__dirname + '/lib/samsung-2016');
+}
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
@@ -14,6 +18,18 @@ function isOn (callback) {
     ping.probe(adapter.config.ip, { timeout: 500 }, function(err, res) {
          callback (!err && res && res.alive);
     })
+}
+
+var nodeVersion;
+function minNodeVersion (minVersion) {
+    var re = /^v*([0-9]+)\.([0-9]+).([0-9]+)/;
+    if (nodeVersion === undefined) {
+        var nv = re.exec (process.version);
+        nodeVersion = nv[1]*100*100 + nv[2] * 100 + nv[3];
+    }
+    var rv = re.exec(minVersion);
+    var mv = rv[1] * 100*100 + rv[2]*100 + rv[3];
+    return nodeVersion >= mv;
 }
 
 var checkOnOffTimer;
@@ -139,24 +155,26 @@ function main() {
     for (var key in Keys) {
         if (Keys[key] === null) {
             channel = key;
-            createObj(key, "", "channel");
+            createObj (key, "", "channel");
         }
         else {
-            commandValues.push(key);
-            createObj(channel + '.' + Keys[key], key, "state");
+            commandValues.push (key);
+            createObj (channel + '.' + Keys[key], key, "state");
         }
     }
-    createObj('Power.checkOn', '', 'state', 'state');
-    remote = new SamsungRemote( { ip: adapter.config.ip } );
+    createObj ('Power.checkOn', '', 'state', 'state');
+    remote = new SamsungRemote ({ip: adapter.config.ip});
     
-    remote2016 = new Samsung2016( { ip: adapter.config.ip, timeout: 2000 } );
-    remote2016.onError = function (error) {
-    }.bind (remote2016);
-    remote2016.send(undefined, function(err, data) {
-        if (err === 'success') {
-            remote = remote2016;
-        }
-    });
+    if (nodeVersion4) {
+        remote2016 = new Samsung2016 ({ip: adapter.config.ip, timeout: 2000});
+        remote2016.onError = function (error) {
+        }.bind (remote2016);
+        remote2016.send (undefined, function (err, data) {
+            if (err === 'success') {
+                remote = remote2016;
+            }
+        });
+    }
 
     adapter.setObjectNotExists('command', {
         type: 'state',
