@@ -10,7 +10,6 @@ var utils = require(__dirname + '/lib/utils'),
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
 
-
 function isOn (callback) {
     ping.probe(adapter.config.ip, { timeout: 500 }, function(err, res) {
          callback (!err && res && res.alive);
