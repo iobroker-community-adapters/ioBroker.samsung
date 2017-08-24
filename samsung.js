@@ -22,7 +22,7 @@ function isOn (callback) {
 
 var nodeVersion;
 function minNodeVersion (minVersion) {
-    var re = /^v*([0-9]+)\.([0-9]+).([0-9]+)/;
+    var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
     if (nodeVersion === undefined) {
         var nv = re.exec (process.version);
         nodeVersion = nv[1]*100*100 + nv[2] * 100 + nv[3];
@@ -32,6 +32,14 @@ function minNodeVersion (minVersion) {
     return nodeVersion >= mv;
 }
 
+function setStateNe(id, val, ack) {
+    adapter.getState(id, function (err, obj) {
+         if (obj && (obj.val !== val || obj.ack !== !!ack)) {
+             adapter.setState(id, val, true);
+         }
+    });
+}
+
 var checkOnOffTimer;
 function checkPowerOnOff () {
     if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
@@ -39,16 +47,58 @@ function checkPowerOnOff () {
     (function check() {
         isOn (function (on) {
             if (lastOn !== on) {
-                if (on) adapter.setState (powerOnOffState, 'ON', true); // uppercase indicates final on state.
+                if (on) {
+                    adapter.setState (powerOnOffState, 'ON', true); // uppercase indicates final on state.
+                    setStateNe ('Power.on', true, true);
+                }
                 adapter.setState (powerOnOffState, on ? 'on' : 'off', true);
                 lastOn = on;
             }
             if (!on) {
-                if (cnt < 10) checkOnOffTimer = setTimeout (check, 1000);
-                else adapter.setState (powerOnOffState, 'OFF', true); // uppercase indicates final off state.
+                if (cnt < 20) {
+                    checkOnOffTimer = setTimeout (check, 1000);
+                }
+                else {
+                    adapter.setState (powerOnOffState, 'OFF', true); // uppercase indicates final off state.
+                    setStateNe ('Power.on', false, true);
+                }
             }
         });
     })();
+}
+
+
+var onOffTimer;
+function onOn(val) {
+    var timeout = 0, self = this;
+    val = !!val;
+
+    isOn (function (running) {
+        if (running === val) {
+            adapter.setState ('Power.on', val, true);
+            return;
+        }
+        send(remote.powerKey);
+        if (onOffTimer) clearTimeout(onOffTimer);
+        var cnt = 0;
+
+        function doIt () {
+            onOffTimer = null;
+            if (cnt++ >= 20) {
+                adapter.setState ('Power.on', running, true);
+                return;
+            }
+            isOn (function (running) {
+                if (running === val) {
+                    adapter.setState ('Power.on', val, true);
+                    return;
+                }
+                //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
+                onOffTimer = setTimeout(doIt, 1000);
+            });
+        }
+        doIt ();
+    });
 }
 
 var adapter = utils.adapter({
@@ -74,7 +124,7 @@ var adapter = utils.adapter({
 
         if (state && !state.ack) {
             var as = id.split('.');
-            if (as[0] + '.' + as[1] != adapter.namespace) return;
+            if (as[0] + '.' + as[1] !== adapter.namespace) return;
             switch (as[2]) {
                 case 'command':
                     send (state.val, function callback (err) {
@@ -83,15 +133,15 @@ var adapter = utils.adapter({
                         }
                     });
                     break;
-    
+
                 case 'Power':
                     switch (as[3]) {
-                        // case 'powerOn':
-                        //     send('KEY_POWERON');
-                        //     return;
-                        // case 'powerOff':
-                        //     send('KEY_POWEROFF');
-                        //     return;
+                        //case 'on':
+                        //   onOn(state.val);
+                        //   break;
+                        case 'off':
+                            onOn(false);
+                            break;
                         case 'checkOnOff':
                         case 'checkOn':
                             checkPowerOnOff();
@@ -114,7 +164,6 @@ var adapter = utils.adapter({
         }
     },
     ready: function () {
-        //g_devices.init(adapter, main);
         main();
     }
 });
@@ -128,8 +177,8 @@ function send(command, callback) {
 }
 
 
-function createObj(name, val, type, role) {
-    
+function createObj(name, val, type, role, desc) {
+
     if (role === undefined) role = type !== "channel" ? "button" : "";
     adapter.setObjectNotExists(name, {
         type: type,
@@ -140,7 +189,8 @@ function createObj(name, val, type, role) {
             def: false,
             read: true,
             write: true,
-            values: [false, true]
+            values: [false, true],
+            desc: desc
         },
         native: { command: val }
     }, "", function (err, obj) {
@@ -148,8 +198,20 @@ function createObj(name, val, type, role) {
     });
 }
 
-function main() {
-    
+
+function saveModel2016(val, callback) {
+    adapter.getForeignObject("system.adapter." + adapter.namespace, function (err, obj) {
+        if (!err && obj && !obj.native) obj['native'] = {};
+        if (obj.native.model2016 === val) return callback && callback();
+        obj.native.model2016 = val;
+        adapter.config.model2016 = val;
+        adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
+            callback && callback('changed');
+        });
+    });
+}
+
+function createObjectsAndStates() {
     var commandValues = [];
     var channel;
     for (var key in Keys) {
@@ -163,20 +225,9 @@ function main() {
         }
     }
     createObj ('Power.checkOn', '', 'state', 'state');
-    remote = new SamsungRemote ({ip: adapter.config.ip});
-    
-    if (nodeVersion4) {
-        remote2016 = new Samsung2016 ({ip: adapter.config.ip, timeout: 2000});
-        remote2016.onError = function (error) {
-        }.bind (remote2016);
-        remote2016.send (undefined, function (err, data) {
-            if (err === 'success') {
-                remote = remote2016;
-            }
-        });
-    }
+    createObj ('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
 
-    adapter.setObjectNotExists('command', {
+    adapter.setObject /*NotExists*/('command', {
         type: 'state',
         common: {
             name: 'command',
@@ -186,7 +237,8 @@ function main() {
             values: commandValues,
             states: commandValues
         },
-        native: {}
+        native: {
+        }
     }, "", function (err, obj) {
         adapter.setState("command", "", true/*{ ack: true }*/);
     });
@@ -198,10 +250,49 @@ function main() {
             role: 'state',
             desc: "checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status"
         },
-        native: {}
+        native: {
+            ts: new Date().getTime()
+        }
     }, "", function (err, obj) {
         adapter.setState(powerOnOffState, "", true/*{ ack: true }*/);
     });
+
     checkPowerOnOff();
+}
+
+
+
+function main() {
+
+    if (adapter.config.model2016 === true && !nodeVersion4) {
+        adapter.log.error('Model >= 2016 requires node version 4 or above!');
+        return;
+    }
+
+    if (adapter.config.model2016 !== true) {
+        remote = new SamsungRemote ({ip: adapter.config.ip});
+        remote.powerKey = 'KEY_POWEROFF';
+        if (adapter.config.model2016 === false) createObjectsAndStates();
+    }
+
+    if (nodeVersion4 && adapter.config.model2016 !== false) {
+        remote2016 = new Samsung2016 ({ip: adapter.config.ip, timeout: 2000});
+        remote2016.onError = function (error) {
+        }.bind (remote2016);
+        remote2016.send (undefined, function (err, data) {
+            if (adapter.config.model2016 === undefined) saveModel2016(err === 'success');
+            if (err === 'success' || adapter.config.model2016 === true) {
+                remote = remote2016;
+                remote.powerKey = 'KEY_POWER';
+                Keys.KEY_POWER = Keys.KEY_POWEROFF;
+                delete Keys.KEY_POWEROFF;
+                createObjectsAndStates();
+            }
+        });
+    }
+    setTimeout(function() {
+        if (adapter.config.model2016 === undefined) createObjectsAndStates();
+    }, 3000);
+
     adapter.subscribeStates('*');
 }
