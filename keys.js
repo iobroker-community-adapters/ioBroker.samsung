@@ -22,7 +22,7 @@ var Keys = {
     'KEY_CH_LIST': 'Channel List',
     'KEY_PRECH': 'Previous Channel',
     'KEY_PICTURE_SIZE': 'Picture Size',
-    
+
     'Input': null,
     'KEY_TV': 'TV',
     'KEY_HDMI': 'HDMI',
