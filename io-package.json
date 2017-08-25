@@ -1,8 +1,12 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.2.5",
+    "version": "0.2.6",
     "news": {
+      "0.2.6": {
+        "en": "Enhance CI testing",
+        "de": "CI testing erweitert"
+      },
       "0.2.5": {
         "en": "Checkbox for model 2016 added",
         "de": "Checkbox für Modelle ab 2016 hinzugefügt"
