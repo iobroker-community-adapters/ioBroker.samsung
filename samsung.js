@@ -101,7 +101,7 @@ function onOn(val) {
     });
 }
 
-var adapter = utils.adapter({
+var adapter = utils.Adapter({
     name: 'samsung',
 
     unload: function (callback) {
