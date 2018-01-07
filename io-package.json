@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "samsung",
-        "version": "0.2.8",
+        "version": "0.2.9",
         "news": {
+            "0.2.9": {
+                "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
+                "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
+            },
             "0.2.8": {
                 "en": "update basic package-file testing (Apollon77)",
                 "de": "Erweiterung der Tests (Apollon77)"
