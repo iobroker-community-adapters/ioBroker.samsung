@@ -12,6 +12,9 @@
 
 Adapter for Samsung TVs
 
+### Initial Creation
+This adapter was initialy created by @soef at https://github.com/soef/ioBroker.samsung but not maintained any more, so we moved it to iobroker-community so that bugs could be fixed. thanks @soef for his work.
+
 #### Configuration
 Enter the IP of your Samsung TV
 
