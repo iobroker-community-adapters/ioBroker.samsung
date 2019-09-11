@@ -44,7 +44,7 @@
     "url": "https://github.com/soef/iobroker.samsung/issues"
   },
   "readmeFilename": "README.md",
-  "main": "samsung.js",
+  "main": "main.js",
   "scripts": {
     "test": "node node_modules/mocha/bin/mocha --exit"
   }
