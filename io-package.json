@@ -73,7 +73,8 @@
     },
     "native": {
         "ip": "192.168.1.63",
-        "mac": "5c:49:7d:cc:89:7b",
+        "mac": "",
+        "token": "",
         "apiType": "SamsungRemote"
     },
     "objects": []
