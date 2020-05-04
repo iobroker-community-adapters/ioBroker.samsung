@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "samsung-community",
-        "version": "0.2.9",
+        "version": "0.4.0",
         "news": {
+            "0.4.0": {
+                "en": "New api Type, removed node 4 check",
+                "de": "Neue API, Node 4 check entfernt"
+            },
             "0.2.9": {
                 "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
                 "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
@@ -40,7 +44,7 @@
                 "de": "Unterstützung für Geräte ab 2016 (nicht getestet)"
             }
         },
-        "title": "Samsung TV Adapter",
+        "title": "Samsung TV Adapter (Community)",
         "desc": {
             "en": "Control Samsung TV devices",
             "de": "Steuert Samsung TV Geräte",
