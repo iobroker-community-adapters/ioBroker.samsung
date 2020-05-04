@@ -276,10 +276,13 @@ async function main() {
             }
         });
     } else if (adapter.config.apiType === "SamsungTV") {
-        remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
+        var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
         if (adapter.config.token)
             remoteSTV.token = adapter.config.token;
-        await remoteSTV.connect()
+        await remoteSTV.connect();
+        adapter.log.info("----------");
+        adapter.log.info("Token: "+ adapter.config.token);
+        adapter.log.info("----------");
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
     } else {
