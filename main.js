@@ -279,7 +279,7 @@ async function main() {
         var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
         if (adapter.config.token)
             remoteSTV.token = adapter.config.token;
-        await remoteSTV.connect();
+        await remoteSTV.connect('ioBroker');
         adapter.log.info("----------");
         adapter.log.info("Token: "+ adapter.config.token);
         adapter.log.info("----------");
