@@ -3,7 +3,7 @@
 var utils = require(__dirname + '/lib/utils'),
     SamsungRemote = require('samsung-remote'),
     Samsung2016 = require(__dirname + '/lib/samsung-2016'),
-    SamsungTV = require('samsungtv'),
+    SamsungTV = require(__dirname + '/lib/samsungtv/build/device.js'), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
     ping = require(__dirname + '/lib/ping'),
     Keys = require('./keys')
     ;
