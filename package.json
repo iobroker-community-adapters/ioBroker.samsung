@@ -12,7 +12,7 @@
       "email": "soef@gmx.net"
     }
   ],
-  "homepage": "https://github.com/soef/iobroker.samsung",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.samsung-community/",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -24,24 +24,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/soef/iobroker.samsung"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.samsung-community/"
   },
   "dependencies": {
-    "samsung-remote": "^1.2.5",
-    "ws": "^7.2.0",
-    "@iobroker/adapter-core": "^1.0.3"
+    "@iobroker/adapter-core": "^2.4.0",
+    "samsung-remote": "^1.5.2",
+    "samsungtv": "git+https://github.com/luca-saggese/samsungtv.git",
+    "ws": "^7.2.5"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.1.0",
     "grunt-replace": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-jshint": "^2.1.0",
     "grunt-jscs": "^3.0.1",
-    "grunt-http": "^2.2.0",
-    "mocha": "^4.1.0",
-    "chai": "^4.1.2"
+    "grunt-http": "^2.3.3",
+    "mocha": "^7.1.2",
+    "chai": "^4.2.0"
   },
   "bugs": {
-    "url": "https://github.com/soef/iobroker.samsung/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.samsung-community/issues"
   },
   "readmeFilename": "README.md",
   "main": "main.js",
