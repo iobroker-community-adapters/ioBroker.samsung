@@ -280,9 +280,11 @@ async function main() {
         if (adapter.config.token)
             remoteSTV.token = adapter.config.token;
         await remoteSTV.connect('ioBroker');
-        adapter.log.info("----------");
-        adapter.log.info("Token: "+ adapter.config.token);
-        adapter.log.info("----------");
+        adapter.log.info("-----------------------------------------");
+        adapter.log.info("Confirm on your TV to get a Token");
+        adapter.log.info("-----------------------------------------");
+        adapter.log.info("Token: "+ remoteSTV.token);
+        adapter.log.info("-----------------------------------------");
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
     } else {
