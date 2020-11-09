@@ -30,7 +30,7 @@
     "@iobroker/adapter-core": "^2.4.0",
     "samsung-remote": "^1.5.2",
     "samsungtv": "git+https://github.com/luca-saggese/samsungtv.git",
-    "ws": "^7.2.5"
+    "ws": "^7.4.0"
   },
   "devDependencies": {
     "grunt": "^1.1.0",
