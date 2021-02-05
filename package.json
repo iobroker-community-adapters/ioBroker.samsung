@@ -39,7 +39,7 @@
     "grunt-jscs": "^3.0.1",
     "grunt-http": "^2.3.3",
     "mocha": "^7.1.2",
-    "chai": "^4.2.0"
+    "chai": "^4.3.0"
   },
   "bugs": {
     "url": "https://github.com/iobroker-community-adapters/ioBroker.samsung-community/issues"
