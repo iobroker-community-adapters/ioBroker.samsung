@@ -297,6 +297,8 @@ async function main() {
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
     } else if (adapter.config.apiType === "SamsungHJ") {
+
+        deviceConfig.ip = adapter.config.ip;
         remoteHJ = new SamsungHJ(deviceConfig);
         remoteHJ.init();
 
