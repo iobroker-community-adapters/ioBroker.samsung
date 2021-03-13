@@ -121,14 +121,21 @@
         <tr><td class="translate">IP</td><td><input class="value" id="ip" type="input" size="15" /></td></tr>
         <tr><td class="translate">MAC</td><td><input class="value" id="mac" type="input" size="50" /> (only needed with SamsungTV API)</td></tr>
         <tr><td class="translate">Token</td><td><input class="value" id="token" type="input" size="50" /> (only needed with SamsungTV API, should be in Log after first connect)</td></tr>
-        <tr><td class="translate">ApiType</td><td><select class="value" id="apiType">
-            <option value="SamsungRemote" selected>SamsungRemote</option>
-            <option value="SamsungHJ" selected>SamsungHJ</option>
-            <option value="Samsung2016">Samsung2016</option>
-            <option value="SamsungTV">SamsungTV</option>
-        </select></td></tr>
+        <tr>
+            <td class="translate">ApiType</td>
+            <td>
+                <select class="value" id="apiType">
+                    <option value="SamsungRemote" selected>SamsungRemote</option>
+                    <option value="SamsungHJ" selected>SamsungHJ</option>
+                    <option value="Samsung2016">Samsung2016</option>
+                    <option value="SamsungTV">SamsungTV</option>
+                </select>
+            </td>
+        </tr>
     </table>
-
+    <br><button id="requestPin" class="translate">Request Pin</button>
+    <tr><td class="translate">Pin</td><td><input class="value" id="pin" type="input" size="50" /> (only needed with Samsung H and J Series)</td></tr>
+    <br><button id="comfirmPin" class="translate">Confirm Pin</button>
     <div style="padding: 10px"></div>
     <h1 class="translate">Info</h1>
 
