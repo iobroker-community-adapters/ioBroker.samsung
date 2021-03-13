@@ -2,6 +2,7 @@
 
 var utils = require(__dirname + '/lib/utils'),
     SamsungRemote = require('samsung-remote'),
+    SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv')
     Samsung2016 = require(__dirname + '/lib/samsung-2016'),
     SamsungTV = require(__dirname + '/lib/samsungtv/build/device.js'), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
     ping = require(__dirname + '/lib/ping'),
@@ -10,6 +11,14 @@ var utils = require(__dirname + '/lib/utils'),
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
+
+var remoteHJ;
+const deviceConfig = {
+    ip: null,
+    appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
+    userId: '654321',
+}
+
 
 function isOn(callback) {
     ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
@@ -287,6 +296,12 @@ async function main() {
         adapter.log.info("-----------------------------------------");
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
+    } else if (adapter.config.apiType === "SamsungHJ") {
+        remoteHJ = new SamsungHJ(deviceConfig);
+        remoteHJ.init();
+
+        createObjectsAndStates();
+
     } else {
         remote = new SamsungRemote({ ip: adapter.config.ip });
         remote.powerKey = 'KEY_POWEROFF';
