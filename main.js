@@ -307,10 +307,11 @@ async function main() {
 
             if (adapter.config.pin) {
                 remoteHJ.confirmPin(adapter.config.pin)
-                    .then( _identity => remoteHJ.connect())
-                    .then(() => adapter.log.info(_identity))
-            };
+                    .then(_identity => remoteHJ.connect())
+                    .then(() => adapter.log.info(_identity));
+
                 adapter.log.info("Connected to your Samsung HJ TV ");
+                
             } else {
 
                 try {
