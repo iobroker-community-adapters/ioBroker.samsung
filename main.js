@@ -303,14 +303,22 @@ async function main() {
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
             remoteHJ.init();
+            adapter.log.info("Connection to TV initialised");
 
             if (adapter.config.pin) {
                 remoteHJ.confirmPin(adapter.config.pin)
                     .then(() => remoteHJ.connect());
                 adapter.log.info("Connected to your Samsung HJ TV ");
             } else {
-                remoteHJ.requestPin();
-                adapter.log.info("PIN is on your TV");
+
+                try {
+                    remoteHJ.requestPin();
+                    adapter.log.info("PIN is on your TV");
+                }
+                catch (e) {
+                    adapter.log.error();
+                }
+              
             }
 
             createObjectsAndStates();
