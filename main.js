@@ -298,11 +298,28 @@ async function main() {
         createObjectsAndStates();
     } else if (adapter.config.apiType === "SamsungHJ") {
 
-        deviceConfig.ip = adapter.config.ip;
-        remoteHJ = new SamsungHJ(deviceConfig);
-        remoteHJ.init();
+        if (adapter.config.ip) {
 
-        createObjectsAndStates();
+            deviceConfig.ip = adapter.config.ip;
+            remoteHJ = new SamsungHJ(deviceConfig);
+            remoteHJ.init();
+
+            if (adapter.config.pin) {
+                tv.confirmPin(adapter.config.pin)
+                    .then(() => tv.connect());
+                adapter.log.info("Connected to your Samsung HJ TV ");
+            } else {
+                tv.requestPin();
+                adapter.log.info("PIN is on your TV");
+            }
+
+            createObjectsAndStates();
+        } else {
+            adapter.log.error("No IP defined")
+        }
+        
+
+        
 
     } else {
         remote = new SamsungRemote({ ip: adapter.config.ip });
