@@ -305,11 +305,11 @@ async function main() {
             remoteHJ.init();
 
             if (adapter.config.pin) {
-                tv.confirmPin(adapter.config.pin)
-                    .then(() => tv.connect());
+                remoteHJ.confirmPin(adapter.config.pin)
+                    .then(() => remoteHJ.connect());
                 adapter.log.info("Connected to your Samsung HJ TV ");
             } else {
-                tv.requestPin();
+                remoteHJ.requestPin();
                 adapter.log.info("PIN is on your TV");
             }
 
