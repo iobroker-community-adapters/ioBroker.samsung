@@ -1,5 +1,7 @@
 "use strict";
 
+const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
+
 var utils = require(__dirname + '/lib/utils'),
     SamsungRemote = require('samsung-remote'),
     SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv'),
@@ -296,45 +298,50 @@ async function main() {
         adapter.log.info("-----------------------------------------");
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
+
     } else if (adapter.config.apiType === "SamsungHJ") {
 
         if (adapter.config.ip) {
 
+            adapter.log.debug("Initilaizing HJ lib");
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
-            remoteHJ.init();
-            adapter.log.info("Connection to TV initialised");
-
-            if (adapter.config.pin) {
-                remoteHJ.confirmPin(adapter.config.pin)
-                    .then(_identity => remoteHJ.connect())
-                    .then(() => adapter.log.info(_identity));
-
-                adapter.log.info("Connected to your Samsung HJ TV ");
-                
-            } else {
 
                 try {
-                    remoteHJ.requestPin()
-                        .then(() => {
-                            adapter.log.info("PIN is on your TV");
-                            return {}
-                        });
-                    
-                }
-                catch (e) {
-                    adapter.log.error();
-                }
-              
-            }
+                    var resp = await remoteHJ.init2();
+                    adapter.log.debug("resp is " + resp);
+                    adapter.log.info("Connection to TV initialised");
 
-            createObjectsAndStates();
+                    if (adapter.config.pin) {
+
+                        try {
+                            await remoteHJ.confirmPin(adapter.config.pin);
+                            await remoteHJ.connect();
+
+                            createObjectsAndStates();
+
+                            remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
+                            //await remoteHJ.sendKey(KEY_MUTE);
+                            //remote = remoteHJ;
+
+                            adapter.log.info("Successfully connected to your Samsung HJ TV ");
+                        } catch (e) {
+                            adapter.log.error("Could not connect! Is the Pin correct?" + e)
+                        }
+                
+                    } else {
+                        adapter.log.debug("remoteHJ conf ");
+                        adapter.log.debug(remoteHJ.pairing);
+
+                        remoteHJ.requestPin();
+                    }
+                } catch (e) {
+                    adapter.log.error("Connection to TV failed. Is the IP correct ? Is the TV switched on?")
+                }
+            
         } else {
             adapter.log.error("No IP defined")
         }
-        
-
-        
 
     } else {
         remote = new SamsungRemote({ ip: adapter.config.ip });
