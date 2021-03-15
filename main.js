@@ -321,8 +321,6 @@ async function main() {
                             createObjectsAndStates();
 
                             remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
-                            //await remoteHJ.sendKey(KEY_MUTE);
-                            //remote = remoteHJ;
 
                             adapter.log.info("Successfully connected to your Samsung HJ TV ");
                         } catch (e) {
@@ -336,7 +334,7 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (e) {
-                    adapter.log.error("Connection to TV failed. Is the IP correct ? Is the TV switched on?")
+                    adapter.log.error("Connection to TV failed. Is the IP correct? Is the TV switched on?")
                 }
             
         } else {
