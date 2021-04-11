@@ -28,18 +28,14 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.4.0",
-    "samsung-remote": "^1.5.2",
+    "samsung-remote": "^1.6.0",
     "samsungtv": "git+https://github.com/luca-saggese/samsungtv.git",
-    "ws": "^7.2.5"
+    "ws": "^7.4.4"
   },
   "devDependencies": {
-    "grunt": "^1.1.0",
-    "grunt-replace": "^1.0.1",
-    "grunt-contrib-jshint": "^2.1.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-http": "^2.3.3",
-    "mocha": "^7.1.2",
-    "chai": "^4.3.3"
+    "@alcalzone/release-script": "^1.8.3",
+    "mocha": "^8.3.2",
+    "chai": "^4.3.4"
   },
   "bugs": {
     "url": "https://github.com/iobroker-community-adapters/ioBroker.samsung-community/issues"
@@ -47,6 +43,7 @@
   "readmeFilename": "README.md",
   "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "release": "release-script"
   }
 }
