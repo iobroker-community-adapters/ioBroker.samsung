@@ -1,8 +1,12 @@
 {
     "common": {
         "name": "samsung-community",
-        "version": "0.4.0",
+        "version": "0.5.0",
         "news": {
+            "0.5.0": {
+                "en": "New api Type for H and J Series (2014 + 2015)",
+                "de": "Neue API für H und J Serie aus den Jahren (2014 + 2015)"
+            },
             "0.4.0": {
                 "en": "New api Type, removed node 4 check",
                 "de": "Neue API, Node 4 check entfernt"
@@ -76,9 +80,10 @@
         ]
     },
     "native": {
-        "ip": "192.168.1.63",
+        "ip": "192.168.1.95",
         "mac": "",
         "token": "",
+        "pin":  "",
         "apiType": "SamsungRemote"
     },
     "objects": []

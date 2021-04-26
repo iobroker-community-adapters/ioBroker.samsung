@@ -14,9 +14,19 @@ Adapter for Samsung TVs
 
 ### Initial Creation
 This adapter was initialy created by @soef at https://github.com/soef/ioBroker.samsung but not maintained any more, so we moved it to iobroker-community so that bugs could be fixed. thanks @soef for his work.
+Adapter was extended by jogibear9988 and mwp007 with further Api since then.
 
 #### Configuration
-Enter the IP of your Samsung TV
+Enter the IP of your Samsung TV.
+Choose your API:
+	Samsung Remote - TVs before 2014
+		After installation, you have to confirm the new connection on your TV
+	Samsung HJ - 2014 and 2015
+		After first connect you need to enter the Pin shown on your TV.
+	Samsung2016 - selfexplaining 
+	SamsungTV - Tizen TVs after 2016 
+
+
 
 #### Installation
 via ioBroker Admin.
@@ -31,8 +41,13 @@ npm install iobroker.samsung
 ```
 
 #### Requirements
-Samsung TV before 2014<br>
-Support for devices since 2016 (version 0.2.0, experimental)
+Samsung TV<br>
+HJ Series tested by me on UE55HU7200. 
+Support for devices since 2016  experimental
+if something does not work, look  in the log.
 
-After installation, you have to confirm the new connection on your TV
+
+
+
+
 

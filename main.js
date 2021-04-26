@@ -1,7 +1,10 @@
 "use strict";
 
+const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
+
 var utils = require(__dirname + '/lib/utils'),
     SamsungRemote = require('samsung-remote'),
+    SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv'),
     Samsung2016 = require(__dirname + '/lib/samsung-2016'),
     SamsungTV = require(__dirname + '/lib/samsungtv/build/device.js'), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
     ping = require(__dirname + '/lib/ping'),
@@ -10,6 +13,14 @@ var utils = require(__dirname + '/lib/utils'),
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
+
+var remoteHJ;
+const deviceConfig = {
+    ip: null,
+    appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
+    userId: '654321',
+}
+
 
 function isOn(callback) {
     ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
@@ -287,6 +298,49 @@ async function main() {
         adapter.log.info("-----------------------------------------");
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
+
+    } else if (adapter.config.apiType === "SamsungHJ") {
+
+        if (adapter.config.ip) {
+
+            adapter.log.debug("Initilaizing HJ lib");
+            deviceConfig.ip = adapter.config.ip;
+            remoteHJ = new SamsungHJ(deviceConfig);
+
+                try {
+                    var resp = await remoteHJ.init2();
+                    adapter.log.debug("resp is " + resp);
+                    adapter.log.info("Connection to TV initialised");
+
+                    if (adapter.config.pin) {
+
+                        try {
+                            await remoteHJ.confirmPin(adapter.config.pin);
+                            await remoteHJ.connect();
+
+                            createObjectsAndStates();
+
+                            remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
+
+                            adapter.log.info("Successfully connected to your Samsung HJ TV ");
+                        } catch (e) {
+                            adapter.log.error("Could not connect! Is the Pin correct?" + e)
+                        }
+                
+                    } else {
+                        adapter.log.debug("remoteHJ conf ");
+                        adapter.log.debug(remoteHJ.pairing);
+
+                        remoteHJ.requestPin();
+                    }
+                } catch (e) {
+                    adapter.log.error("Connection to TV failed. Is the IP correct? Is the TV switched on?")
+                }
+            
+        } else {
+            adapter.log.error("No IP defined")
+        }
+
     } else {
         remote = new SamsungRemote({ ip: adapter.config.ip });
         remote.powerKey = 'KEY_POWEROFF';
