@@ -201,7 +201,7 @@ function createObj(name, val, type, role, desc) {
             desc: desc
         },
         native: { command: val }
-    }, "", function (err, obj) {
+    }, function (err, obj) {
         if (type !== "channel") adapter.setState(name, false, true);
     });
 }
@@ -235,7 +235,7 @@ function createObjectsAndStates() {
     createObj('Power.checkOn', '', 'state', 'state');
     createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
 
-    adapter.setObject /*NotExists*/('command', {
+    adapter.setObjectNotExists('command', {
         type: 'state',
         common: {
             name: 'command',
@@ -247,13 +247,13 @@ function createObjectsAndStates() {
         },
         native: {
         }
-    }, "", function (err, obj) {
+    }, function (err, obj) {
         adapter.setState("command", "", true/*{ ack: true }*/);
     });
     adapter.setObjectNotExists(powerOnOffState, {
         type: 'state',
         common: {
-            name: 'Teterminates Power state',
+            name: 'Determinated Power state',
             type: 'string',
             role: 'state',
             desc: "checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status"
@@ -261,7 +261,7 @@ function createObjectsAndStates() {
         native: {
             ts: new Date().getTime()
         }
-    }, "", function (err, obj) {
+    }, function (err, obj) {
         adapter.setState(powerOnOffState, "", true/*{ ack: true }*/);
     });
 
@@ -326,7 +326,7 @@ async function main() {
                         } catch (e) {
                             adapter.log.error("Could not connect! Is the Pin correct?" + e)
                         }
-                
+
                     } else {
                         adapter.log.debug("remoteHJ conf ");
                         adapter.log.debug(remoteHJ.pairing);
@@ -336,7 +336,7 @@ async function main() {
                 } catch (e) {
                     adapter.log.error("Connection to TV failed. Is the IP correct? Is the TV switched on?")
                 }
-            
+
         } else {
             adapter.log.error("No IP defined")
         }
@@ -345,12 +345,7 @@ async function main() {
         remote = new SamsungRemote({ ip: adapter.config.ip });
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
-
-        setTimeout(function () {
-            createObjectsAndStates();
-        }, 3000);
     }
-
 
     adapter.subscribeStates('*');
 }

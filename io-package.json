@@ -48,7 +48,19 @@
                 "de": "Unterstützung für Geräte ab 2016 (nicht getestet)"
             }
         },
-        "title": "Samsung TV Adapter (Community)",
+        "title": "Samsung TV",
+        "titleLang": {
+            "en": "Samsung TV",
+            "de": "Samsung-Fernseher",
+            "ru": "Телевизор Samsung",
+            "pt": "Samsung TV",
+            "nl": "Samsung-tv",
+            "fr": "Téléviseur Samsung",
+            "it": "TV Samsung",
+            "es": "Samsung TV",
+            "pl": "Telewizor Samsung",
+            "zh-cn": "三星电视"
+        },
         "desc": {
             "en": "Control Samsung TV devices",
             "de": "Steuert Samsung TV Geräte",
@@ -77,7 +89,10 @@
                 "name": "soef",
                 "email": "soef@gmx.net"
             }
-        ]
+        ],
+        "connectionType": "local",
+        "dataSource": "poll",
+        "tier": 2
     },
     "native": {
         "ip": "192.168.1.95",
