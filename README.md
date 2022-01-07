@@ -1,12 +1,12 @@
 ![Logo](admin/samsung.png)
 ### ioBroker.samsung
 
-![Number of Installations](http://iobroker.live/badges/samsung-community-installed.svg) ![Number of Installations](http://iobroker.live/badges/samsung-community-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.samsung.svg)](https://www.npmjs.com/package/iobroker.samsung)
-[![Tests](http://img.shields.io/travis/soef/ioBroker.samsung/master.svg)](https://travis-ci.org/soef/ioBroker.samsung)
-[![Build status](https://ci.appveyor.com/api/projects/status/7ggeh5c3b1mcgoe9?svg=true)](https://ci.appveyor.com/project/soef/iobroker-samsung-3vcui)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/soef/iobroker.samsung/blob/master/LICENSE)
+![Number of Installations](http://iobroker.live/badges/samsung-installed.svg) ![Number of Installations](http://iobroker.live/badges/samsung-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.samsung.svg)](https://www.npmjs.com/package/iobroker.samsung)
+[![Tests](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.samsung/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.samsung)
+[![Build status](https://ci.appveyor.com/api/projects/status/7ggeh5c3b1mcgoe9?svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/iobroker-samsung-3vcui)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/LICENSE)
 
-<!--[![Node](https://img.shields.io/badge/node-%3E=4.4-red.svg?style=flat-square)](https://www.npmjs.com/packages/soef)-->
+<!--[![Node](https://img.shields.io/badge/node-%3E=4.4-red.svg?style=flat-square)](https://www.npmjs.com/packages/iobroker-community-adapters)-->
 
 #### Description
 
