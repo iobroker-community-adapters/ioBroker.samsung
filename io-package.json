@@ -1,6 +1,6 @@
 {
     "common": {
-        "name": "samsung-community",
+        "name": "samsung",
         "version": "0.5.0",
         "news": {
             "0.5.0": {
@@ -69,8 +69,8 @@
         "platform": "Javascript/Node.js",
         "mode": "daemon",
         "icon": "samsung.png",
-        "extIcon": "https://raw.githubusercontent.com/soef/iobroker.samsung/master/admin/samsung.png",
-        "readme": "https://github.com/soef/iobroker.samsung/blob/master/README.md",
+        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.samsung/master/admin/samsung.png",
+        "readme": "https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/README.md",
         "license": "MIT",
         "loglevel": "info",
         "keywords": [
