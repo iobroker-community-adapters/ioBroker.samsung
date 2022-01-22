@@ -31,7 +31,7 @@
     "samsung-remote": "^1.6.0",
     "samsungtv": "git+https://github.com/luca-saggese/samsungtv.git",
     "ws": "^7.5.3",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^3.1.1"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^2.2.1",
