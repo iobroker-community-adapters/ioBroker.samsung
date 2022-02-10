@@ -110,7 +110,7 @@ function onOn(val) {
 }
 
 var adapter = utils.Adapter({
-    name: 'samsung-community',
+    name: 'samsung',
 
     unload: function (callback) {
         try {
