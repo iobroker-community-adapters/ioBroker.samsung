@@ -1,107 +1,107 @@
 {
-    "common": {
-        "name": "samsung",
-        "version": "0.5.0",
-        "news": {
-            "0.2.9": {
-                "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
-                "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
-            },
-            "0.2.8": {
-                "en": "update basic package-file testing (Apollon77)",
-                "de": "Erweiterung der Tests (Apollon77)"
-            },
-            "0.2.7": {
-                "en": "node 0.12 removed from testing",
-                "de": "node 0.12 auf testing entfernt"
-            },
-            "0.2.6": {
-                "en": "Enhance CI testing",
-                "de": "CI testing erweitert"
-            },
-            "0.2.5": {
-                "en": "Checkbox for model 2016 added",
-                "de": "Checkbox für Modelle ab 2016 hinzugefügt"
-            },
-            "0.2.4": {
-                "en": "Support for 2016 devices removed for Node version lower 4.0.0",
-                "de": "Unterstützung für 2016er Geräte entfernt wenn Node version kleiner 4.0.0."
-            },
-            "0.2.3": {
-                "en": "const declaration changed to var",
-                "de": "const Deklaration nach var geändert."
-            },
-            "0.2.1": {
-                "en": "Added isOnOff state",
-                "de": "isOnOff state hinzugefügt."
-            },
-            "0.2.0": {
-                "en": "Added support for devices since 2016 (experimental)",
-                "de": "Unterstützung für Geräte ab 2016 (nicht getestet)"
-            }
-        },
-        "title": "Samsung TV",
-        "titleLang": {
-            "en": "Samsung TV",
-            "de": "Samsung-Fernseher",
-            "ru": "Телевизор Samsung",
-            "pt": "Samsung TV",
-            "nl": "Samsung-tv",
-            "fr": "Téléviseur Samsung",
-            "it": "TV Samsung",
-            "es": "Samsung TV",
-            "pl": "Telewizor Samsung",
-            "zh-cn": "三星电视"
-        },
-        "desc": {
-            "en": "Control Samsung TV devices",
-            "de": "Steuert Samsung TV Geräte",
-            "ru": "Control Samsung TV devices"
-        },
-        "platform": "Javascript/Node.js",
-        "mode": "daemon",
-        "icon": "samsung.png",
-        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.samsung/master/admin/samsung.png",
-        "readme": "https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/README.md",
-        "license": "MIT",
-        "loglevel": "info",
-        "keywords": [
-            "ioBroker",
-            "samsung",
-            "samsung remote",
-            "samsunf tv",
-            "Smart Home",
-            "home automation"
-        ],
-        "enabled": false,
-        "nondeletable": false,
-        "type": "multimedia",
-        "authors": [
-            {
-                "name": "soef",
-                "email": "soef@gmx.net"
-            }
-        ],
-        "connectionType": "local",
-        "dataSource": "poll",
-        "tier": 2,
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://fde0a3f21d42438d94f170549d9679f2@sentry.iobroker.net/185"
-            }
-        }
+  "common": {
+    "name": "samsung",
+    "version": "0.5.1",
+    "news": {
+      "0.5.1": {
+        "en": "General updates\nAdd Sentry for Crash reporting",
+        "de": "Allgemeine Aktualisierungen\nFügen Sie Sentry für Crash-Berichte hinzu",
+        "ru": "Общие обновления\nДобавьте Sentry для отчетов о сбоях",
+        "pt": "Atualizações gerais\nAdicionar Sentinela para relatórios de falhas",
+        "nl": "Algemene updates\nSentry voor crashrapportage toevoegen",
+        "fr": "Mises à jour générales\nAjouter Sentry pour les rapports d'incident",
+        "it": "Aggiornamenti generali\nAggiungi Sentinella per i rapporti sugli arresti anomali",
+        "es": "Actualizaciones generales\nAgregar Sentry para informes de fallas",
+        "pl": "Ogólne aktualizacje\nDodaj Sentry do zgłaszania awarii",
+        "zh-cn": "一般更新\n为崩溃报告添加哨兵"
+      },
+      "0.2.9": {
+        "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
+        "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
+      },
+      "0.2.8": {
+        "en": "update basic package-file testing (Apollon77)",
+        "de": "Erweiterung der Tests (Apollon77)"
+      },
+      "0.2.7": {
+        "en": "node 0.12 removed from testing",
+        "de": "node 0.12 auf testing entfernt"
+      },
+      "0.2.6": {
+        "en": "Enhance CI testing",
+        "de": "CI testing erweitert"
+      },
+      "0.2.5": {
+        "en": "Checkbox for model 2016 added",
+        "de": "Checkbox für Modelle ab 2016 hinzugefügt"
+      },
+      "0.2.4": {
+        "en": "Support for 2016 devices removed for Node version lower 4.0.0",
+        "de": "Unterstützung für 2016er Geräte entfernt wenn Node version kleiner 4.0.0."
+      }
     },
-    "native": {
-        "ip": "192.168.1.95",
-        "mac": "",
-        "token": "",
-        "pin":  "",
-        "apiType": "SamsungRemote"
+    "title": "Samsung TV",
+    "titleLang": {
+      "en": "Samsung TV",
+      "de": "Samsung-Fernseher",
+      "ru": "Телевизор Samsung",
+      "pt": "Samsung TV",
+      "nl": "Samsung-tv",
+      "fr": "Téléviseur Samsung",
+      "it": "TV Samsung",
+      "es": "Samsung TV",
+      "pl": "Telewizor Samsung",
+      "zh-cn": "三星电视"
     },
-    "objects": []
+    "desc": {
+      "en": "Control Samsung TV devices",
+      "de": "Steuert Samsung TV Geräte",
+      "ru": "Control Samsung TV devices"
+    },
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "icon": "samsung.png",
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.samsung/master/admin/samsung.png",
+    "readme": "https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/README.md",
+    "license": "MIT",
+    "loglevel": "info",
+    "keywords": [
+      "ioBroker",
+      "samsung",
+      "samsung remote",
+      "samsunf tv",
+      "Smart Home",
+      "home automation"
+    ],
+    "enabled": false,
+    "nondeletable": false,
+    "type": "multimedia",
+    "authors": [
+      {
+        "name": "soef",
+        "email": "soef@gmx.net"
+      }
+    ],
+    "connectionType": "local",
+    "dataSource": "poll",
+    "tier": 2,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://fde0a3f21d42438d94f170549d9679f2@sentry.iobroker.net/185"
+      }
+    }
+  },
+  "native": {
+    "ip": "192.168.1.95",
+    "mac": "",
+    "token": "",
+    "pin": "",
+    "apiType": "SamsungRemote"
+  },
+  "objects": []
 }

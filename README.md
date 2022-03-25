@@ -50,7 +50,7 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.5.1 (2022-03-25)
 * (Apollon77) General updates
 * (Apollon77) Add Sentry for Crash reporting
 
