@@ -1,12 +1,15 @@
 ![Logo](admin/samsung.png)
 ### ioBroker.samsung
 
-![Number of Installations](http://iobroker.live/badges/samsung-installed.svg) ![Number of Installations](http://iobroker.live/badges/samsung-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.samsung.svg)](https://www.npmjs.com/package/iobroker.samsung)
-[![Tests](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.samsung/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.samsung)
-[![Build status](https://ci.appveyor.com/api/projects/status/7ggeh5c3b1mcgoe9?svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/iobroker-samsung-3vcui)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/LICENSE)
+![Number of Installations](http://iobroker.live/badges/samsung-installed.svg)
+![Number of Installations](http://iobroker.live/badges/samsung-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.samsung.svg)](https://www.npmjs.com/package/iobroker.samsung)
 
-<!--[![Node](https://img.shields.io/badge/node-%3E=4.4-red.svg?style=flat-square)](https://www.npmjs.com/packages/iobroker-community-adapters)-->
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.samsung/workflows/Test%20and%20Release/badge.svg)
+<!-- [![Translation status](https://weblate.iobroker.net/widgets/adapters/-/samsung/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget) -->
+[![Downloads](https://img.shields.io/npm/dm/iobroker.samsung.svg)](https://www.npmjs.com/package/iobroker.samsung)
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 #### Description
 
@@ -46,8 +49,21 @@ HJ Series tested by me on UE55HU7200.
 Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
+## Changelog
+### __WORK IN PROGRESS__
+* (Apollon77) General updates
+* (Apollon77) Add Sentry for Crash reporting
 
+### 0.5.0
+* New api Type for H and J Series (2014 + 2015)
 
+### 0.4.0
+* New api Type, removed node 4 check
 
+### 0.2.9
+* Update utils.js and usage, CI Testing and deps (Apollon77)",
 
+## License
+The MIT License (MIT)
 
+Copyright (c) 2015-2017 soef <soef@gmx.net>, 2018-2022 ioBroker Community

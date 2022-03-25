@@ -3,14 +3,6 @@
         "name": "samsung",
         "version": "0.5.0",
         "news": {
-            "0.5.0": {
-                "en": "New api Type for H and J Series (2014 + 2015)",
-                "de": "Neue API für H und J Serie aus den Jahren (2014 + 2015)"
-            },
-            "0.4.0": {
-                "en": "New api Type, removed node 4 check",
-                "de": "Neue API, Node 4 check entfernt"
-            },
             "0.2.9": {
                 "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
                 "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
@@ -92,7 +84,17 @@
         ],
         "connectionType": "local",
         "dataSource": "poll",
-        "tier": 2
+        "tier": 2,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ],
+        "plugins": {
+            "sentry": {
+                "dsn": "https://fde0a3f21d42438d94f170549d9679f2@sentry.iobroker.net/185"
+            }
+        }
     },
     "native": {
         "ip": "192.168.1.95",

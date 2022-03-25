@@ -119,15 +119,6 @@ var adapter = utils.Adapter({
             callback();
         }
     },
-    discover: function (callback) {
-    },
-    install: function (callback) {
-    },
-    uninstall: function (callback) {
-    },
-    objectChange: function (id, obj) {
-    },
-
     stateChange: function (id, state) {
 
         if (state && !state.ack) {
@@ -144,9 +135,9 @@ var adapter = utils.Adapter({
 
                 case 'Power':
                     switch (as[3]) {
-                        //case 'on':
-                        //   onOn(state.val);
-                        //   break;
+                        case 'on':
+                           onOn(true);
+                           break;
                         case 'off':
                             onOn(false);
                             break;
@@ -197,7 +188,6 @@ function createObj(name, val, type, role, desc) {
             def: false,
             read: true,
             write: true,
-            values: [false, true],
             desc: desc
         },
         native: { command: val }
@@ -234,6 +224,7 @@ function createObjectsAndStates() {
     }
     createObj('Power.checkOn', '', 'state', 'state');
     createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
+    createObj('Power.on', false, 'state', 'state', 'Indicated power status or turn on if not already turned on');
 
     adapter.setObjectNotExists('command', {
         type: 'state',
