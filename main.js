@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 
 const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
 
-var utils = require(__dirname + '/lib/utils'),
+var utils = require(`${__dirname}/lib/utils`),
     SamsungRemote = require('samsung-remote'),
     SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv'),
-    Samsung2016 = require(__dirname + '/lib/samsung-2016'),
-    SamsungTV = require(__dirname + '/lib/samsungtv/build/device.js'), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
-    ping = require(__dirname + '/lib/ping'),
+    Samsung2016 = require(`${__dirname}/lib/samsung-2016`),
+    SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
+    ping = require(`${__dirname}/lib/ping`),
     Keys = require('./keys')
     ;
 
@@ -82,6 +82,10 @@ function onOn(val) {
     val = !!val;
 
     isOn(function (running) {
+        if (!remote) {
+            adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
+            return;
+        }
         if (running === val) {
             adapter.setState('Power.on', val, true);
             return;
@@ -123,7 +127,7 @@ var adapter = utils.Adapter({
 
         if (state && !state.ack) {
             var as = id.split('.');
-            if (as[0] + '.' + as[1] !== adapter.namespace) return;
+            if (`${as[0]}.${as[1]}` !== adapter.namespace) return;
             switch (as[2]) {
                 case 'command':
                     send(state.val, function callback(err) {
@@ -169,7 +173,11 @@ var adapter = utils.Adapter({
 
 function send(command, callback) {
     if (!command) {
-        adapter.log.error("Empty commands will not be excecuted.");
+        adapter.log.error('Empty commands will not be excecuted.');
+        return;
+    }
+    if (!remote) {
+        adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
         return;
     }
     remote.send(command, callback || function nop() { });
@@ -178,7 +186,7 @@ function send(command, callback) {
 
 function createObj(name, val, type, role, desc) {
 
-    if (role === undefined) role = type !== "channel" ? "button" : "";
+    if (role === undefined) role = type !== 'channel' ? 'button' : '';
     adapter.setObjectNotExists(name, {
         type: type,
         common: {
@@ -192,13 +200,13 @@ function createObj(name, val, type, role, desc) {
         },
         native: { command: val }
     }, function (err, obj) {
-        if (type !== "channel") adapter.setState(name, false, true);
+        if (type !== 'channel') adapter.setState(name, false, true);
     });
 }
 
 
 function saveModel2016(val, callback) {
-    adapter.getForeignObject("system.adapter." + adapter.namespace, function (err, obj) {
+    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
         if (!err && obj && !obj.native) obj['native'] = {};
         if (obj.native.model2016 === val) return callback && callback();
         obj.native.model2016 = val;
@@ -215,11 +223,11 @@ function createObjectsAndStates() {
     for (var key in Keys) {
         if (Keys[key] === null) {
             channel = key;
-            createObj(key, "", "channel");
+            createObj(key, '', 'channel');
         }
         else {
             commandValues.push(key);
-            createObj(channel + '.' + Keys[key], key, "state");
+            createObj(`${channel}.${Keys[key]}`, key, 'state');
         }
     }
     createObj('Power.checkOn', '', 'state', 'state');
@@ -232,14 +240,14 @@ function createObjectsAndStates() {
             name: 'command',
             type: 'string',
             role: 'state',
-            desc: "KEY_xxx",
+            desc: 'KEY_xxx',
             values: commandValues,
             states: commandValues
         },
         native: {
         }
     }, function (err, obj) {
-        adapter.setState("command", "", true/*{ ack: true }*/);
+        adapter.setState('command', '', true/*{ ack: true }*/);
     });
     adapter.setObjectNotExists(powerOnOffState, {
         type: 'state',
@@ -247,13 +255,13 @@ function createObjectsAndStates() {
             name: 'Determinated Power state',
             type: 'string',
             role: 'state',
-            desc: "checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status"
+            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
         },
         native: {
             ts: new Date().getTime()
         }
     }, function (err, obj) {
-        adapter.setState(powerOnOffState, "", true/*{ ack: true }*/);
+        adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
     });
 
     checkPowerOnOff();
@@ -263,45 +271,54 @@ function createObjectsAndStates() {
 
 async function main() {
 
-    if (adapter.config.apiType === "Samsung2016") {
+    if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
         remote2016.onError = function (error) {
         }.bind(remote2016);
-        remote2016.send(undefined, function (err, data) {
-            if (adapter.config.model2016 === undefined) saveModel2016(err === 'success');
-            if (err === 'success' || adapter.config.model2016 === true) {
-                remote = remote2016;
-                remote.powerKey = 'KEY_POWER';
-                Keys.KEY_POWER = Keys.KEY_POWEROFF;
-                delete Keys.KEY_POWEROFF;
-                createObjectsAndStates();
-            }
-        });
-    } else if (adapter.config.apiType === "SamsungTV") {
+        try {
+            remote2016.send(undefined, function (err, data) {
+                if (adapter.config.model2016 === undefined) saveModel2016(err === 'success');
+                if (err === 'success' || adapter.config.model2016 === true) {
+                    remote = remote2016;
+                    remote.powerKey = 'KEY_POWER';
+                    Keys.KEY_POWER = Keys.KEY_POWEROFF;
+                    delete Keys.KEY_POWEROFF;
+                    createObjectsAndStates();
+                }
+            });
+        } catch (err) {
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err.message}`);
+        }
+    } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
         if (adapter.config.token)
             remoteSTV.token = adapter.config.token;
-        await remoteSTV.connect('ioBroker');
-        adapter.log.info("-----------------------------------------");
-        adapter.log.info("Confirm on your TV to get a Token");
-        adapter.log.info("-----------------------------------------");
-        adapter.log.info("Token: "+ remoteSTV.token);
-        adapter.log.info("-----------------------------------------");
+        try {
+            await remoteSTV.connect('ioBroker');
+        } catch (err) {
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err.message}`);
+            return
+        }
+        adapter.log.info('-----------------------------------------');
+        adapter.log.info('Confirm on your TV to get a Token');
+        adapter.log.info('-----------------------------------------');
+        adapter.log.info(`Token: ${remoteSTV.token}`);
+        adapter.log.info('-----------------------------------------');
         remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
         createObjectsAndStates();
 
-    } else if (adapter.config.apiType === "SamsungHJ") {
+    } else if (adapter.config.apiType === 'SamsungHJ') {
 
         if (adapter.config.ip) {
 
-            adapter.log.debug("Initilaizing HJ lib");
+            adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
 
                 try {
                     var resp = await remoteHJ.init2();
-                    adapter.log.debug("resp is " + resp);
-                    adapter.log.info("Connection to TV initialised");
+                    adapter.log.debug(`resp is ${resp}`);
+                    adapter.log.info('Connection to TV initialised');
 
                     if (adapter.config.pin) {
 
@@ -313,27 +330,32 @@ async function main() {
 
                             remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
 
-                            adapter.log.info("Successfully connected to your Samsung HJ TV ");
+                            adapter.log.info('Successfully connected to your Samsung HJ TV ');
                         } catch (e) {
-                            adapter.log.error("Could not connect! Is the Pin correct?" + e)
+                            adapter.log.error(`Could not connect! Is the Pin correct? ${e.message}`)
                         }
 
                     } else {
-                        adapter.log.debug("remoteHJ conf ");
+                        adapter.log.debug('remoteHJ conf ');
                         adapter.log.debug(remoteHJ.pairing);
 
                         remoteHJ.requestPin();
                     }
                 } catch (e) {
-                    adapter.log.error("Connection to TV failed. Is the IP correct? Is the TV switched on?")
+                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${e.message}`)
                 }
 
         } else {
-            adapter.log.error("No IP defined")
+            adapter.log.error('No IP defined')
         }
 
     } else {
-        remote = new SamsungRemote({ ip: adapter.config.ip });
+        try {
+            remote = new SamsungRemote({ip: adapter.config.ip});
+        } catch (err) {
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${e.message}`)
+            return;
+        }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
     }
