@@ -287,7 +287,7 @@ async function main() {
                 }
             });
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err.message}`);
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
@@ -296,7 +296,7 @@ async function main() {
         try {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err.message}`);
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
             return
         }
         adapter.log.info('-----------------------------------------');
