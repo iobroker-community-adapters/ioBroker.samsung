@@ -331,8 +331,8 @@ async function main() {
                             remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
-                        } catch (e) {
-                            adapter.log.error(`Could not connect! Is the Pin correct? ${e.message}`)
+                        } catch (err) {
+                            adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
                         }
 
                     } else {
@@ -341,8 +341,8 @@ async function main() {
 
                         remoteHJ.requestPin();
                     }
-                } catch (e) {
-                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${e.message}`)
+                } catch (err) {
+                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
                 }
 
         } else {
@@ -353,7 +353,7 @@ async function main() {
         try {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${e.message}`)
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
