@@ -265,6 +265,8 @@ function createObjectsAndStates() {
     });
 
     checkPowerOnOff();
+
+    adapter.subscribeStates('*');
 }
 
 
@@ -359,6 +361,4 @@ async function main() {
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
     }
-
-    adapter.subscribeStates('*');
 }
