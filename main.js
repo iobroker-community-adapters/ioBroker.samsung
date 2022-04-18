@@ -43,7 +43,7 @@ function minNodeVersion(minVersion) {
 function setStateNe(id, val, ack) {
     adapter.getState(id, function (err, obj) {
         if (obj && (obj.val !== val || obj.ack !== !!ack)) {
-            adapter.setState(id, val, true);
+            adapter.setState(id, val, !!ack);
         }
     });
 }
@@ -58,15 +58,15 @@ function checkPowerOnOff() {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
+                } else {
+                    cnt = 0;
+                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
                 }
-                adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
                 lastOn = on;
             }
             if (!on) {
-                if (cnt < 20) {
-                    checkOnOffTimer = setTimeout(check, 1000);
-                }
-                else {
+                checkOnOffTimer = setTimeout(check, 1000);
+                if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
                 }
@@ -125,6 +125,9 @@ var adapter = utils.Adapter({
     },
     stateChange: function (id, state) {
 
+        if (state && state.lc !== state.ts) {
+            adapter.log.debug(`stateChange: ${id} ${JSON.stringify(state)}`);
+        }
         if (state && !state.ack) {
             var as = id.split('.');
             if (`${as[0]}.${as[1]}` !== adapter.namespace) return;
@@ -180,6 +183,7 @@ function send(command, callback) {
         adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
         return;
     }
+    adapter.log.debug(`Executing command: ${command}`);
     remote.send(command, callback || function nop() { });
 }
 
@@ -252,7 +256,7 @@ function createObjectsAndStates() {
     adapter.setObjectNotExists(powerOnOffState, {
         type: 'state',
         common: {
-            name: 'Determinated Power state',
+            name: 'Determinant Power state',
             type: 'string',
             role: 'state',
             desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
