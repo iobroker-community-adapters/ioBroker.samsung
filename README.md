@@ -50,8 +50,7 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 0.5.7 (2022-04-19)
 * (Apollon77) Adjust logic to detect if TV is on or off
 
 ### 0.5.6 (2022-03-31)

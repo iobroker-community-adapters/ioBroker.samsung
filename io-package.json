@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.5.6",
+    "version": "0.5.7",
     "news": {
+      "0.5.7": {
+        "en": "Adjust logic to detect if TV is on or off",
+        "de": "Passen Sie die Logik an, um zu erkennen, ob der Fernseher ein- oder ausgeschaltet ist",
+        "ru": "Настройте логику, чтобы определить, включен ли телевизор или выключен",
+        "pt": "Ajuste a lógica para detectar se a TV está ligada ou desligada",
+        "nl": "Pas de logica aan om te detecteren of de tv aan of uit staat",
+        "fr": "Ajustez la logique pour détecter si le téléviseur est allumé ou éteint",
+        "it": "Regola la logica per rilevare se la TV è accesa o spenta",
+        "es": "Ajuste la lógica para detectar si la TV está encendida o apagada",
+        "pl": "Dostosuj logikę, aby wykryć, czy telewizor jest włączony, czy wyłączony",
+        "zh-cn": "调整逻辑以检测电视是打开还是关闭"
+      },
       "0.5.6": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
@@ -74,10 +86,6 @@
         "es": "Actualizaciones generales\nAgregar Sentry para informes de fallas",
         "pl": "Ogólne aktualizacje\nDodaj Sentry do zgłaszania awarii",
         "zh-cn": "一般更新\n为崩溃报告添加哨兵"
-      },
-      "0.2.9": {
-        "en": "Update utils.js and usage, CI Testing and deps (Apollon77)",
-        "de": "utils.js und Benutzung erneuert, CI Testing (Apollon77)"
       }
     },
     "title": "Samsung TV",
