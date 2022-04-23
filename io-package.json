@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.5.7",
+    "version": "0.5.8",
     "news": {
+      "0.5.8": {
+        "en": "Fix crash cases reported by Sentry",
+        "de": "Von Sentry gemeldete Absturzfälle beheben",
+        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
+        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
+        "nl": "Herstel crashgevallen gemeld door Sentry",
+        "fr": "Correction des cas de plantage signalés par Sentry",
+        "it": "Risolvi i casi di crash segnalati da Sentry",
+        "es": "Solucionar casos de fallas informados por Sentry",
+        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
+        "zh-cn": "修复 Sentry 报告的崩溃案例"
+      },
       "0.5.7": {
         "en": "Adjust logic to detect if TV is on or off",
         "de": "Passen Sie die Logik an, um zu erkennen, ob der Fernseher ein- oder ausgeschaltet ist",
@@ -74,18 +86,6 @@
         "es": "Solucionar casos de fallas informados por Sentry",
         "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
         "zh-cn": "修复 Sentry 报告的崩溃案例"
-      },
-      "0.5.1": {
-        "en": "General updates\nAdd Sentry for Crash reporting",
-        "de": "Allgemeine Aktualisierungen\nFügen Sie Sentry für Crash-Berichte hinzu",
-        "ru": "Общие обновления\nДобавьте Sentry для отчетов о сбоях",
-        "pt": "Atualizações gerais\nAdicionar Sentinela para relatórios de falhas",
-        "nl": "Algemene updates\nSentry voor crashrapportage toevoegen",
-        "fr": "Mises à jour générales\nAjouter Sentry pour les rapports d'incident",
-        "it": "Aggiornamenti generali\nAggiungi Sentinella per i rapporti sugli arresti anomali",
-        "es": "Actualizaciones generales\nAgregar Sentry para informes de fallas",
-        "pl": "Ogólne aktualizacje\nDodaj Sentry do zgłaszania awarii",
-        "zh-cn": "一般更新\n为崩溃报告添加哨兵"
       }
     },
     "title": "Samsung TV",
