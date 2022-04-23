@@ -184,7 +184,11 @@ function send(command, callback) {
         return;
     }
     adapter.log.debug(`Executing command: ${command}`);
-    remote.send(command, callback || function nop() { });
+    try {
+        remote.send(command, callback || function nop() { });
+    } catch (e) {
+        adapter.log.error(`Error executing command: ${command}: ${e.message}`);
+    }
 }
 
 
