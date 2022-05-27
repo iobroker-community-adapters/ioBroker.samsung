@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.5.8",
+    "version": "0.5.9",
     "news": {
+      "0.5.9": {
+        "en": "fix crash when initializing a SamsungTV (Tizen)",
+        "de": "Absturz beim Initialisieren eines SamsungTV (Tizen) behoben",
+        "ru": "исправить сбой при инициализации SamsungTV (Tizen)",
+        "pt": "corrigir falha ao inicializar um SamsungTV (Tizen)",
+        "nl": "repareer crash bij het initialiseren van een SamsungTV (Tizen)",
+        "fr": "correction d'un crash lors de l'initialisation d'un SamsungTV (Tizen)",
+        "it": "correggere l'arresto anomalo durante l'inizializzazione di un SamsungTV (Tizen)",
+        "es": "corrige el bloqueo al inicializar un SamsungTV (Tizen)",
+        "pl": "napraw awarię podczas inicjalizacji SamsungTV (Tizen)",
+        "zh-cn": "修复初始化 SamsungTV (Tizen) 时的崩溃"
+      },
       "0.5.8": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
@@ -64,18 +76,6 @@
         "zh-cn": "修复 Sentry 报告的崩溃案例"
       },
       "0.5.3": {
-        "en": "Fix crash cases reported by Sentry",
-        "de": "Von Sentry gemeldete Absturzfälle beheben",
-        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
-        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
-        "nl": "Herstel crashgevallen gemeld door Sentry",
-        "fr": "Correction des cas de plantage signalés par Sentry",
-        "it": "Risolvi i casi di crash segnalati da Sentry",
-        "es": "Solucionar casos de fallas informados por Sentry",
-        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
-      },
-      "0.5.2": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
         "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
