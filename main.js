@@ -298,6 +298,7 @@ async function main() {
             });
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
+            adapter.log.error(err.stack);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
@@ -307,6 +308,7 @@ async function main() {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
+            adapter.log.error(err.stack);
             return
         }
         adapter.log.info('-----------------------------------------');
@@ -353,6 +355,7 @@ async function main() {
                     }
                 } catch (err) {
                     adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+                    adapter.log.error(err.stack);
                 }
 
         } else {
@@ -364,6 +367,7 @@ async function main() {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(err.stack);
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
