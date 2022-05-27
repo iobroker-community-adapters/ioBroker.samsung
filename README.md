@@ -50,6 +50,10 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) fix crash with SamsungTV
+
 ### 0.5.8 (2022-04-23)
 * (Apollon77) Fix crash cases reported by Sentry
 
