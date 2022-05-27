@@ -308,7 +308,6 @@ async function main() {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
-            adapter.log.error(err.stack);
             return
         }
         adapter.log.info('-----------------------------------------');
