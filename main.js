@@ -270,9 +270,10 @@ function createObjectsAndStates() {
         }
     }, function (err, obj) {
         adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
+
+        checkPowerOnOff();
     });
 
-    checkPowerOnOff();
 
     adapter.subscribeStates('*');
 }
