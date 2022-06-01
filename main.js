@@ -50,10 +50,12 @@ function setStateNe(id, val, ack) {
 
 var checkOnOffTimer;
 function checkPowerOnOff() {
+    adapter.log.debug('Checking power on/off state ...');
     if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
     var cnt = 0, lastOn;
     (function check() {
         isOn(function (on) {
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
             if (lastOn !== on) {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
@@ -125,9 +127,7 @@ var adapter = utils.Adapter({
     },
     stateChange: function (id, state) {
 
-        if (state && state.lc !== state.ts) {
-            adapter.log.debug(`stateChange: ${id} ${JSON.stringify(state)}`);
-        }
+        adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`);
         if (state && !state.ack) {
             var as = id.split('.');
             if (`${as[0]}.${as[1]}` !== adapter.namespace) return;
