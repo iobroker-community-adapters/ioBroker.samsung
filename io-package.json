@@ -1,8 +1,20 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.5.10",
+    "version": "0.5.11",
     "news": {
+      "0.5.11": {
+        "en": "Optimize checkOnOff logic on adapter start",
+        "de": "Optimieren Sie die checkOnOff-Logik beim Adapterstart",
+        "ru": "Оптимизация логики checkOnOff при запуске адаптера",
+        "pt": "Otimize a lógica checkOnOff na inicialização do adaptador",
+        "nl": "Optimaliseer checkOnOff-logica bij het starten van de adapter",
+        "fr": "Optimiser la logique checkOnOff au démarrage de l'adaptateur",
+        "it": "Ottimizza la logica checkOnOff all'avvio dell'adattatore",
+        "es": "Optimice la lógica checkOnOff en el inicio del adaptador",
+        "pl": "Zoptymalizuj logikę checkOnOff przy starcie adaptera",
+        "zh-cn": "优化适配器启动时的 checkOnOff 逻辑"
+      },
       "0.5.10": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
@@ -64,18 +76,6 @@
         "zh-cn": "修复 Sentry 报告的崩溃案例"
       },
       "0.5.5": {
-        "en": "Fix crash cases reported by Sentry",
-        "de": "Von Sentry gemeldete Absturzfälle beheben",
-        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
-        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
-        "nl": "Herstel crashgevallen gemeld door Sentry",
-        "fr": "Correction des cas de plantage signalés par Sentry",
-        "it": "Risolvi i casi di crash segnalati da Sentry",
-        "es": "Solucionar casos de fallas informados por Sentry",
-        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
-      },
-      "0.5.4": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
         "ru": "Исправить случаи сбоев, о которых сообщил Sentry",

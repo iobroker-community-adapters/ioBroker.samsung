@@ -50,8 +50,7 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 0.5.11 (2022-06-02)
 * (Apollon77) Optimize checkOnOff logic on adapter start
 
 ### 0.5.10 (2022-05-27)
