@@ -302,21 +302,34 @@ async function main() {
             adapter.log.error(err.stack);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
-        var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.mac);
-        if (adapter.config.token)
+        var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.token ? undefined : adapter.config.mac);
+        if (adapter.config.token) {
             remoteSTV.token = adapter.config.token;
+        }
         try {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
             return
         }
-        adapter.log.info('-----------------------------------------');
-        adapter.log.info('Confirm on your TV to get a Token');
-        adapter.log.info('-----------------------------------------');
-        adapter.log.info(`Token: ${remoteSTV.token}`);
-        adapter.log.info('-----------------------------------------');
-        remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteSTV.sendKey(cmd) };
+        if (!adapter.config.token) {
+            adapter.log.info('-----------------------------------------');
+            adapter.log.info('Confirm on your TV to get a Token');
+            adapter.log.info('-----------------------------------------');
+            adapter.log.info(`Token: ${remoteSTV.token}`);
+            adapter.log.info('-----------------------------------------');
+        }
+        remote = { powerKey: 'KEY_POWER', send: async (cmd) => {
+            try {
+                if (!remoteSTV.isConnected) {
+                    await remoteSTV.connect('ioBroker');
+                }
+            } catch (err) {
+                adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
+                return
+            }
+            await remoteSTV.sendKey(cmd);
+        }};
         createObjectsAndStates();
 
     } else if (adapter.config.apiType === 'SamsungHJ') {

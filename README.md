@@ -50,6 +50,10 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Only Wake-On-Lan SamsungTVs on adapterstart if no token is configured
+
 ### 0.5.11 (2022-06-02)
 * (Apollon77) Optimize checkOnOff logic on adapter start
 
