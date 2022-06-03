@@ -318,6 +318,8 @@ async function main() {
             adapter.log.info('-----------------------------------------');
             adapter.log.info(`Token: ${remoteSTV.token}`);
             adapter.log.info('-----------------------------------------');
+        } else {
+            remoteSTV.mac = adapter.config.mac;
         }
         remote = { powerKey: 'KEY_POWER', send: async (cmd) => {
             try {
