@@ -176,7 +176,7 @@ var adapter = utils.Adapter({
 
 function send(command, callback) {
     if (!command) {
-        adapter.log.error('Empty commands will not be excecuted.');
+        adapter.log.error('Empty commands will not be executed.');
         return;
     }
     if (!remote) {
@@ -321,7 +321,7 @@ async function main() {
         } else {
             remoteSTV.mac = adapter.config.mac;
         }
-        remote = { powerKey: 'KEY_POWER', send: async (cmd) => {
+        remote = { powerKey: 'KEY_POWER', send: async (cmd, cb) => {
             try {
                 if (!remoteSTV.isConnected) {
                     await remoteSTV.connect('ioBroker');
@@ -331,6 +331,7 @@ async function main() {
                 return
             }
             await remoteSTV.sendKey(cmd);
+            cb && cb();
         }};
         createObjectsAndStates();
 
@@ -355,7 +356,10 @@ async function main() {
 
                             createObjectsAndStates();
 
-                            remote = { powerKey: 'KEY_POWER', send: (cmd) => remoteHJ.sendKey(cmd) };
+                            remote = { powerKey: 'KEY_POWER', send: (cmd, cn) => {
+                                remoteHJ.sendKey(cmd);
+                                cb && cb();
+                            } };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
                         } catch (err) {
