@@ -144,10 +144,10 @@ var adapter = utils.Adapter({
                     switch (as[3]) {
                         case 'on':
                            onOn(true);
-                           break;
+                           return;
                         case 'off':
                             onOn(false);
-                            break;
+                            return;
                         case 'checkOnOff':
                         case 'checkOn':
                             checkPowerOnOff();
