@@ -323,9 +323,7 @@ async function main() {
         }
         remote = { powerKey: 'KEY_POWER', send: async (cmd, cb) => {
             try {
-                if (!remoteSTV.isConnected) {
-                    await remoteSTV.connect('ioBroker');
-                }
+                await remoteSTV.connect('ioBroker');
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
                 return
