@@ -302,7 +302,7 @@ async function main() {
             adapter.log.error(err.stack);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
-        var remoteSTV = new SamsungTV(adapter.config.ip, adapter.config.token ? undefined : adapter.config.mac);
+        var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
         if (adapter.config.token) {
             remoteSTV.token = adapter.config.token;
         }
