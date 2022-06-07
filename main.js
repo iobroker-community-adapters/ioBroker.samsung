@@ -89,6 +89,7 @@ function onOn(val) {
             return;
         }
         if (running === val) {
+            adapter.log.debug(`TV already in state ${val}`);
             adapter.setState('Power.on', val, true);
             return;
         }
@@ -324,6 +325,7 @@ async function main() {
         remote = { powerKey: 'KEY_POWER', send: async (cmd, cb) => {
             try {
                 await remoteSTV.connect('ioBroker');
+                adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
                 return
