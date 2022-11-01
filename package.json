@@ -27,7 +27,7 @@
     "url": "https://github.com/iobroker-community-adapters/ioBroker.samsung/"
   },
   "dependencies": {
-    "@iobroker/adapter-core": "^2.6.0",
+    "@iobroker/adapter-core": "^2.6.7",
     "samsung-remote": "^1.6.0",
     "samsungtv": "https://git@github.com/luca-saggese/samsungtv",
     "ws": "^8.7.0",
