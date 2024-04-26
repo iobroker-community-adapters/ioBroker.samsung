@@ -88,7 +88,6 @@
         "zh-cn": "修复 Sentry 报告的崩溃案例"
       }
     },
-    "title": "Samsung TV",
     "titleLang": {
       "en": "Samsung TV",
       "de": "Samsung-Fernseher",
@@ -111,7 +110,10 @@
     "icon": "samsung.png",
     "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/iobroker.samsung/master/admin/samsung.png",
     "readme": "https://github.com/iobroker-community-adapters/iobroker.samsung/blob/master/README.md",
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "loglevel": "info",
     "keywords": [
       "ioBroker",
@@ -135,7 +137,12 @@
     "tier": 2,
     "dependencies": [
       {
-        "js-controller": ">=2.0.0"
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
       }
     ],
     "plugins": {
