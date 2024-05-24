@@ -38,7 +38,11 @@ Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
 ## Changelog
-### 0.6.0-alpha.0 (2024-05-24)
+<!--
+	Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
+### **WORK IN PROGRESS**
 * (mcm1957) Adapter requires node.js >= 18 and js-controller >= 5 now
 * (mcm1957) Adapter uses adapter-core now
 * (Apollon77) Only Wake-On-Lan SamsungTVs on adapterstart if no token is configured
