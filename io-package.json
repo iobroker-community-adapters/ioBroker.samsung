@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.5.11",
+    "version": "0.6.0-alpha.0",
     "news": {
+      "0.6.0-alpha.0": {
+        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nAdapter uses adapter-core now\nOnly Wake-On-Lan SamsungTVs on adapterstart if no token is configured\nDependencies have been updated",
+        "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAdapter verwendet jetzt adapter-core\nWake-On-Lan SamsungTVs bei Adapterstart nur wenn kein Token konfiguriert ist\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nАдаптер теперь использует адаптер\nТолько Wake-On-Lan SamsungTV на адаптерстарт, если нет токен настроен\nЗависимость обновлена",
+        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nAdaptador usa adaptador-core agora\nApenas Wake-On-Lan SamsungTVs no adaptadorstart se nenhum token estiver configurado\nAs dependências foram atualizadas",
+        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAdapter gebruikt nu adapter-core\nAlleen Wake-On-Lan SamsungTVs op adapterstart als er geen token is geconfigureerd\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nAdaptateur utilise adaptateur-core maintenant\nSeulement Wake-On-Lan SamsungTVs sur adaptateurstart si aucun jeton n'est configuré\nLes dépendances ont été actualisées",
+        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nAdattatore utilizza adattatore-core ora\nSolo Wake-On-Lan SamsungTVs sull'adattatoreavviare se nessun token è configurato\nLe dipendenze sono state aggiornate",
+        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nAdaptador utiliza adaptador-core ahora\nSólo Wake-On-Lan SamsungTVs en el adaptadorstart si no token está configurado\nSe han actualizado las dependencias",
+        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nAdapter używa adapter-rdzeń teraz\nTylko Wake- On- Lan SamsungTV na Adapterstart jeśli nie jest skonfigurowany żaden token\nZaktualizowano zależności",
+        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nАдаптер використовує адаптер-core зараз\nТільки Wake-On-Lan SamsungTVs на адаптеріstart, якщо не токен налаштований\nЗалежність було оновлено",
+        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n适配器现在使用适配器核心\n只有Wake-On-Lan SamsungTVs在适配器启动时, 如果没有配置任何符号\n依赖关系已更新"
+      },
       "0.5.11": {
         "en": "Optimize checkOnOff logic on adapter start",
         "de": "Optimieren Sie die checkOnOff-Logik beim Adapterstart",
@@ -64,18 +77,6 @@
         "zh-cn": "调整逻辑以检测电视是打开还是关闭"
       },
       "0.5.6": {
-        "en": "Fix crash cases reported by Sentry",
-        "de": "Von Sentry gemeldete Absturzfälle beheben",
-        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
-        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
-        "nl": "Herstel crashgevallen gemeld door Sentry",
-        "fr": "Correction des cas de plantage signalés par Sentry",
-        "it": "Risolvi i casi di crash segnalati da Sentry",
-        "es": "Solucionar casos de fallas informados por Sentry",
-        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
-      },
-      "0.5.5": {
         "en": "Fix crash cases reported by Sentry",
         "de": "Von Sentry gemeldete Absturzfälle beheben",
         "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
