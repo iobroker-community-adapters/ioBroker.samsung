@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.6.0-alpha.0",
+    "version": "0.6.0",
     "news": {
-      "0.6.0-alpha.0": {
+      "0.6.0": {
         "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nAdapter uses adapter-core now\nOnly Wake-On-Lan SamsungTVs on adapterstart if no token is configured\nDependencies have been updated",
         "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAdapter verwendet jetzt adapter-core\nWake-On-Lan SamsungTVs bei Adapterstart nur wenn kein Token konfiguriert ist\nAbhängigkeiten wurden aktualisiert",
         "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nАдаптер теперь использует адаптер\nТолько Wake-On-Lan SamsungTV на адаптерстарт, если нет токен настроен\nЗависимость обновлена",
@@ -75,18 +75,6 @@
         "es": "Ajuste la lógica para detectar si la TV está encendida o apagada",
         "pl": "Dostosuj logikę, aby wykryć, czy telewizor jest włączony, czy wyłączony",
         "zh-cn": "调整逻辑以检测电视是打开还是关闭"
-      },
-      "0.5.6": {
-        "en": "Fix crash cases reported by Sentry",
-        "de": "Von Sentry gemeldete Absturzfälle beheben",
-        "ru": "Исправить случаи сбоев, о которых сообщил Sentry",
-        "pt": "Corrigir casos de travamento relatados pelo Sentinela",
-        "nl": "Herstel crashgevallen gemeld door Sentry",
-        "fr": "Correction des cas de plantage signalés par Sentry",
-        "it": "Risolvi i casi di crash segnalati da Sentry",
-        "es": "Solucionar casos de fallas informados por Sentry",
-        "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
       }
     },
     "titleLang": {
