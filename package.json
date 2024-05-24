@@ -2,15 +2,10 @@
   "name": "iobroker.samsung",
   "version": "0.5.11",
   "description": "Samsung Adapter",
-  "author": {
-    "name": "soef",
-    "email": "soef@gmx.net"
-  },
+  "author": "soef <soef@gmx.net>",
   "contributors": [
-    {
-      "name": "soef",
-      "email": "soef@gmx.net"
-    }
+    "soef <soef@gmx.net>",
+    "mcm1957 <mcm57@gmx.at>"
   ],
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.samsung/",
   "license": "MIT",

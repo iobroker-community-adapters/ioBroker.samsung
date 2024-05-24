@@ -31,18 +31,6 @@ Choose your API:
 
 
 
-#### Installation
-via ioBroker Admin.
-
-Otherwise execute the following command in the ioBroker root directory (e.g. in /opt/iobroker)
-```
-iobroker install samsung
-```
-or
-```
-npm install iobroker.samsung 
-```
-
 #### Requirements
 Samsung TV<br>
 HJ Series tested by me on UE55HU7200. 
@@ -53,6 +41,7 @@ if something does not work, look  in the log.
 
 ### __WORK IN PROGRESS__
 * (mcm1957) Adapter requires node.js >= 18 and js-controller >= 5 now
+* (mcm1957) Adapter uses adapter-core now
 * (Apollon77) Only Wake-On-Lan SamsungTVs on adapterstart if no token is configured
 * (mcm1957) Dependencies have been updated
 

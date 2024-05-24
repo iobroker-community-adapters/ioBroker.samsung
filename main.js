@@ -2,14 +2,14 @@
 
 const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
 
-var utils = require(`${__dirname}/lib/utils`),
-    SamsungRemote = require('samsung-remote'),
-    SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv'),
-    Samsung2016 = require(`${__dirname}/lib/samsung-2016`),
-    SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`), //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
-    ping = require(`${__dirname}/lib/ping`),
-    Keys = require('./keys')
-    ;
+//const utils = require(`${__dirname}/lib/utils`);
+const utils = require('@iobroker/adapter-core');
+const SamsungRemote = require('samsung-remote');
+const SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv');
+const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
+const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
+const ping = require(`${__dirname}/lib/ping`);
+const Keys = require('./keys');
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
