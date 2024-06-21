@@ -26,7 +26,8 @@
         "it": "Ottimizza la logica checkOnOff all'avvio dell'adattatore",
         "es": "Optimice la lógica checkOnOff en el inicio del adaptador",
         "pl": "Zoptymalizuj logikę checkOnOff przy starcie adaptera",
-        "zh-cn": "优化适配器启动时的 checkOnOff 逻辑"
+        "zh-cn": "优化适配器启动时的 checkOnOff 逻辑",
+        "uk": "Оптимізація логіки checkOnOff під час запуску адаптера"
       },
       "0.5.10": {
         "en": "Fix crash cases reported by Sentry",
@@ -38,7 +39,8 @@
         "it": "Risolvi i casi di crash segnalati da Sentry",
         "es": "Solucionar casos de fallas informados por Sentry",
         "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
+        "zh-cn": "修复 Sentry 报告的崩溃案例",
+        "uk": "Виправте випадки збоїв, про які повідомляє Sentry"
       },
       "0.5.9": {
         "en": "fix crash when initializing a SamsungTV (Tizen)",
@@ -50,7 +52,8 @@
         "it": "correggere l'arresto anomalo durante l'inizializzazione di un SamsungTV (Tizen)",
         "es": "corrige el bloqueo al inicializar un SamsungTV (Tizen)",
         "pl": "napraw awarię podczas inicjalizacji SamsungTV (Tizen)",
-        "zh-cn": "修复初始化 SamsungTV (Tizen) 时的崩溃"
+        "zh-cn": "修复初始化 SamsungTV (Tizen) 时的崩溃",
+        "uk": "виправити збій під час ініціалізації SamsungTV (Tizen)"
       },
       "0.5.8": {
         "en": "Fix crash cases reported by Sentry",
@@ -62,7 +65,8 @@
         "it": "Risolvi i casi di crash segnalati da Sentry",
         "es": "Solucionar casos de fallas informados por Sentry",
         "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
-        "zh-cn": "修复 Sentry 报告的崩溃案例"
+        "zh-cn": "修复 Sentry 报告的崩溃案例",
+        "uk": "Виправте випадки збоїв, про які повідомляє Sentry"
       },
       "0.5.7": {
         "en": "Adjust logic to detect if TV is on or off",
@@ -74,7 +78,8 @@
         "it": "Regola la logica per rilevare se la TV è accesa o spenta",
         "es": "Ajuste la lógica para detectar si la TV está encendida o apagada",
         "pl": "Dostosuj logikę, aby wykryć, czy telewizor jest włączony, czy wyłączony",
-        "zh-cn": "调整逻辑以检测电视是打开还是关闭"
+        "zh-cn": "调整逻辑以检测电视是打开还是关闭",
+        "uk": "Налаштуйте логіку, щоб визначити, увімкнено чи вимкнено телевізор"
       }
     },
     "titleLang": {
@@ -87,12 +92,21 @@
       "it": "TV Samsung",
       "es": "Samsung TV",
       "pl": "Telewizor Samsung",
-      "zh-cn": "三星电视"
+      "zh-cn": "三星电视",
+      "uk": "Телевізор Samsung"
     },
     "desc": {
       "en": "Control Samsung TV devices",
       "de": "Steuert Samsung TV Geräte",
-      "ru": "Control Samsung TV devices"
+      "ru": "Control Samsung TV devices",
+      "pt": "Controlar dispositivos de TV Samsung",
+      "nl": "Bedien Samsung TV-apparaten",
+      "fr": "Contrôler les appareils TV Samsung",
+      "it": "Controlla i dispositivi TV Samsung",
+      "es": "Controlar dispositivos de TV Samsung",
+      "pl": "Kontroluj urządzenia telewizyjne Samsung",
+      "uk": "Керуйте пристроями Samsung TV",
+      "zh-cn": "控制三星电视设备"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
