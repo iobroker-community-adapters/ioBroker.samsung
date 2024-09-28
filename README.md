@@ -35,7 +35,8 @@ Choose your API:
 
 #### Requirements
 Samsung TV<br>
-HJ Series tested by me on UE55HU7200. 
+HJ Series tested by me on UE55HU7200 (v.0.5.0 only), 
+again 2024 on UE55HJ8590 (v.0.6.1)
 Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
