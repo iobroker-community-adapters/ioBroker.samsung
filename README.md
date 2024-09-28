@@ -42,11 +42,10 @@ if something does not work, look  in the log.
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
 -->
-### 0.6.1-alpha.0 (2024-09-28)
+### **WORK IN PROGRESS**
 * (marian-t-web-de) Sending a key to TV logged an error [#210]
-* (marian-t-web-de) Error connecting to Samsung HJ Series TV has been fixed [#202]
+* (marian-t-web-de) Error connecting to Samsung HJ Series TV has been fixed [#202] [#138]
 * (mcm1957) Dependencies have been updated
 
 ### 0.6.0 (2024-05-24)
