@@ -44,7 +44,7 @@ if something does not work, look  in the log.
 	Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.6.1-alpha.0 (2024-09-28)
 * (marian-t-web-de) Sending a key to TV logged an error [#210]
 * (marian-t-web-de) Error connecting to Samsung HJ Series TV has been fixed [#202]
 * (mcm1957) Dependencies have been updated
@@ -63,9 +63,6 @@ if something does not work, look  in the log.
 
 ### 0.5.9 (2022-05-27)
 * (Apollon77) fix crash when initializing a SamsungTV (Tizen)
-
-### 0.5.8 (2022-04-23)
-* (Apollon77) Fix crash cases reported by Sentry
 
 ## License
 The MIT License (MIT)

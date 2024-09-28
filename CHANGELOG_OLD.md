@@ -1,4 +1,7 @@
 # Older Changelogs
+## 0.5.8 (2022-04-23)
+* (Apollon77) Fix crash cases reported by Sentry
+
 ## 0.5.7 (2022-04-19)
 * (Apollon77) Adjust logic to detect if TV is on or off
 
