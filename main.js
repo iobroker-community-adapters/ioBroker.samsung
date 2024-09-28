@@ -356,7 +356,7 @@ async function main() {
 
                             createObjectsAndStates();
 
-                            remote = { powerKey: 'KEY_POWER', send: (cmd, cn) => {
+                            remote = { powerKey: 'KEY_POWER', send: (cmd, cb) => {
                                 remoteHJ.sendKey(cmd);
                                 cb && cb();
                             } };
