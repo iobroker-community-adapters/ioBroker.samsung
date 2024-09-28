@@ -132,11 +132,9 @@
     },
     "loglevel": "info",
     "keywords": [
-      "ioBroker",
       "samsung",
       "samsung remote",
-      "samsunf tv",
-      "Smart Home",
+      "samsung tv",
       "home automation"
     ],
     "enabled": false,
