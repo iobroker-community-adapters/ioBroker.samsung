@@ -275,14 +275,17 @@ function createObjectsAndStates() {
         checkPowerOnOff();
     });
 
-
     adapter.subscribeStates('*');
 }
 
 
+var connectTimer;   // new 11.2024
+var cnt = 0; 
 
 async function main() {
-
+    if (connectTimer) clearTimeout(connectTimer);  // new 11.2024
+                                      // new 11.2024
+	
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
         remote2016.onError = function (error) {
@@ -356,12 +359,13 @@ async function main() {
 
                             createObjectsAndStates();
 
-                            remote = { powerKey: 'KEY_POWER', send: (cmd, cn) => {
+                            remote = { powerKey: 'KEY_POWER', send: (cmd, cb) => {
                                 remoteHJ.sendKey(cmd);
                                 cb && cb();
                             } };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
+							cnt = 0;  // new 11.2024
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
                         }
@@ -373,8 +377,13 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
-                    adapter.log.error(err.stack);
+					// try 5x to connect, then err
+					connectTimer = setTimeout(main, 2000); // new 11.2024
+					cnt++;                                 // new 11.2024
+					if( cnt > 5 ) {                        // new 11.2024
+						adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+						adapter.log.error(err.stack);
+					}                                      // new 11.2024
                 }
 
         } else {
