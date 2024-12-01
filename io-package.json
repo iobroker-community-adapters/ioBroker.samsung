@@ -1,8 +1,25 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.6.0",
+    "version": "0.6.2",
     "news": {
+      "0.6.2": {
+        "en": "Connection to Samsung HJ Series TV logged an error `Connection to TV failed. Is the IP correct?', try to reconnect implemended",
+        "de": "Verbindung mit Samsung HJ Series TV protokollierte einen Fehler `Connection to TV failed. Is the IP correct?', ein automatischer Reconnectversuch eingebaut",
+      },
+      "0.6.1": {
+        "en": "Sending a key to TV logged an error [#210]\nError connecting to Samsung HJ Series TV has been fixed [#202] [#138]\nDependencies have been updated",
+        "de": "Senden einer Tastenbedienung an TV protokollierte einen Fehler [#210]\nFehler bei der Verbindung mit Samsung HJ Serie TV wurde behoben [#202] [#138]\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Отправка ключа к телевизору зарегистрировала ошибку [#210]\nОшибка подключения к Samsung HJ Series TV была исправлена [#202] [#138]\nЗависимость обновлена",
+        "pt": "Enviar uma chave para a TV logou um erro [#210]\nO erro de conexão com a TV Samsung HJ Series foi corrigido [#202] [#138]\nAs dependências foram atualizadas",
+        "nl": "Een sleutel naar tv versturen logde een fout [#210]\nFout bij het verbinden met Samsung HJ Series TV is hersteld [#202] [#138]\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "Envoi d'une clé à TV enregistré une erreur [#210]\nErreur de connexion à Samsung HJ Series TV a été corrigé [#202] [#138]\nLes dépendances ont été actualisées",
+        "it": "Inviare una chiave per la TV ha registrato un errore [#210]\nErrore di connessione a Samsung HJ Series TV è stato fissato [#202] [#138]\nLe dipendenze sono state aggiornate",
+        "es": "Enviar una clave a TV registró un error [#210]\nEl error de conexión a Samsung HJ Series TV se ha fijado [#202] [#138]\nSe han actualizado las dependencias",
+        "pl": "Wysyłanie klucza do telewizora zalogowało błąd [# 210]\nBłąd połączenia z Samsung HJ Series TV został naprawiony [# 202] [# 138]\nZaktualizowano zależności",
+        "uk": "Надсилання ключа до відеозапису [#210]\nПомилка підключення до телевізора серії Samsung HJ [#202] [#138]\nЗалежність було оновлено",
+        "zh-cn": "将密钥发送到已登录的 TV 错误 [# 210]\n连接三星HJ系列电视的错误已固定 [#202] [#138]\n依赖关系已更新"
+      },
       "0.6.0": {
         "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nAdapter uses adapter-core now\nOnly Wake-On-Lan SamsungTVs on adapterstart if no token is configured\nDependencies have been updated",
         "de": "Adapter benötigt node.js >= 18 und js-controller >= 5 jetzt\nAdapter verwendet jetzt adapter-core\nWake-On-Lan SamsungTVs bei Adapterstart nur wenn kein Token konfiguriert ist\nAbhängigkeiten wurden aktualisiert",
