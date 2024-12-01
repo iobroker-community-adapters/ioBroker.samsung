@@ -384,7 +384,7 @@ async function main() {
 			}else {                                // new 11.2024
 				adapter.log.info('Connection to your Samsung HJ TV failed, reconnect (' +cnt +')');  // new 11.2024
 			// try 5x to connect, then err
-				connectTimer = setTimeout(main(), 2000); // new 11.2024
+				connectTimer = setTimeout(await main(), 2000); // new 11.2024
 			}
                 } // catch
 
