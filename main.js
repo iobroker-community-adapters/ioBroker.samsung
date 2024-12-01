@@ -377,16 +377,16 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-		// try 5x to connect, then err
-			connectTimer = setTimeout(main(), 2000); // new 11.2024
-			cnt++;                                 // new 11.2024
 			if( cnt > 5 ) {                        // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
 				adapter.log.error(err.stack);
-			}else {                                      // new 11.2024
-				adapter.log.info('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
+			}else {     // new 11.2024
+				cnt++;                                 // new 11.2024
+				adapter.log.info('Connection to your Samsung HJ TV failed, reconnect (' +cnt +')');
+			// try 5x to connect, then err
+				connectTimer = setTimeout(main(), 2000); // new 11.2024
 			}
-                }
+                } // catch
 
         } else {
             adapter.log.error('No IP defined')
