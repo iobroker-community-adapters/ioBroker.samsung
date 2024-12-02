@@ -224,7 +224,7 @@ async function main(callback) {
 
 async function repeat_main(callback) {
 	try {
-            main();
+            main(callback);
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
             adapter.log.error(err.stack);
