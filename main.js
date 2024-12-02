@@ -15,7 +15,7 @@ const schedule = require('node-schedule');
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
 var pingSchedule;
-var scheduleJob;
+var scheduledJob;
 let alive_old = false;
 
 var remoteHJ;
