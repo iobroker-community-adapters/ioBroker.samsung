@@ -10,7 +10,7 @@ const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
 const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
-const schedule = require('node-schedule');
+const scheduler = require('node-schedule');
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
@@ -250,7 +250,7 @@ function ping_shedule() {
 
      //let cronString = "*/1 * * * *"   
      let cronString = '{"timeperiod":{"minutes":1}}';
-     pingShedule = schedule(cronString, function () {
+     pingShedule = scheduler(cronString, function () {
        ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
