@@ -188,16 +188,15 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-		// try 5x to connect, then err
-			//connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
-			await delay(2000);
-			repeat_main(main);
-			cnt++;                                 // new 11.2024
-			if( cnt > 5 ) {                        // new 11.2024
+			// try 5x to connect, then err
+			if( cnt++ > 5 ) {                            // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
 				adapter.log.error(err.stack);
 			}else {                                      // new 11.2024
 				adapter.log.info('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
+				//connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
+				await delay(2000);
+				repeat_main(main);
 			}
 		}  // try
 
