@@ -87,7 +87,6 @@ var adapter = utils.Adapter({
 	}
 });
 
-var connectTimer;   // new 11.2024
 var cnt = 0;        // new 11.2024
 const delay = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 //######################################################################################
