@@ -13,6 +13,7 @@ const Keys = require('./keys');
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
+var pingShedule;
 
 var remoteHJ;
 const deviceConfig = {
@@ -20,6 +21,7 @@ const deviceConfig = {
     appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
     userId: '654321',
 }
+ping_shedule();
 
 //######################################################################################
 //
@@ -36,8 +38,8 @@ var adapter = utils.Adapter({
             callback();
         }
     },
+	
     stateChange: function (id, state) {
-
         adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`);
         if (state && !state.ack) {
             var as = id.split('.');
@@ -84,7 +86,7 @@ var adapter = utils.Adapter({
 //#############################
         main();
 //#############################    
-	}
+    }
 });
 
 var cnt = 0;        // new 11.2024
@@ -109,11 +111,13 @@ async function main() {
                     Keys.KEY_POWER = Keys.KEY_POWEROFF;
                     delete Keys.KEY_POWEROFF;
                     createObjectsAndStates();
+		    clearShedule(pingShedule);
                 }
             });
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
             adapter.log.error(err.stack);
+	    pingShedule ? false : ping_shedule();
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
@@ -124,6 +128,7 @@ async function main() {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
+	    pingShedule ? false : ping_shedule();
             return
         }
         if (!adapter.config.token) {
@@ -139,8 +144,10 @@ async function main() {
             try {
                 await remoteSTV.connect('ioBroker');
                 adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
+		clearShedule(pingShedule);
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
+		pingShedule ? false : ping_shedule();
                 return
             }
             await remoteSTV.sendKey(cmd);
@@ -176,8 +183,10 @@ async function main() {
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
 			    cnt = 0;  // new 11.2024
+			    clearShedule(pingShedule);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
+			    pingShedule ? false : ping_shedule();
                         }
 
                     } else {
@@ -193,7 +202,7 @@ async function main() {
 				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
-				//connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
+				pingShedule ? false : ping_shedule();
 				await delay(2000);
 				repeat_main(main);
 			}
@@ -208,11 +217,13 @@ async function main() {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
-            adapter.log.error(err.stack);
+            adapter.log.error(err.stack);y
+	    pingShedule ? false : ping_shedule();
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
+	clearShedule(pingShedule);
     }
 }  // main()
 
@@ -230,6 +241,22 @@ function repeat_main(callback) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
         }
+}
+
+function ping_shedule() {
+   let alive_old = false;
+
+   if(pingShedule) clearSchedule(pingShedule);
+
+   pingShedule = schedule("*/1 * * * *", function () {
+      ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+         if(res.alive && alive_old !== res.alive ) {  // ping changed to true
+            adapter.log.("availableOld/new: " +alive_old +'/' +res.alive);
+            alive_old = res.alive; 
+	    repeat_main(main);
+	 }
+    });
+});
 }
 
 function isOn(callback) {
