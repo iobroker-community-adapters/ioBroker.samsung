@@ -113,7 +113,7 @@ async function main() {
                 }
             });
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct? ${err}`);
+            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
             adapter.log.error(err.stack);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
@@ -124,7 +124,7 @@ async function main() {
         try {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct? ${err}`);
+            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
             return
         }
         if (!adapter.config.token) {
@@ -141,7 +141,7 @@ async function main() {
                 await remoteSTV.connect('ioBroker');
                 adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
             } catch (err) {
-                adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct? ${err}`);
+                adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
                 return
             }
             await remoteSTV.sendKey(cmd);
@@ -178,7 +178,7 @@ async function main() {
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
 			    cnt = 0;  // new 11.2024
                         } catch (err) {
-                            adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
+                            adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
                         }
 
                     } else {
@@ -190,7 +190,7 @@ async function main() {
                 } catch (err) {
 			// try 5x to connect, then err
 			if( cnt++ > 4 ) {                            // new 11.2024
-				adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct? ${err.message}`)
+				adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
@@ -208,7 +208,7 @@ async function main() {
         try {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
             return;
         }
@@ -228,7 +228,7 @@ function repeat_main(callback) {
 	try {
            callback(); // NOT await!!
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
         }
 }
