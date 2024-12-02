@@ -10,6 +10,7 @@ const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
 const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
+const schedule = require('node-schedule');
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
