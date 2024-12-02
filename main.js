@@ -15,7 +15,6 @@ const schedule = require('node-schedule');
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
 var pingSchedule;
-var scheduledJob;
 let alive_old = false;
 
 var remoteHJ;
@@ -111,7 +110,7 @@ async function main() {
                     Keys.KEY_POWER = Keys.KEY_POWEROFF;
                     delete Keys.KEY_POWEROFF;
                     createObjectsAndStates();
-		    scheduledJob.cancel();
+		    schedule.cancelJob(jobId);
                 }
             });
         } catch (err) {
@@ -144,7 +143,7 @@ async function main() {
             try {
                 await remoteSTV.connect('ioBroker');
                 adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
-		scheduledJob.cancel();
+		schedule.cancelJob(jobId);
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
 		pingSchedule ? false : ping_schedule();
@@ -182,7 +181,7 @@ async function main() {
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
 			    cnt = 0;  // new 11.2024
-			    scheduledJob.cancel();
+			    schedule.cancelJob(jobId);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
 			    pingSchedule ? false : ping_schedule();
@@ -222,7 +221,7 @@ async function main() {
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
-	scheduledJob.cancel();
+	schedule.cancelJob(jobId);
     }
 }  // main()
 
@@ -244,12 +243,11 @@ function repeat_main(callback) {
 
 function ping_schedule() {
      let jobId = '1479';
-     if(pingSchedule) scheduledJob.cancel();
+     if(pingSchedule)  schedule.cancelJob(jobId); 
 	
      let cronString = "*/1 * * * *"   
     //let cronString = '{"timeperiod":{"minutes":1}}';
      pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
-       scheduledJob = schedule.scheduledJobs[jobId];
        ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
