@@ -88,7 +88,8 @@ var adapter = utils.Adapter({
 });
 
 var connectTimer;   // new 11.2024
-var cnt = 0; 
+var cnt = 0;        // new 11.2024
+const delay = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 //######################################################################################
 //     M A I N
 //######################################################################################
@@ -188,7 +189,9 @@ async function main() {
                     }
                 } catch (err) {
 		// try 5x to connect, then err
-			connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
+			//connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
+			await delay(2000);
+			repeat_main(main);
 			cnt++;                                 // new 11.2024
 			if( cnt > 5 ) {                        // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
@@ -221,7 +224,8 @@ async function main() {
 //
 //######################################################################################
 
-async function repeat_main(callback) {
+//async 
+function repeat_main(callback) {
 	try {
            callback(); // NOT await!!
         } catch (err) {
