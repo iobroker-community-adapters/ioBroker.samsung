@@ -247,8 +247,9 @@ function repeat_main(callback) {
 
 function ping_shedule() {
    if(pingShedule) clearSchedule(pingShedule);
-
+    
      //let cronString = "*/1 * * * *"   
+   /*
      let cronString = '{"timeperiod":{"minutes":1}}';
      pingShedule = scheduler(cronString, function () {
        ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
@@ -257,7 +258,7 @@ function ping_shedule() {
             alive_old = res.alive; 
 	    repeat_main(main);
 	 }
-    });
+    }); */
 });
 }
 
