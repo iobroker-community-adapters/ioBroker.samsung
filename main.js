@@ -21,101 +21,11 @@ const deviceConfig = {
     userId: '654321',
 }
 
-
-function isOn(callback) {
-    ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
-        callback(!err && res && res.alive);
-    })
-}
-
-var nodeVersion;
-function minNodeVersion(minVersion) {
-    var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
-    if (nodeVersion === undefined) {
-        var nv = re.exec(process.version);
-        nodeVersion = nv[1] * 100 * 100 + nv[2] * 100 + nv[3];
-    }
-    var rv = re.exec(minVersion);
-    var mv = rv[1] * 100 * 100 + rv[2] * 100 + rv[3];
-    return nodeVersion >= mv;
-}
-
-function setStateNe(id, val, ack) {
-    adapter.getState(id, function (err, obj) {
-        if (obj && (obj.val !== val || obj.ack !== !!ack)) {
-            adapter.setState(id, val, !!ack);
-        }
-    });
-}
-
-var checkOnOffTimer;
-function checkPowerOnOff() {
-    adapter.log.debug('Checking power on/off state ...');
-    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
-    var cnt = 0, lastOn;
-    (function check() {
-        isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
-            if (lastOn !== on) {
-                if (on) {
-                    adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
-                    setStateNe('Power.on', true, true);
-                } else {
-                    cnt = 0;
-                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
-                }
-                lastOn = on;
-            }
-            if (!on) {
-                checkOnOffTimer = setTimeout(check, 1000);
-                if (cnt > 20) {
-                    adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
-                    setStateNe('Power.on', false, true);
-                }
-            }
-        });
-    })();
-}
-
-
-var onOffTimer;
-function onOn(val) {
-    var timeout = 0, self = this;
-    val = !!val;
-
-    isOn(function (running) {
-        if (!remote) {
-            adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
-            return;
-        }
-        if (running === val) {
-            adapter.log.debug(`TV already in state ${val}`);
-            adapter.setState('Power.on', val, true);
-            return;
-        }
-        send(remote.powerKey);
-        if (onOffTimer) clearTimeout(onOffTimer);
-        var cnt = 0;
-
-        function doIt() {
-            onOffTimer = null;
-            if (cnt++ >= 20) {
-                adapter.setState('Power.on', running, true);
-                return;
-            }
-            isOn(function (running) {
-                if (running === val) {
-                    adapter.setState('Power.on', val, true);
-                    return;
-                }
-                //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
-                onOffTimer = setTimeout(doIt, 1000);
-            });
-        }
-        doIt();
-    });
-}
-
+########################################################################################
+#
+#   S T A R T   A D A P T E R
+#
+########################################################################################
 var adapter = utils.Adapter({
     name: 'samsung',
 
@@ -171,117 +81,17 @@ var adapter = utils.Adapter({
         }
     },
     ready: function () {
+###############################
         main();
-    }
+###############################    
+	}
 });
-
-function send(command, callback) {
-    if (!command) {
-        adapter.log.error('Empty commands will not be executed.');
-        return;
-    }
-    if (!remote) {
-        adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
-        return;
-    }
-    adapter.log.debug(`Executing command: ${command}`);
-    try {
-        remote.send(command, callback || function nop() { });
-    } catch (e) {
-        adapter.log.error(`Error executing command: ${command}: ${e.message}`);
-    }
-}
-
-
-function createObj(name, val, type, role, desc) {
-
-    if (role === undefined) role = type !== 'channel' ? 'button' : '';
-    adapter.setObjectNotExists(name, {
-        type: type,
-        common: {
-            name: name,
-            type: 'boolean',
-            role: role,
-            def: false,
-            read: true,
-            write: true,
-            desc: desc
-        },
-        native: { command: val }
-    }, function (err, obj) {
-        if (type !== 'channel') adapter.setState(name, false, true);
-    });
-}
-
-
-function saveModel2016(val, callback) {
-    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
-        if (!err && obj && !obj.native) obj['native'] = {};
-        if (obj.native.model2016 === val) return callback && callback();
-        obj.native.model2016 = val;
-        adapter.config.model2016 = val;
-        adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
-            callback && callback('changed');
-        });
-    });
-}
-
-function createObjectsAndStates() {
-    var commandValues = [];
-    var channel;
-    for (var key in Keys) {
-        if (Keys[key] === null) {
-            channel = key;
-            createObj(key, '', 'channel');
-        }
-        else {
-            commandValues.push(key);
-            createObj(`${channel}.${Keys[key]}`, key, 'state');
-        }
-    }
-    createObj('Power.checkOn', '', 'state', 'state');
-    createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
-    createObj('Power.on', false, 'state', 'state', 'Indicated power status or turn on if not already turned on');
-
-    adapter.setObjectNotExists('command', {
-        type: 'state',
-        common: {
-            name: 'command',
-            type: 'string',
-            role: 'state',
-            desc: 'KEY_xxx',
-            values: commandValues,
-            states: commandValues
-        },
-        native: {
-        }
-    }, function (err, obj) {
-        adapter.setState('command', '', true/*{ ack: true }*/);
-    });
-    adapter.setObjectNotExists(powerOnOffState, {
-        type: 'state',
-        common: {
-            name: 'Determinant Power state',
-            type: 'string',
-            role: 'state',
-            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
-        },
-        native: {
-            ts: new Date().getTime()
-        }
-    }, function (err, obj) {
-        adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
-
-        checkPowerOnOff();
-    });
-
-    adapter.subscribeStates('*');
-}
-
 
 var connectTimer;   // new 11.2024
 var cnt = 0; 
-
+########################################################################################
+#      M A I N
+########################################################################################
 async function main() {
     if (connectTimer) clearTimeout(connectTimer);  // new 11.2024
                                       // new 11.2024
@@ -377,16 +187,18 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
+		// try 5x to connect, then err
+			connectTimer = setTimeout(repeat_main(), 2000); // new 11.2024
 			cnt++;                                 // new 11.2024
 			if( cnt > 5 ) {                        // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
 				adapter.log.error(err.stack);
-			}else {                                // new 11.2024
-				adapter.log.info('Connection to your Samsung HJ TV failed, reconnect (' +cnt +')');  // new 11.2024
-			// try 5x to connect, then err
-				connectTimer = setTimeout(await main(), 2000); // new 11.2024
+			//}else {                                      // new 11.2024
+			//	adapter.log.info('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
 			}
-                } // catch
+		} finally {
+			if( cnt < 6 ) adapter.log.info('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');  // new 11.2024
+		}  // try
 
         } else {
             adapter.log.error('No IP defined')
@@ -403,4 +215,214 @@ async function main() {
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
     }
+}  // main()
+
+########################################################################################
+#
+#  F U N C T I O N S
+#
+########################################################################################
+
+function repeat_main() {
+	try {
+           await main();
+        } catch (err) {
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(err.stack);
+            return err;
+        }
+}
+
+function isOn(callback) {
+    ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+        callback(!err && res && res.alive);
+    })
+}
+
+var nodeVersion;
+function minNodeVersion(minVersion) {
+    var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
+    if (nodeVersion === undefined) {
+        var nv = re.exec(process.version);
+        nodeVersion = nv[1] * 100 * 100 + nv[2] * 100 + nv[3];
+    }
+    var rv = re.exec(minVersion);
+    var mv = rv[1] * 100 * 100 + rv[2] * 100 + rv[3];
+    return nodeVersion >= mv;
+}
+
+function setStateNe(id, val, ack) {
+    adapter.getState(id, function (err, obj) {
+        if (obj && (obj.val !== val || obj.ack !== !!ack)) {
+            adapter.setState(id, val, !!ack);
+        }
+    });
+}
+
+var checkOnOffTimer;
+function checkPowerOnOff() {
+    adapter.log.debug('Checking power on/off state ...');
+    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
+    var cnt = 0, lastOn;
+    (function check() {
+        isOn(function (on) {
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
+            if (lastOn !== on) {
+                if (on) {
+                    adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
+                    setStateNe('Power.on', true, true);
+                } else {
+                    cnt = 0;
+                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
+                }
+                lastOn = on;
+            }
+            if (!on) {
+                checkOnOffTimer = setTimeout(check, 1000);
+                if (cnt > 20) {
+                    adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
+                    setStateNe('Power.on', false, true);
+                }
+            }
+        });
+    })();
+}
+
+var onOffTimer;
+function onOn(val) {
+    var timeout = 0, self = this;
+    val = !!val;
+
+    isOn(function (running) {
+        if (!remote) {
+            adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
+            return;
+        }
+        if (running === val) {
+            adapter.log.debug(`TV already in state ${val}`);
+            adapter.setState('Power.on', val, true);
+            return;
+        }
+        send(remote.powerKey);
+        if (onOffTimer) clearTimeout(onOffTimer);
+        var cnt = 0;
+
+        function doIt() {
+            onOffTimer = null;
+            if (cnt++ >= 20) {
+                adapter.setState('Power.on', running, true);
+                return;
+            }
+            isOn(function (running) {
+                if (running === val) {
+                    adapter.setState('Power.on', val, true);
+                    return;
+                }
+                //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
+                onOffTimer = setTimeout(doIt, 1000);
+            });
+        }
+        doIt();
+    });
+}
+
+function send(command, callback) {
+    if (!command) {
+        adapter.log.error('Empty commands will not be executed.');
+        return;
+    }
+    if (!remote) {
+        adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
+        return;
+    }
+    adapter.log.debug(`Executing command: ${command}`);
+    try {
+        remote.send(command, callback || function nop() { });
+    } catch (e) {
+        adapter.log.error(`Error executing command: ${command}: ${e.message}`);
+    }
+}
+
+function createObj(name, val, type, role, desc) {
+
+    if (role === undefined) role = type !== 'channel' ? 'button' : '';
+    adapter.setObjectNotExists(name, {
+        type: type,
+        common: {
+            name: name,
+            type: 'boolean',
+            role: role,
+            def: false,
+            read: true,
+            write: true,
+            desc: desc
+        },
+        native: { command: val }
+    }, function (err, obj) {
+        if (type !== 'channel') adapter.setState(name, false, true);
+    });
+}
+
+function saveModel2016(val, callback) {
+    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
+        if (!err && obj && !obj.native) obj['native'] = {};
+        if (obj.native.model2016 === val) return callback && callback();
+        obj.native.model2016 = val;
+        adapter.config.model2016 = val;
+        adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
+            callback && callback('changed');
+        });
+    });
+}
+
+function createObjectsAndStates() {
+    var commandValues = [];
+    var channel;
+    for (var key in Keys) {
+        if (Keys[key] === null) {
+            channel = key;
+            createObj(key, '', 'channel');
+        }
+        else {
+            commandValues.push(key);
+            createObj(`${channel}.${Keys[key]}`, key, 'state');
+        }
+    }
+    createObj('Power.checkOn', '', 'state', 'state');
+    createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
+    createObj('Power.on', false, 'state', 'state', 'Indicated power status or turn on if not already turned on');
+
+    adapter.setObjectNotExists('command', {
+        type: 'state',
+        common: {
+            name: 'command',
+            type: 'string',
+            role: 'state',
+            desc: 'KEY_xxx',
+            values: commandValues,
+            states: commandValues
+        },
+        native: {
+        }
+    }, function (err, obj) {
+        adapter.setState('command', '', true/*{ ack: true }*/);
+    });
+    adapter.setObjectNotExists(powerOnOffState, {
+        type: 'state',
+        common: {
+            name: 'Determinant Power state',
+            type: 'string',
+            role: 'state',
+            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
+        },
+        native: {
+            ts: new Date().getTime()
+        }
+    }, function (err, obj) {
+        adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
+
+        checkPowerOnOff();
+    });
+
+    adapter.subscribeStates('*');
 }
