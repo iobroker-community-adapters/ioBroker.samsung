@@ -92,7 +92,7 @@ var cnt = 0;
 //######################################################################################
 //     M A I N
 //######################################################################################
-async function main() {
+async function main(callback) {
     if (connectTimer) clearTimeout(connectTimer);  // new 11.2024
                                       // new 11.2024
 	
@@ -188,11 +188,12 @@ async function main() {
                     }
                 } catch (err) {
 		// try 5x to connect, then err
-			connectTimer = setTimeout(await repeat_main(), 2000); // new 11.2024
+			connectTimer = setTimeout(await repeat_main(callback), 2000); // new 11.2024
 			cnt++;                                 // new 11.2024
 			if( cnt > 5 ) {                        // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
 				adapter.log.error(err.stack);
+				callback(err);
 			}else {                                      // new 11.2024
 				adapter.log.info('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
 			}
@@ -221,13 +222,13 @@ async function main() {
 //
 //######################################################################################
 
-async function repeat_main() {
+async function repeat_main(callback) {
 	try {
             main();
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
             adapter.log.error(err.stack);
-            return err;
+            callback(err);
         }
 }
 
