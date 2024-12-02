@@ -248,8 +248,10 @@ function repeat_main(callback) {
 function ping_shedule() {
    if(pingShedule) clearSchedule(pingShedule);
 
-   pingShedule = schedule("*/1 * * * *", function () {
-      ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+     //let cronString = "*/1 * * * *"   
+     let cronString = '{"timeperiod":{"minutes":1}}';
+     pingShedule = schedule(cronString, function () {
+       ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
