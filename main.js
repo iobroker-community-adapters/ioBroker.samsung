@@ -258,8 +258,8 @@ function ping_shedule() {
             alive_old = res.alive; 
 	    repeat_main(main);
 	 }
-    }); */
-});
+    }); 
+}); */
 }
 
 function isOn(callback) {
