@@ -191,7 +191,7 @@ async function main() {
 			// try 5x to connect, then err
 			if( cnt++ > 4 ) {                            // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
-				adapter.log.error(err.stack);
+				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
 				//connectTimer = setTimeout(await repeat_main(main), 2000); // new 11.2024
