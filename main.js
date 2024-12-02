@@ -1,4 +1,4 @@
-'use strict';
+	'use strict';
 
 const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
 
@@ -223,7 +223,7 @@ async function main() {
 
 function repeat_main(callback) {
 	try {
-           callback();
+           await callback();
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
             adapter.log.error(err.stack);
