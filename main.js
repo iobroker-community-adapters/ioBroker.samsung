@@ -15,6 +15,7 @@ const schedule = require('node-schedule');
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
 var pingSchedule;
+let jobId;
 let alive_old = false;
 
 var remoteHJ;
@@ -242,7 +243,7 @@ function repeat_main(callback) {
 }
 
 function ping_schedule() {
-     let jobId = '1479';
+     jobId = '1479';
      if(pingSchedule)  schedule.cancelJob(jobId); 
 	
      let cronString = "*/1 * * * *"   
