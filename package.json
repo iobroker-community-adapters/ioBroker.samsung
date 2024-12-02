@@ -1,6 +1,6 @@
 {
   "name": "iobroker.samsung",
-  "version": "0.6.0",
+  "version": "0.6.2",
   "description": "Samsung Adapter",
   "author": "soef <soef@gmx.net>",
   "contributors": [
