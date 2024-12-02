@@ -14,6 +14,7 @@ const Keys = require('./keys');
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
 var pingShedule;
+let alive_old = false;
 
 var remoteHJ;
 const deviceConfig = {
@@ -244,8 +245,6 @@ function repeat_main(callback) {
 }
 
 function ping_shedule() {
-   let alive_old = false;
-
    if(pingShedule) clearSchedule(pingShedule);
 
    pingShedule = schedule("*/1 * * * *", function () {
