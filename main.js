@@ -250,7 +250,7 @@ function ping_shedule() {
    pingShedule = schedule("*/1 * * * *", function () {
       ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
-            adapter.log.("availableOld/new: " +alive_old +'/' +res.alive);
+            adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
 	    repeat_main(main);
 	 }
