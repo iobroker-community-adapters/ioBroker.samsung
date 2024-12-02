@@ -225,7 +225,7 @@ async function main() {
 
 function repeat_main() {
 	try {
-           await main();
+            main();
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
             adapter.log.error(err.stack);
