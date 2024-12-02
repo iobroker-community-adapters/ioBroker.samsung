@@ -11,11 +11,11 @@ const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custo
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
 const schedule = require('node-schedule');
-var scheduleJob;
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
-var pingShedule;
+var pingSchedule;
+var scheduleJob;
 let alive_old = false;
 
 var remoteHJ;
@@ -248,7 +248,7 @@ function ping_schedule() {
 	
      let cronString = "*/1 * * * *"   
     //let cronString = '{"timeperiod":{"minutes":1}}';
-     pingShedule = schedule.scheduleJob(jobId, cronString, function () {
+     pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
        scheduledJob = schedule.scheduledJobs[jobId];
        ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
