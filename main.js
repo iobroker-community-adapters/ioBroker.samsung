@@ -1,4 +1,4 @@
-	'use strict';
+'use strict';
 
 const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
 
@@ -10,7 +10,7 @@ const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
 const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
-const scheduler = require('node-schedule');
+const schedule = require('node-schedule');
 
 var remote, remote2016;
 var powerOnOffState = 'Power.checkOnOff';
@@ -245,10 +245,9 @@ function repeat_main(callback) {
 function ping_shedule() {
    if(pingShedule) clearSchedule(pingShedule);
     
-     //let cronString = "*/1 * * * *"   
-   /*
-     let cronString = '{"timeperiod":{"minutes":1}}';
-     pingShedule = scheduler(cronString, function () {
+     let cronString = "*/1 * * * *"   
+    //let cronString = '{"timeperiod":{"minutes":1}}';
+     pingShedule = schedule.scheduleJob(cronString, function () {
        ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
