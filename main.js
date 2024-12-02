@@ -255,7 +255,7 @@ function ping_shedule() {
 	    repeat_main(main);
 	 }
     }); 
-}); */
+});
 }
 
 function isOn(callback) {
