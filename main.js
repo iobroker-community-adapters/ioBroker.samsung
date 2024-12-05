@@ -250,10 +250,10 @@ function ping_schedule() {
     //let cronString = '{"timeperiod":{"minutes":1}}';
      pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
        ping.probe(adapter.config.ip, { timeout: 10000 }, function (err, res) {
-         if(res.alive && alive_old !== res.alive ) {  // ping changed to true
+         if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
-	//    repeat_main(main);
+	    repeat_main(main);
 	 }
     }); 
 });
@@ -297,7 +297,8 @@ function checkPowerOnOff() {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
-		    lastOn = on;	// MT 12.2024
+		   // acts if TV powered and next switched on only
+		    lastOn = on;	// MT 12.2024 because repeat_main(main) exits here
 		    repeat_main(main);  // MT 12.2024 reconnect
                 } else {
                     cnt = 0;
