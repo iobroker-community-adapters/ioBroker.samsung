@@ -292,7 +292,7 @@ function checkPowerOnOff() {
     var cnt = 0, lastOn;
     (function check() {
         isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn} ({$cnt})`);
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}; cnt=${cnt}`);
             if (lastOn !== on) {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
