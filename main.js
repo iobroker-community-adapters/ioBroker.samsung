@@ -92,7 +92,7 @@ var adapter = utils.Adapter({
     }
 });
 
-var cnt = 0;        // new 11.2024
+var count = 0;        // new 11.2024
 const delay = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 //######################################################################################
 //     M A I N
@@ -181,7 +181,7 @@ async function main() {
                             } };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
-			    cnt = 0;  // new 11.2024
+			    count = 0;  // new 11.2024
 			    schedule.cancelJob(jobId);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
@@ -196,7 +196,7 @@ async function main() {
                     }
                 } catch (err) {
 			// try 5x to connect, then err
-			if( cnt++ > 4 ) {                            // new 11.2024
+			if( count++ > 4 ) {                            // new 11.2024
 				adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
@@ -292,7 +292,7 @@ function checkPowerOnOff() {
     var cnt = 0, lastOn;
     (function check() {
         isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}; cnt=${cnt}`);
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}; count=${count}`);
             if (lastOn !== on) {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
