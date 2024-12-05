@@ -24,7 +24,7 @@ const deviceConfig = {
     appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
     userId: '654321',
 }
-ping_schedule();
+// ping_schedule();
 
 //######################################################################################
 //
@@ -297,6 +297,7 @@ function checkPowerOnOff() {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
+		    repeat_main(main);  // MT 12,2024
                 } else {
                     cnt = 0;
                     adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
