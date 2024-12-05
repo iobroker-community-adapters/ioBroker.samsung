@@ -298,8 +298,10 @@ function checkPowerOnOff() {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
 		   // acts if TV powered and next switched on only
-		    lastOn = on;	// MT 12.2024 because repeat_main(main) exits here
-		    repeat_main(main);  // MT 12.2024 reconnect
+		    if( typeof lastOn !== 'undefined' ) {
+		       lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
+		       repeat_main(main);  // MT 12.2024 reconnect
+		    }
                 } else {
                     cnt = 0;
                     adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
