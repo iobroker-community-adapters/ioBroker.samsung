@@ -253,7 +253,7 @@ function ping_schedule() {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
-	    repeat_main(main);
+	//    repeat_main(main);
 	 }
     }); 
 });
@@ -297,7 +297,7 @@ function checkPowerOnOff() {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
-		    repeat_main(main);  // MT 12,2024
+		    if(cnt !== 0 ) repeat_main(main);  // MT 12,2024
                 } else {
                     cnt = 0;
                     adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
