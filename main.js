@@ -297,7 +297,8 @@ function checkPowerOnOff() {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
-		    if(cnt !== 0 ) repeat_main(main);  // MT 12,2024
+		    lastOn = on;	// MT 12.2024
+		    repeat_main(main);  // MT 12.2024 reconnect
                 } else {
                     cnt = 0;
                     adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
