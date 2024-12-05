@@ -200,7 +200,7 @@ async function main() {
 				adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
-				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +cnt +')');
+				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
 				await delay(2000);
 				repeat_main(main);
