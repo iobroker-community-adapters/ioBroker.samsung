@@ -202,7 +202,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
-				await delay(2000);
+				await delay(4000);
 				repeat_main(main);
 			}
 		}  // try
@@ -309,7 +309,7 @@ function checkPowerOnOff() {
                 lastOn = on;
             }
             if (!on) {
-                checkOnOffTimer = setTimeout(check, 1000);
+                checkOnOffTimer = setTimeout(check, 10000);
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
