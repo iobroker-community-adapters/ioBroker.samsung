@@ -202,7 +202,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
-				await delay(4000);
+				await delay(15000);
 				repeat_main(main);
 			}
 		}  // try
@@ -249,7 +249,7 @@ function ping_schedule() {
      let cronString = "*/1 * * * *"   
     //let cronString = '{"timeperiod":{"minutes":1}}';
      pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
-       ping.probe(adapter.config.ip, { timeout: 10000 }, function (err, res) {
+       ping.probe(adapter.config.ip, { timeout: 20000 }, function (err, res) {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
