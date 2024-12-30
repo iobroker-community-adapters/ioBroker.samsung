@@ -93,11 +93,11 @@ var adapter = utils.Adapter({
 });
 
 var count = 0;        // new 11.2024
-const delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
 //######################################################################################
 //     M A I N
 //######################################################################################
 async function main() {	
+    const delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
         remote2016.onError = function (error) {
