@@ -202,7 +202,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
-				const delay = await setTimeout(15000, 'resolved');
+				const delay = tryit( delay(15000) );
 				repeat_main(main);
 			}
 		}  // try
@@ -232,10 +232,17 @@ async function main() {
 //
 //######################################################################################
 
-//async 
+function tryit(callback) {
+    	try {
+            return await callback(); 
+	} catch (err) {
+	    return await callback(); 
+        }
+}
+
 function repeat_main(callback) {
 	try {
-           callback(); // NOT await!!
+            callback(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
