@@ -202,7 +202,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
-				const delay = tryit( delay(15000) );
+				const wait = await delay(15000);
 				repeat_main(main);
 			}
 		}  // try
@@ -231,14 +231,6 @@ async function main() {
 //  F U N C T I O N S
 //
 //######################################################################################
-
-function tryit(callback) {
-    	try {
-            return await callback(); 
-	} catch (err) {
-	    return await callback(); 
-        }
-}
 
 function repeat_main(callback) {
 	try {
