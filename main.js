@@ -93,7 +93,7 @@ var adapter = utils.Adapter({
 });
 
 var count = 0;        // new 11.2024
-const delay = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
+const delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
 //######################################################################################
 //     M A I N
 //######################################################################################
