@@ -370,6 +370,8 @@ function send(command, callback) {
         remote.send(command, callback || function nop() { });
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
+	const wait = await delay(1000);
+	repeat_main(main);
     }
 }
 
