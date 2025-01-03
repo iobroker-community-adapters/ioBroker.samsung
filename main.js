@@ -252,6 +252,7 @@ function ping_schedule() {
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
+	    count = 0;        // new 1.2025
 	    repeat_main(main);
 	 }
     }); 
