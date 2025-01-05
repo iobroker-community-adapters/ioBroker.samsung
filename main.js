@@ -248,7 +248,9 @@ function ping_schedule() {
      let cronString = "*/1 * * * *"   
     //let cronString = '{"timeperiod":{"minutes":1}}';
      pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
+       adapter.log.silly("pingSchedule triggered");
        ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
+	 adapter.log.silly("ping.probe() triggered");
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
             adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
