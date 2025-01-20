@@ -111,13 +111,11 @@ async function main() {
                     Keys.KEY_POWER = Keys.KEY_POWEROFF;
                     delete Keys.KEY_POWEROFF;
                     createObjectsAndStates();
-		    schedule.cancelJob(jobId);
                 }
             });
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
             adapter.log.error(err.stack);
-	    pingSchedule ? false : ping_schedule();
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
@@ -128,7 +126,6 @@ async function main() {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
-	    pingSchedule ? false : ping_schedule();
             return
         }
         if (!adapter.config.token) {
@@ -144,10 +141,8 @@ async function main() {
             try {
                 await remoteSTV.connect('ioBroker');
                 adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
-		schedule.cancelJob(jobId);
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
-		pingSchedule ? false : ping_schedule();
                 return
             }
             await remoteSTV.sendKey(cmd);
@@ -202,7 +197,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 				pingSchedule ? false : ping_schedule();
-				const wait = await delay(10000);
+				const wait = await delay(30000);
 				repeat_main(main);
 			}
 		}  // try
@@ -252,7 +247,7 @@ function ping_schedule() {
        ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
 	 adapter.log.silly("ping.probe() triggered");
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
-            adapter.log.debug("availableOld/new: " +alive_old +'/' +res.alive);
+            adapter.log.debug("TV alive eOld/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
 	    count = 0;        // new 1.2025
 	    repeat_main(main);
