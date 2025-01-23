@@ -180,7 +180,7 @@ async function main() {
 			    schedule.cancelJob(jobId);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
-			    pingSchedule ? false : ping_schedule();
+			 // pingSchedule ? false : ping_schedule();
                         }
 
                     } else {
@@ -196,8 +196,8 @@ async function main() {
 				adapter.log.debug(err.stack);
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
-				pingSchedule ? false : ping_schedule();
-				const wait = await delay(30000);
+			     // pingSchedule ? false : ping_schedule();
+				const wait = await delay(20000);
 				repeat_main(main);
 			}
 		}  // try
@@ -247,7 +247,7 @@ function ping_schedule() {
        ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
 	 adapter.log.silly("ping.probe() triggered");
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
-            adapter.log.debug("TV alive eOld/new: " +alive_old +'/' +res.alive);
+            adapter.log.debug("TV alive old/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
 	    count = 0;        // new 1.2025
 	    repeat_main(main);
@@ -296,8 +296,9 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', true, true);
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
-		       lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
-		       repeat_main(main);  // MT 12.2024 reconnect
+		        lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
+			const wait = await delay(10000);
+		        repeat_main(main);  // MT 12.2024 reconnect
 		    }
                 } else {
                     cnt = 0;
