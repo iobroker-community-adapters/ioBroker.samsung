@@ -197,8 +197,8 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 			     // pingSchedule ? false : ping_schedule();
-				setTimeout(repeat_main(main), 10000);
-				// repeat_main(main);
+				const wait = await delay(10000);
+				repeat_main(main);
 			}
 		}  // try
 
@@ -212,7 +212,7 @@ async function main() {
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);y
-	    pingSchedule ? false : ping_schedule();
+	    // pingSchedule ? false : ping_schedule();
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
@@ -297,8 +297,8 @@ function checkPowerOnOff() {
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
 		        lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
-			const wait = await delay(10000);
-		        repeat_main(main);  // MT 12.2024 reconnect
+			setTimeout(repeat_main(main), 10000);
+		     // repeat_main(main);  // MT 12.2024 reconnect
 		    }
                 } else {
                     cnt = 0;
