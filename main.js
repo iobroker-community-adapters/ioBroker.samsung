@@ -236,6 +236,7 @@ function repeat_main(callback) {
         }
 }
 
+
 function ping_schedule() {
      jobId = '1479';
      if(pingSchedule)  schedule.cancelJob(jobId); 
@@ -307,7 +308,7 @@ function checkPowerOnOff() {
                 lastOn = on;
             }
             if (!on) {
-                checkOnOffTimer = setTimeout(check, 10000);
+                checkOnOffTimer = setTimeout(check, 60000);
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
