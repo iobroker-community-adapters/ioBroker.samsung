@@ -28,7 +28,7 @@
     "@iobroker/adapter-core": "^3.2.3",
     "samsung-remote": "^1.6.0",
     "samsungtv": "https://git@github.com/luca-saggese/samsungtv",
-    "ws": "^8.17.1",
+    "ws": "^8.18.1",
     "node-fetch": "2.6.7"
   },
   "devDependencies": {
