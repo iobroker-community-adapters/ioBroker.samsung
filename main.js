@@ -23,6 +23,7 @@ const deviceConfig = {
     ip: null,
     appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
     userId: '654321',
+	delay: '500',  // 11.2025
 }
 // ping_schedule();
 
@@ -93,7 +94,7 @@ var adapter = utils.Adapter({
 });
 
 var count = 0;        // new 11.2024
-const delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
+const _delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
 //######################################################################################
 //     M A I N
 //######################################################################################
@@ -197,7 +198,7 @@ async function main() {
 			}else {                                      // new 11.2024
 				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 			     // pingSchedule ? false : ping_schedule();
-				const wait = await delay(10000);
+				const wait = await _delay(10000);
 				repeat_main(main);
 			}
 		}  // try
@@ -246,7 +247,7 @@ function ping_schedule() {
      pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
        adapter.log.silly("pingSchedule triggered");
        ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
-	 adapter.log.silly("ping.probe() triggered");
+	   adapter.log.silly("ping.probe() triggered");
          if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
             adapter.log.debug("TV alive old/new: " +alive_old +'/' +res.alive);
             alive_old = res.alive; 
@@ -257,8 +258,10 @@ function ping_schedule() {
 });
 }
 
-function isOn(callback) {
-    ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+function isOn(callback) 
+    const delayTime = adapter.config.delay > 0 ? adapter.config.delay : 500;  // 11.2025
+  //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+    ping.probe(adapter.config.ip, { timeout: delayTime }, function (err, res) {
         callback(!err && res && res.alive);
     })
 }
