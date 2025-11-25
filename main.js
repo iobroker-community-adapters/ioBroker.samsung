@@ -259,7 +259,7 @@ function ping_schedule() {
 }
 
 function isOn(callback) 
-    const delayTime = adapter.config.delay > 0 ? adapter.config.delay : 500;  // 11.2025
+    var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 500;  // 11.2025
   //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
     ping.probe(adapter.config.ip, { timeout: delayTime }, function (err, res) {
         callback(!err && res && res.alive);
