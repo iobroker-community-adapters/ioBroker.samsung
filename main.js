@@ -301,7 +301,7 @@ function checkPowerOnOff() {
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
 		        lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
-			    setTimeout(setTimeout(function () { repeat_main(main); }, 10000);
+			    setTimeout(function () { repeat_main(main); }, 10000);
 		     // repeat_main(main);  // MT 12.2024 reconnect
 		    }
                 } else {
