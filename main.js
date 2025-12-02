@@ -177,8 +177,8 @@ async function main() {
                             } };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
-			    count = 0;  // new 11.2024
-			    schedule.cancelJob(jobId);
+			                count = 0;  // new 11.2024
+			              //  schedule.cancelJob(jobId);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
 			 // pingSchedule ? false : ping_schedule();
@@ -211,7 +211,7 @@ async function main() {
         try {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
+            adapter.log.error(`Connection to TV failed(1). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);y
 	    // pingSchedule ? false : ping_schedule();
             return;
@@ -232,19 +232,19 @@ function repeat_main(callback) {
 	try {
             callback(); // NOT await!!
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
+            adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
         }
 }
 
 
 function ping_schedule() {
-     jobId = '1479';
+/*     jobId = '1479';
      if(pingSchedule)  schedule.cancelJob(jobId); 
-	
-     let cronString = "*/1 * * * *"   
-    //let cronString = '{"timeperiod":{"minutes":1}}';
-     pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
+*/	
+     //let cronString = "*/1 * * * *"   
+    ////let cronString = '{"timeperiod":{"minutes":1}}';
+ /*    pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
        adapter.log.silly("pingSchedule triggered");
        ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
 	   adapter.log.silly("ping.probe() triggered");
@@ -255,7 +255,7 @@ function ping_schedule() {
 	    repeat_main(main);
 	 }
     }); 
-});
+}); */
 }
 
 function isOn(callback) {
