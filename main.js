@@ -192,20 +192,21 @@ async function main() {
                     }
                 } catch (err) {
 			// try 5x to connect, then err
-			if( count++ > 4 ) {                            // new 11.2024
-				adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
-				adapter.log.debug(err.stack);
-			}else {                                      // new 11.2024
-				adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
-			     // pingSchedule ? false : ping_schedule();
-				const wait = await _delay(10000);
-				repeat_main(main);
-			}
-		}  // try
+					if( count++ > 4 ) {                            // new 11.2024
+						//adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
+						adapter.log.warning(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
+						adapter.log.debug(err.stack);
+					}else {                                      // new 11.2024
+						adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
+			     	 // pingSchedule ? false : ping_schedule();
+						const wait = await _delay(10000);
+						repeat_main(main);
+					}
+				}  // try
 
         } else {
             adapter.log.error('No IP defined')
-        }
+        }  // if (adapter.config.ip) {
 
     } else {
         try {
@@ -218,7 +219,7 @@ async function main() {
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
-	schedule.cancelJob(jobId);
+	  //schedule.cancelJob(jobId);
     }
 }  // main()
 
