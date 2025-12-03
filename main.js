@@ -196,6 +196,7 @@ async function main() {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
 						checkPowerOnOff();
+					    adapter.getState(powerOnOffState) == ['on', 'ON'] ? repeat_main(main) : none;
 				/*	}else {                                      // new 11.2024
 						adapter.log.debug('Connection to your Samsung(HJ) TV failed. Is the TV switched on? Repeat (' +count +')');
 			     	 // pingSchedule ? false : ping_schedule();
