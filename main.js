@@ -196,6 +196,7 @@ async function main() {
 						//adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
+						checkPowerOnOff();
 					}else {                                      // new 11.2024
 						adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
 			     	 // pingSchedule ? false : ping_schedule();
@@ -379,7 +380,6 @@ function send(command, callback) {
 }
 
 function createObj(name, val, type, role, desc) {
-
     if (role === undefined) role = type !== 'channel' ? 'button' : '';
     adapter.setObjectNotExists(name, {
         type: type,
