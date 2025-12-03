@@ -187,22 +187,21 @@ async function main() {
                     } else {
                         adapter.log.debug('remoteHJ conf ');
                         adapter.log.debug(remoteHJ.pairing);
-
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
 			// try 5x to connect, then err
-					if( count++ > 4 ) {                            // new 11.2024
+				//	if( count++ > 4 ) {                            // new 11.2024
 						//adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
 						checkPowerOnOff();
-					}else {                                      // new 11.2024
-						adapter.log.debug('Connection to your Samsung HJ TV failed, repeat (' +count +')');
+				/*	}else {                                      // new 11.2024
+						adapter.log.debug('Connection to your Samsung(HJ) TV failed. Is the TV switched on? Repeat (' +count +')');
 			     	 // pingSchedule ? false : ping_schedule();
 						const wait = await _delay(10000);
 						repeat_main(main);
-					}
+					} */
 				}  // try
 
         } else {
@@ -354,7 +353,8 @@ function onOn(val) {
                     return;
                 }
                 //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
-                onOffTimer = setTimeout(doIt, 1000);
+                //onOffTimer = setTimeout(doIt, 1000);
+				onOffTimer = setTimeout(doIt, 10000);
             });
         }
         doIt();
