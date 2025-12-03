@@ -13,9 +13,11 @@ const Keys = require('./keys');
 const schedule = require('node-schedule');
 
 var remote, remote2016;
+var nodeVersion;
 var powerOnOffState = 'Power.checkOnOff';
-var pingSchedule;
-let jobId;
+var checkOnOffTimer;
+var onOffTimer;
+let count = 0;        // new 11.2024
 let alive_old = false;
 
 var remoteHJ;
@@ -93,8 +95,6 @@ var adapter = utils.Adapter({
     }
 });
 
-var count = 0;        // new 11.2024
-const _delay = time => new Promise(res=>setTimeout(res, time));  // new 11.2024
 //######################################################################################
 //     M A I N
 //######################################################################################
@@ -178,10 +178,8 @@ async function main() {
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
 			                count = 0;  // new 11.2024
-			              //  schedule.cancelJob(jobId);
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
-			 // pingSchedule ? false : ping_schedule();
                         }
 
                     } else {
@@ -190,19 +188,10 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-			// try 5x to connect, then err
-				//	if( count++ > 4 ) {                            // new 11.2024
-						//adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
-						checkPowerOnOff();
-					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) repeat_main(main);
-				/*	}else {                                      // new 11.2024
-						adapter.log.debug('Connection to your Samsung(HJ) TV failed. Is the TV switched on? Repeat (' +count +')');
-			     	 // pingSchedule ? false : ping_schedule();
-						const wait = await _delay(10000);
-						repeat_main(main);
-					} */
+						if ( !checkOnOffTimer ) checkPowerOnOff();         //new 12.2025
+					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) repeat_main(main);  //new 12.2025
 				}  // try
 
         } else {
@@ -215,12 +204,10 @@ async function main() {
         } catch (err) {
             adapter.log.error(`Connection to TV failed(1). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);y
-	    // pingSchedule ? false : ping_schedule();
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
-	  //schedule.cancelJob(jobId);
     }
 }  // main()
 
@@ -239,27 +226,6 @@ function repeat_main(callback) {
         }
 }
 
-
-function ping_schedule() {
-/*     jobId = '1479';
-     if(pingSchedule)  schedule.cancelJob(jobId); 
-*/	
-     //let cronString = "*/1 * * * *"   
-    ////let cronString = '{"timeperiod":{"minutes":1}}';
- /*    pingSchedule = schedule.scheduleJob(jobId, cronString, function () {
-       adapter.log.silly("pingSchedule triggered");
-       ping.probe(adapter.config.ip, { timeout: 50000 }, function (err, res) {
-	   adapter.log.silly("ping.probe() triggered");
-         if(res.alive && alive_old !== res.alive ) {  // ping changed to true, TV powered continuosly
-            adapter.log.debug("TV alive old/new: " +alive_old +'/' +res.alive);
-            alive_old = res.alive; 
-	    count = 0;        // new 1.2025
-	    repeat_main(main);
-	 }
-    }); 
-}); */
-}
-
 function isOn(callback) {
     var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 500;  // 11.2025
   //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
@@ -268,27 +234,7 @@ function isOn(callback) {
     })
 }
 
-var nodeVersion;
-function minNodeVersion(minVersion) {
-    var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
-    if (nodeVersion === undefined) {
-        var nv = re.exec(process.version);
-        nodeVersion = nv[1] * 100 * 100 + nv[2] * 100 + nv[3];
-    }
-    var rv = re.exec(minVersion);
-    var mv = rv[1] * 100 * 100 + rv[2] * 100 + rv[3];
-    return nodeVersion >= mv;
-}
-
-function setStateNe(id, val, ack) {
-    adapter.getState(id, function (err, obj) {
-        if (obj && (obj.val !== val || obj.ack !== !!ack)) {
-            adapter.setState(id, val, !!ack);
-        }
-    });
-}
-
-var checkOnOffTimer;
+//var checkOnOffTimer;
 function checkPowerOnOff() {
     adapter.log.debug('Checking power on/off state ...');
     if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
@@ -303,8 +249,8 @@ function checkPowerOnOff() {
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
 		        lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
+			 // repeat_main(main);  // MT 12.2024 reconnect
 			    setTimeout(function () { repeat_main(main); }, 10000);
-		     // repeat_main(main);  // MT 12.2024 reconnect
 		    }
                 } else {
                     cnt = 0;
@@ -323,7 +269,7 @@ function checkPowerOnOff() {
     })();
 }
 
-var onOffTimer;
+//var onOffTimer;
 function onOn(val) {
     var timeout = 0, self = this;
     val = !!val;
@@ -376,8 +322,28 @@ function send(command, callback) {
         remote.send(command, callback || function nop() { });
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
-	repeat_main(main);
+	    repeat_main(main);
     }
+}
+
+//var nodeVersion;
+function minNodeVersion(minVersion) {
+    var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
+    if (nodeVersion === undefined) {
+        var nv = re.exec(process.version);
+        nodeVersion = nv[1] * 100 * 100 + nv[2] * 100 + nv[3];
+    }
+    var rv = re.exec(minVersion);
+    var mv = rv[1] * 100 * 100 + rv[2] * 100 + rv[3];
+    return nodeVersion >= mv;
+}
+
+function setStateNe(id, val, ack) {
+    adapter.getState(id, function (err, obj) {
+        if (obj && (obj.val !== val || obj.ack !== !!ack)) {
+            adapter.setState(id, val, !!ack);
+        }
+    });
 }
 
 function createObj(name, val, type, role, desc) {
