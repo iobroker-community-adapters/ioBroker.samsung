@@ -18,6 +18,7 @@ var checkOnOffTimer;
 var onOffTimer;
 let count = 0;        // new 11.2024
 let alive_old = false;
+let powerOn = false;
 
 var remoteHJ;
 const deviceConfig = {
@@ -188,8 +189,9 @@ async function main() {
                 } catch (err) {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
-						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
-					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
+						if(!checkOnOffTimer) powerOn = checkPowerOnOff();         //new 12.2025
+					   // if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
+					    if(powerOn) call_main();  //new 12.2025
 				}  // try
 
         } else {
@@ -262,6 +264,7 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', false, true);
                 }
             }
+			return on;  //new 12,2025
         });
     })();
 }
