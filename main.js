@@ -10,7 +10,6 @@ const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
 const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
-const schedule = require('node-schedule');
 
 var remote, remote2016;
 var nodeVersion;
@@ -27,7 +26,6 @@ const deviceConfig = {
     userId: '654321',
 	delay: '500',  // 11.2025
 }
-// ping_schedule();
 
 //######################################################################################
 //
@@ -191,7 +189,7 @@ async function main() {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
 						if ( !checkOnOffTimer ) checkPowerOnOff();         //new 12.2025
-					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) repeat_main(main);  //new 12.2025
+					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
 				}  // try
 
         } else {
@@ -217,9 +215,9 @@ async function main() {
 //
 //######################################################################################
 
-function repeat_main(callback) {
+function call_main() {
 	try {
-            callback(); // NOT await!!
+            main(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
@@ -227,7 +225,7 @@ function repeat_main(callback) {
 }
 
 function isOn(callback) {
-    var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 500;  // 11.2025
+    var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
   //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
     ping.probe(adapter.config.ip, { timeout: delayTime }, function (err, res) {
         callback(!err && res && res.alive);
@@ -248,9 +246,8 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', true, true);
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
-		        lastOn = on;	   // MT 12.2024 because repeat_main(main) exits here
-			 // repeat_main(main);  // MT 12.2024 reconnect
-			    setTimeout(function () { repeat_main(main); }, 10000);
+		        lastOn = on;	   // MT 12.2024 because call_main() exits here
+			    setTimeout(call_main, 10000);
 		    }
                 } else {
                     cnt = 0;
@@ -322,7 +319,7 @@ function send(command, callback) {
         remote.send(command, callback || function nop() { });
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
-	    repeat_main(main);
+	    call_main();
     }
 }
 
