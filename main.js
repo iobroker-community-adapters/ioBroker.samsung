@@ -189,7 +189,7 @@ async function main() {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
 						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
-					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_func(main);  //new 12.2025
+					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
 				}  // try
 
         } else {
@@ -215,9 +215,9 @@ async function main() {
 //
 //######################################################################################
 
-function call_func(callback) {
+function call_main() {
 	try {
-            callback(); // NOT await!!
+            main(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
@@ -245,10 +245,10 @@ function checkPowerOnOff() {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
 		   // acts if TV powered and next switched on only
-		    if( typeof lastOn !== 'undefined' ) {
-		        lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
-			    setTimeout(function () {call_funct(main);}, 10000);
-		    }
+		            if( typeof lastOn !== 'undefined' ) {
+		                lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
+			            setTimeout(call_main, 10000);
+		            }
                 } else {
                     cnt = 0;
                     adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
@@ -297,8 +297,8 @@ function onOn(val) {
                     return;
                 }
                 //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
-                //onOffTimer = setTimeout(doIt, 1000);
-				onOffTimer = setTimeout(doIt, 10000);
+                onOffTimer = setTimeout(doIt, 1000);
+				//onOffTimer = setTimeout(doIt, 10000);  // no more keep-alive
             });
         }
         doIt();
@@ -319,7 +319,7 @@ function send(command, callback) {
         remote.send(command, callback || function nop() { });
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
-	    call_func(main);
+	    call_main();
     }
 }
 
