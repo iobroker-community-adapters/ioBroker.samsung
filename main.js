@@ -189,7 +189,7 @@ async function main() {
                 } catch (err) {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
-						if(!checkOnOffTimer) powerOn = checkPowerOnOff();         //new 12.2025
+						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
 					   // if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
 					    if(powerOn) call_main();  //new 12.2025
 				}  // try
@@ -264,7 +264,7 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', false, true);
                 }
             }
-			return on;  //new 12,2025
+			powerOn = on;  //new 12,2025
         });
     })();
 }
