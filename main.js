@@ -188,8 +188,8 @@ async function main() {
                 } catch (err) {
 						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
 						adapter.log.debug(err.stack);
-						checkPowerOnOff();         //new 12.2025
-					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
+						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
+					    if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_func(main);  //new 12.2025
 				}  // try
 
         } else {
@@ -215,9 +215,9 @@ async function main() {
 //
 //######################################################################################
 
-function call_main() {
+function call_func(callback) {
 	try {
-            main(); // NOT await!!
+            callback(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
@@ -246,8 +246,8 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', true, true);
 		   // acts if TV powered and next switched on only
 		    if( typeof lastOn !== 'undefined' ) {
-		        lastOn = on;	   // MT 12.2024 because call_main() exits here
-			    setTimeout(call_main, 10000);
+		        lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
+			    setTimeout(function () {call_funct(main);}, 10000);
 		    }
                 } else {
                     cnt = 0;
@@ -319,7 +319,7 @@ function send(command, callback) {
         remote.send(command, callback || function nop() { });
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
-	    call_main();
+	    call_func(main);
     }
 }
 
