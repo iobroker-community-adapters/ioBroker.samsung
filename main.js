@@ -191,7 +191,7 @@ async function main() {
 						adapter.log.debug(err.stack);
 						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
 					   // if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
-					    if(!powerOn) call_main();  //new 12.2025 case TV off
+					    if(powerOn) call_main();  //new 12.2025 case TV on, not finally connected
 				}  // try
 
         } else {
