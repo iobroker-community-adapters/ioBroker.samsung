@@ -273,7 +273,7 @@ function checkPowerOnOff() {
                 lastOn = on;
             }
             if (!on) {
-                checkOnOffTimer = setTimeout(check, 60000);
+                checkOnOffTimer = setTimeout(check, 1000);
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
