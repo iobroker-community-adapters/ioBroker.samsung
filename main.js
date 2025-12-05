@@ -28,6 +28,10 @@ const deviceConfig = {
 	delay: '500',  // 11.2025
 }
 
+var cnt = 0;        // new 11.2024
+var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
+const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
+
 //######################################################################################
 //
 //  S T A R T   A D A P T E R
@@ -98,6 +102,8 @@ var adapter = utils.Adapter({
 //     M A I N
 //######################################################################################
 async function main() {	
+	
+//########### TYPE 'Samsung2016' ######################################################
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
         remote2016.onError = function (error) {
@@ -117,6 +123,8 @@ async function main() {
             adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
             adapter.log.error(err.stack);
         }
+		
+//########### TYPE 'SamsungTV' ######################################################
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
         if (adapter.config.token) {
@@ -149,7 +157,8 @@ async function main() {
             cb && cb();
         }};
         createObjectsAndStates();
-
+		
+//########### TYPE 'SamsungHJ' ######################################################
     } else if (adapter.config.apiType === 'SamsungHJ') {
 
         if (adapter.config.ip) {
@@ -187,17 +196,23 @@ async function main() {
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-						adapter.log.warn(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err.message}`)
-						adapter.log.debug(err.stack);
-						if(!checkOnOffTimer) checkPowerOnOff();         //new 12.2025
-					   // if( adapter.getState(powerOnOffState) == ['on', 'ON'] ) call_main();  //new 12.2025
-					    if(powerOn) call_main();  //new 12.2025 case TV on, not finally connected
+						// try 5x to reconnect, then err
+						if( cnt++ > 4 ) {                            // new 11.2024
+							adapter.log.warn(`Connection to TV failed. If the TV switched on, is the IP correct?  ${err.message}`)
+							adapter.log.debug(err.stack);
+						}else {                                      // new 11.2024
+							adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
+							await delay(delayTime);
+							if(!checkOnOffTimer) checkPowerOnOff();  //new 12.2025
+					    	if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
+						}
 				}  // try
-
+			
         } else {
             adapter.log.error('No IP defined')
         }  // if (adapter.config.ip) {
-
+		
+//########### TYPE <default> ######################################################
     } else {
         try {
             remote = new SamsungRemote({ip: adapter.config.ip});
@@ -218,8 +233,7 @@ async function main() {
 //######################################################################################
 
 function call_main() {
-	try {
-            main(); // NOT await!!
+	try { main(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
@@ -227,9 +241,8 @@ function call_main() {
 }
 
 function isOn(callback) {
-    var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
   //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
-    ping.probe(adapter.config.ip, { timeout: delayTime }, function (err, res) {
+    ping.probe(adapter.config.ip, { timeout: 1000 }, function (err, res) {
         callback(!err && res && res.alive);
     })
 }
