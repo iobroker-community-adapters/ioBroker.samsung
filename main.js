@@ -28,8 +28,8 @@ const deviceConfig = {
 	delay: '500',  // 11.2025
 }
 
-var cnt = 0;        // new 11.2024
-var delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
+var cnt       = 0;        // new 11.2024
+var delayTime = 10000;  // 11.2025
 const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 //######################################################################################
@@ -202,6 +202,7 @@ async function main() {
 							adapter.log.debug(err.stack);
 						}else {                                      // new 11.2024
 							adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
+							delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
 							await delay(delayTime);
 							if(!checkOnOffTimer) checkPowerOnOff();  //new 12.2025
 					    	if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
