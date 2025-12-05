@@ -180,7 +180,7 @@ async function main() {
                             createObjectsAndStates();
 
                             remote = { powerKey: 'KEY_POWER', send: (cmd, cb) => {
-                                if(!powerOn) remoteHJ.sendKey(cmd);  //12.2025 if added
+                                remoteHJ.sendKey(cmd);  
                                 cb && cb();
                             } };
 
@@ -205,7 +205,7 @@ async function main() {
 							adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
 							delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
 							await delay(delayTime);
-						    if(!checkOnOffTimer) checkPowerOnOff();  //new 12.2025
+						    if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
 					    	if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
 						}
 				}  // try
