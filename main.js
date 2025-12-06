@@ -207,7 +207,7 @@ async function main() {
 						await delay(delayTime);
 						if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
 					    if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
-						}
+					}
                 }
 
         } else {
