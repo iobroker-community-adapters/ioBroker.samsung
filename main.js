@@ -12,24 +12,19 @@ const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
 
 var remote, remote2016;
-var nodeVersion;
 var powerOnOffState = 'Power.checkOnOff';
+var remoteHJ;
+var nodeVersion;
 var checkOnOffTimer;
 var onOffTimer;
-let count = 0;        // new 11.2024
-let alive_old = false;
-let powerOn = false;
 
-var remoteHJ;
 const deviceConfig = {
     ip: null,
     appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
     userId: '654321',
-	delay: '500',  // 11.2025
 }
-
 var cnt       = 0;        // new 11.2024
-var delayTime = 10000;  // 11.2025
+var delayTime = 10000;    // 11.2025
 const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 //######################################################################################
@@ -47,8 +42,8 @@ var adapter = utils.Adapter({
             callback();
         }
     },
-	
     stateChange: function (id, state) {
+
         adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`);
         if (state && !state.ack) {
             var as = id.split('.');
@@ -94,15 +89,18 @@ var adapter = utils.Adapter({
     ready: function () {
 //#############################
         main();
-//#############################    
+//#############################
     }
 });
 
-//######################################################################################
-//     M A I N
-//######################################################################################
-async function main() {	
-	
+//#####################################################################################
+//
+//  F U N C T I O N S
+//
+//#####################################################################################
+//##########   M A I N   ##############################################################
+async function main() {
+
 //########### TYPE 'Samsung2016' ######################################################
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
@@ -120,10 +118,9 @@ async function main() {
                 }
             });
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
             adapter.log.error(err.stack);
         }
-		
 //########### TYPE 'SamsungTV' ######################################################
     } else if (adapter.config.apiType === 'SamsungTV') {
         var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
@@ -133,7 +130,7 @@ async function main() {
         try {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
             return
         }
         if (!adapter.config.token) {
@@ -150,7 +147,7 @@ async function main() {
                 await remoteSTV.connect('ioBroker');
                 adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
             } catch (err) {
-                adapter.log.error(`Connection to TV failed. Is the TV switched on? Is the IP correct?  ${err}`);
+                adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
                 return
             }
             await remoteSTV.sendKey(cmd);
@@ -173,6 +170,7 @@ async function main() {
                     adapter.log.info('Connection to TV initialised');
 
                     if (adapter.config.pin) {
+
                         try {
                             await remoteHJ.confirmPin(adapter.config.pin);
                             await remoteHJ.connect();
@@ -180,59 +178,52 @@ async function main() {
                             createObjectsAndStates();
 
                             remote = { powerKey: 'KEY_POWER', send: (cmd, cb) => {
-                                remoteHJ.sendKey(cmd);  
+                                remoteHJ.sendKey(cmd);
                                 cb && cb();
                             } };
 
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
-			                count = 0;  // new 11.2024
                         } catch (err) {
-                            adapter.log.error(`Could not connect! Is the Pin correct?  ${err.message}`)
+                            adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
                         }
 
                     } else {
                         adapter.log.debug('remoteHJ conf ');
                         adapter.log.debug(remoteHJ.pairing);
+
                         remoteHJ.requestPin();
                     }
                 } catch (err) {
-						// try 5x to reconnect, then err
-						if( cnt++ > 4 ) {                            // new 11.2024
-							adapter.log.warn(`Connection to TV failed. If the TV switched on, is the IP correct?  ${err.message}`)
-							adapter.log.debug(err.stack);
-						 // if(!checkOnOffTimer) checkPowerOnOff();
-						}else {                                      // new 11.2024
-							adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
-							delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
-							await delay(delayTime);
-						    if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
-					    	if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
+                    // try 5x to reconnect, then err
+					if( cnt++ > 4 ) {                            // new 11.2024
+						adapter.log.warn(`Connection to TV failed. If the TV switched on, is the IP correct?  ${err.message}`)
+						adapter.log.debug(err.stack);
+					 // if(!checkOnOffTimer) checkPowerOnOff();
+					}else {                                      // new 11.2024
+						adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
+						delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
+						await delay(delayTime);
+						if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
+					    if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
 						}
-				}  // try
-			
+                }
+
         } else {
             adapter.log.error('No IP defined')
-        }  // if (adapter.config.ip) {
-		
-//########### TYPE <default> ######################################################
+        }
+
     } else {
         try {
             remote = new SamsungRemote({ip: adapter.config.ip});
         } catch (err) {
-            adapter.log.error(`Connection to TV failed(1). Is the TV switched on? Is the IP correct?  ${err.message}`)
-            adapter.log.error(err.stack);y
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(err.stack);
             return;
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
     }
-}  // main()
-
-//######################################################################################
-//
-//  F U N C T I O N S
-//
-//######################################################################################
+}  //  async function main() {
 
 function call_main() {
 	try { main(); // NOT await!!
@@ -243,8 +234,8 @@ function call_main() {
 }
 
 function isOn(callback) {
-  //ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
-    ping.probe(adapter.config.ip, { timeout: 1000 }, function (err, res) {
+    ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+ // ping.probe(adapter.config.ip, { timeout: 1000 }, function (err, res) { // MT 12.2024
         callback(!err && res && res.alive);
     })
 }
@@ -256,12 +247,12 @@ function checkPowerOnOff() {
     var cnt = 0, lastOn;
     (function check() {
         isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}; count=${count}`);
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
             if (lastOn !== on) {
                 if (on) {
                     adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
                     setStateNe('Power.on', true, true);
-		   // acts if TV powered and next switched on only
+					// acts if TV powered and next switched on only
 		            if( typeof lastOn !== 'undefined' ) {
 		                lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
 			            setTimeout(call_main, 10000);
@@ -274,6 +265,7 @@ function checkPowerOnOff() {
             }
             if (!on) {
                 checkOnOffTimer = setTimeout(check, 1000);
+			 //  checkOnOffTimer = setTimeout(check, 60000); // MT 12.2024
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
@@ -316,7 +308,6 @@ function onOn(val) {
                 }
                 //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
                 onOffTimer = setTimeout(doIt, 1000);
-				//onOffTimer = setTimeout(doIt, 10000);  // no more keep-alive
             });
         }
         doIt();
@@ -361,6 +352,7 @@ function setStateNe(id, val, ack) {
 }
 
 function createObj(name, val, type, role, desc) {
+
     if (role === undefined) role = type !== 'channel' ? 'button' : '';
     adapter.setObjectNotExists(name, {
         type: type,
@@ -378,6 +370,7 @@ function createObj(name, val, type, role, desc) {
         if (type !== 'channel') adapter.setState(name, false, true);
     });
 }
+
 
 function saveModel2016(val, callback) {
     adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
@@ -439,6 +432,7 @@ function createObjectsAndStates() {
 
         checkPowerOnOff();
     });
+
 
     adapter.subscribeStates('*');
 }
