@@ -266,8 +266,8 @@ function checkPowerOnOff() {
                 lastOn = on;
             }
             if (!on) {
-                checkOnOffTimer = setTimeout(check, 1000);
-			 //  checkOnOffTimer = setTimeout(check, 60000); // MT 12.2024
+             //   checkOnOffTimer = setTimeout(check, 1000);
+			    checkOnOffTimer = setTimeout(check, 60000); // MT 12.2024
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
