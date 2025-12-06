@@ -25,6 +25,8 @@ const deviceConfig = {
 }
 var cnt       = 0;        // new 11.2024
 var delayTime = 10000;    // 11.2025
+let count = 0;        // new 11.2024
+let powerOn = false;
 const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 //######################################################################################
