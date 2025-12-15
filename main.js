@@ -24,9 +24,9 @@ const deviceConfig = {
     userId: '654321',
 }
 var cnt       = 0;        // new 11.2024
-var delayTime = 10000;    // 11.2025
-let count = 0;        // new 11.2024
-let powerOn = false;
+var delayTime = 10000;    // new 11.2025
+let count     = 0;        // new 11.2024
+let powerOn   = false;
 const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 //######################################################################################
@@ -183,7 +183,7 @@ async function main() {
                                 remoteHJ.sendKey(cmd);
                                 cb && cb();
                             } };
-
+                            count = 0;  // reset repeat counter
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
