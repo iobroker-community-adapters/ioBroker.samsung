@@ -5,7 +5,8 @@
   "author": "soef <soef@gmx.net>",
   "contributors": [
     "soef <soef@gmx.net>",
-    "mcm1957 <mcm57@gmx.at>"
+    "mcm1957 <mcm57@gmx.at>",
+    "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
   ],
   "homepage": "https://github.com/iobroker-community-adapters/ioBroker.samsung/",
   "license": "MIT",
