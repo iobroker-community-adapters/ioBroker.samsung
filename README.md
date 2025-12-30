@@ -72,8 +72,7 @@ if something does not work, look  in the log.
 The MIT License (MIT)
 
 
-Copyright (c) 2026 iobroker-community-adapters <iobroker-community-adapters@gmx.de>  
-Copyright (c) 2023-2024 ioBroker Community Developers <iobroker-community-adapters@gmx.de>  
+Copyright (c) 2023-2026 iobroker-community-adapters <iobroker-community-adapters@gmx.de>  
 Copyright (c) 2015-2017 soef <soef@gmx.net>, 2018-2022 ioBroker Community
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
