@@ -216,7 +216,7 @@ async function main() {
 						if (!Connected && !ConnectTimer) {  //new 1.2026
 							ConnectTimer = setTimeout(() => {
 								ConnectTimer = null;
-								await call_main();
+								call_main();
 							}, delayTime);
 						}
 					}
@@ -247,14 +247,14 @@ async function main() {
         }
 }*/
 
-async function call_main() {   //new 1.2026
+function call_main() {   //new 1.2026
     if (Connecting || Connected) {
         adapter.log.debug('call_main skipped (already connecting/connected)');
         return;
     }
     Connecting = true;
     try {
-        await main();
+        main();
     } catch (err) {
         adapter.log.warn(`Reconnect failed: ${err.message}`);
     } finally {
@@ -288,7 +288,7 @@ function checkPowerOnOff() {
 						if (!Connected && !ConnectTimer) {
 							ConnectTimer = setTimeout(() => {
 								ConnectTimer = null;
-								await call_main();
+								call_main();
 							}, 10000);
 						}
 		            }
