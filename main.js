@@ -174,7 +174,6 @@ async function main() {
 
                 try {
                     var resp = await remoteHJ.init2();
-                    adapter.log.debug(`resp is ${resp}`);
                     adapter.log.info('Connection to TV initialised');
 
                     if (adapter.config.pin) {
@@ -217,7 +216,7 @@ async function main() {
 						if (!Connected && !ConnectTimer) {  //new 1.2026
 							ConnectTimer = setTimeout(() => {
 								ConnectTimer = null;
-								call_main();
+								await call_main();
 							}, delayTime);
 						}
 					}
@@ -289,7 +288,7 @@ function checkPowerOnOff() {
 						if (!Connected && !ConnectTimer) {
 							ConnectTimer = setTimeout(() => {
 								ConnectTimer = null;
-								call_main();
+								await call_main();
 							}, 10000);
 						}
 		            }
