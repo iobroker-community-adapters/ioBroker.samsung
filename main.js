@@ -27,7 +27,13 @@ var cnt       = 0;        // new 11.2024
 var delayTime = 10000;    // new 11.2025
 let count     = 0;        // new 11.2024
 let powerOn   = false;
-const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
+//const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
+
+// --- Connection control (NEW) ---  //new 1.2026
+let Connecting   = false;
+let Connected    = false;
+let ConnectTimer = null;
+
 
 //######################################################################################
 //
@@ -184,6 +190,7 @@ async function main() {
                                 cb && cb();
                             } };
                             count = 0;  // reset repeat counter
+							Connected = true;
                             adapter.log.info('Successfully connected to your Samsung HJ TV ');
                         } catch (err) {
                             adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
@@ -204,9 +211,15 @@ async function main() {
 					}else {                                      // new 11.2024
 						adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
 						delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
-						await delay(delayTime);
-						if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
-					    if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
+						//await delay(delayTime);
+						//if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
+					    //if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
+						if (!Connected && !ConnectTimer) {  //new 1.2026
+							ConnectTimer = setTimeout(() => {
+								ConnectTimer = null;
+								call_main();
+							}, delayTime);
+						}
 					}
                 }
 
@@ -227,12 +240,27 @@ async function main() {
     }
 }  //  async function main() {
 
-function call_main() {
+/*function call_main() {
 	try { main(); // NOT await!!
         } catch (err) {
             adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
             adapter.log.error(err.stack);
         }
+}*/
+
+async function call_main() {   //new 1.2026
+    if (Connecting || Connected) {
+        adapter.log.debug('call_main skipped (already connecting/connected)');
+        return;
+    }
+    Connecting = true;
+    try {
+        await main();
+    } catch (err) {
+        adapter.log.warn(`Reconnect failed: ${err.message}`);
+    } finally {
+        Connecting = false;
+    }
 }
 
 function isOn(callback) {
@@ -257,7 +285,13 @@ function checkPowerOnOff() {
 					// acts if TV powered and next switched on only
 		            if( typeof lastOn !== 'undefined' ) {
 		                lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
-			            setTimeout(call_main, 10000);
+			            //setTimeout(call_main, 10000);
+						if (!Connected && !ConnectTimer) {
+							ConnectTimer = setTimeout(() => {
+								ConnectTimer = null;
+								call_main();
+							}, 10000);
+						}
 		            }
                 } else {
                     cnt = 0;
@@ -273,7 +307,10 @@ function checkPowerOnOff() {
                     setStateNe('Power.on', false, true);
                 }
             }
-			powerOn = on;  //new 12,2025
+			powerOn = on;  //new 12.2025
+			if(!on) { //new 1.2026
+				Connected = false;
+			}
         });
     })();
 }
