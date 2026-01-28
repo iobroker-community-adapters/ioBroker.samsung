@@ -167,7 +167,14 @@ async function main() {
 		
 //########### TYPE 'SamsungHJ' ######################################################
     } else if (adapter.config.apiType === 'SamsungHJ') {
-
+		const reachable = await new Promise(res => { 
+			ping.probe(adapter.config.ip, { timeout: 2000 }, (err, r) => res(!err && r && r.alive)); 
+		}); 
+		if (!reachable) { 
+			adapter.log.debug('SamsungHJ: TV unreachable → skipping connect attempt'); 
+			return; // WICHTIG: main() NICHT ausführen
+		}
+							 
         if (adapter.config.ip) {
 
             adapter.log.debug('Initializing HJ lib');
@@ -318,17 +325,22 @@ function checkPowerOnOff() {  // new 01.2026
             }
             lastOn = on;
         }
-        // Timer immer weiterlaufen lassen
-        checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
+        // Timer bei nicht connected weiterlaufen lassen
+        if (!Connected) checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
     });
 }
 
 //var onOffTimer;
 function onOn(val) {
+	if (!remoteHJ && adapter.config.apiType === 'SamsungHJ') {
+    	adapter.log.debug('SamsungHJ: Ignoring power command because TV is off / not connected');
+    	return;
+	}
+
     var timeout = 0, self = this;
     val = !!val;
-
-    isOn(function (running) {
+	
+	isOn(function (running) {
         if (!remote) {
             adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
             return;
