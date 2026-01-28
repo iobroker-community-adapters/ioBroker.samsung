@@ -476,7 +476,6 @@ function createObjectsAndStates() {
         }
     }, function (err, obj) {
         adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
-
         checkPowerOnOff();
     });
 	
@@ -494,31 +493,6 @@ function createObjectsAndStates() {
 	}, () => {
     	adapter.setState('info.connected', false, true);
 	});
-	// new 1.2026
-    adapter.setObjectNotExists('info.connection', {
-        type: 'state',
-        common: {
-            name: 'Connection state',
-            type: 'string',
-            role: 'info.status',
-            read: true,
-            write: false,
-            states: Object.values(ConnState)
-        },
-        native: {}
-    });
-
-    adapter.setObjectNotExists('info.connectionInfo', {
-        type: 'state',
-        common: {
-            name: 'Connection info',
-            type: 'string',
-            role: 'info.text',
-            read: true,
-            write: false
-        },
-        native: {}
-    });
 	
     adapter.subscribeStates('*');
 }
