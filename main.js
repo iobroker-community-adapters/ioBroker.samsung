@@ -301,15 +301,13 @@ function checkPowerOnOff() {
             if (!on) {
              //   checkOnOffTimer = setTimeout(check, 1000);
 			    checkOnOffTimer = setTimeout(check, 60000); // MT 12.2024
+				Connected = false; //new 1.2026
                 if (cnt > 20) {
                     adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
                     setStateNe('Power.on', false, true);
                 }
             }
 			powerOn = on;  //new 12.2025
-			if(!on) { //new 1.2026
-				Connected = false;
-			}
         });
     })();
 }
