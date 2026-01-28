@@ -28,6 +28,7 @@ var cnt       = 0;        // new 11.2024
 var delayTime = 10000;    // new 11.2025
 let count     = 0;        // new 11.2024
 let powerOn   = false;
+let AbortMain = false;
 //const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 // --- Connection control (NEW) ---  //new 1.2026
@@ -109,7 +110,7 @@ var adapter = utils.Adapter({
 //#####################################################################################
 //##########   M A I N   ##############################################################
 async function main() {
-
+	AbortMain = false;
 //########### TYPE 'Samsung2016' ######################################################
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
@@ -172,7 +173,8 @@ async function main() {
             adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
-
+			createObjectsAndStates();  // neu 01.2026
+			
 			// Events kommen über den internen EventEmitter der SamsungTv-Klasse
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTING, () => {
     			adapter.log.debug('Websocket reports CONNECTING');
@@ -183,6 +185,7 @@ async function main() {
 			remoteHJ.eventEmitter.on(SamsungTvEvents.DISCONNECTED, () => {
     			adapter.log.warn('Websocket reports DISCONNECTED');
     			Connected = false;
+				AbortMain = true;
     			adapter.setState('info.connected', false, true);
 
       		// Reconnect starten, aber nur wenn nicht schon versucht wird
@@ -201,7 +204,9 @@ async function main() {
                 if (adapter.config.pin) {
                     try {
                         await remoteHJ.confirmPin(adapter.config.pin);
+						if (AbortMain) return;
                         await remoteHJ.connect();
+						if (AbortMain) return;
                         createObjectsAndStates();
 							
                         remote = { powerKey: 'KEY_POWERON', 
@@ -277,8 +282,8 @@ async function call_main() {
 }
 
 function isOn(callback) {
-    ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
- // ping.probe(adapter.config.ip, { timeout: 1000 }, function (err, res) { // MT 12.2024
+ //   ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+  ping.probe(adapter.config.ip, { timeout: 2000 }, function (err, res) { // MT 12.2024
         callback(!err && res && res.alive);
     })
 }
@@ -311,10 +316,8 @@ function checkPowerOnOff() {  // new 01.2026
                 Connected = false;
                 adapter.setState('info.connected', false, true);
             }
-
             lastOn = on;
         }
-
         // Timer immer weiterlaufen lassen
         checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
     });
@@ -476,7 +479,46 @@ function createObjectsAndStates() {
 
         checkPowerOnOff();
     });
+	
+	adapter.setObjectNotExists('info.connected', {
+    	type: 'state',
+    	common: {
+        	name: 'Connection status',
+        	type: 'boolean',
+        	role: 'indicator.connected',
+        	read: true,
+        	write: false,
+        	def: false
+    	},
+    	native: {}
+	}, () => {
+    	adapter.setState('info.connected', false, true);
+	});
+	// new 1.2026
+    adapter.setObjectNotExists('info.connection', {
+        type: 'state',
+        common: {
+            name: 'Connection state',
+            type: 'string',
+            role: 'info.status',
+            read: true,
+            write: false,
+            states: Object.values(ConnState)
+        },
+        native: {}
+    });
 
-
+    adapter.setObjectNotExists('info.connectionInfo', {
+        type: 'state',
+        common: {
+            name: 'Connection info',
+            type: 'string',
+            role: 'info.text',
+            read: true,
+            write: false
+        },
+        native: {}
+    });
+	
     adapter.subscribeStates('*');
 }
