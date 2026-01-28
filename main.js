@@ -171,57 +171,76 @@ async function main() {
             adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
+			
+			remoteHJ.on('CONNECTING', () => {
+    			adapter.log.debug('Websocket reports CONNECTING');
+    			Connected = true;
+    			adapter.setState('info.connected', true, true);
+			});
 
-                try {
-                    var resp = await remoteHJ.init2();
-                    adapter.log.info('Connection to TV initialised');
+			remoteHJ.on('DISCONNECTED', () => {
+    			adapter.log.warn('Websocket reports DISCONNECTED');
+    			Connected = false;
+    			adapter.setState('info.connected', false, true);
 
-                    if (adapter.config.pin) {
+    		// Reconnect starten, aber nur wenn nicht schon versucht wird
+    			if (!Connecting && !ConnectTimer) {
+        			ConnectTimer = setTimeout(() => {
+            			ConnectTimer = null;
+            			call_main();
+        			}, 5000);
+    			}
+			});
 
-                        try {
-                            await remoteHJ.confirmPin(adapter.config.pin);
-                            await remoteHJ.connect();
+            try {
+                const resp = await remoteHJ.init2();
+                adapter.log.info('Connection to TV initialised');
 
-                            createObjectsAndStates();
-
-                            remote = { powerKey: 'KEY_POWERON', send: (cmd, cb) => {
-                                remoteHJ.sendKey(cmd);
-                                cb && cb();
-                            } };
-                            count = 0;  // reset repeat counter
-							Connected = true;
-                            adapter.log.info('Successfully connected to your Samsung HJ TV ');
-                        } catch (err) {
-                            adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
-                        }
-
-                    } else {
-                        adapter.log.debug('remoteHJ conf ');
-                        adapter.log.debug(remoteHJ.pairing);
-
-                        remoteHJ.requestPin();
+                if (adapter.config.pin) {
+                    try {
+                        await remoteHJ.confirmPin(adapter.config.pin);
+                        await remoteHJ.connect();
+                        createObjectsAndStates();
+							
+                        remote = { powerKey: 'KEY_POWERON', 
+								   send: (cmd, cb) => {
+                                		remoteHJ.sendKey(cmd);
+                                		cb && cb();
+                        } };
+                            
+						count = 0;  // reset repeat counter
+						Connected = true;
+						adapter.setState('info.connected', true, true);
+                        adapter.log.info('Successfully connected to your Samsung HJ TV ');
+                    } catch (err) {
+						Connected = false;
+						adapter.setState('info.connected', false, true);
+                        adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
                     }
-                } catch (err) {
-                    // try 5x to reconnect, then err
-					if( cnt++ > 4 ) {                            // new 11.2024
-						adapter.log.warn(`Connection to TV failed. If the TV switched on, is the IP correct?  ${err.message}`)
-						adapter.log.debug(err.stack);
-					 // if(!checkOnOffTimer) checkPowerOnOff();
-					}else {                                      // new 11.2024
-						adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
-						delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
-						//await delay(delayTime);
-						//if(!checkOnOffTimer && !powerOn) checkPowerOnOff();  //new 12.2025
-					    //if(powerOn) call_main();  //new 12.2025 case TV on but not finally connected
-						if (!Connected && !ConnectTimer) {  //new 1.2026
-							ConnectTimer = setTimeout(() => {
-								ConnectTimer = null;
-								call_main();
-							}, delayTime);
-						}
-					}
-                }
 
+                } else {
+                    adapter.log.debug('remoteHJ conf ');
+                    adapter.log.debug(remoteHJ.pairing);
+                    remoteHJ.requestPin();
+                    }
+            } catch (err) {
+				Connected = false; 
+				adapter.setState('info.connected', false, true);
+                // try 5x to reconnect, then err
+				if( cnt++ > 4 ) {                            // new 11.2024
+					adapter.log.warn(`Connection to TV failed. If the TV switched on, is the IP correct?  ${err.message}`)
+					adapter.log.debug(err.stack);
+				}else {                                      // new 11.2024
+					adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
+					delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
+					if (!Connected && !ConnectTimer) {  //new 1.2026
+						ConnectTimer = setTimeout(() => {
+							ConnectTimer = null;
+							call_main();
+						}, delayTime);
+					}
+				}
+            }
         } else {
             adapter.log.error('No IP defined')
         }
@@ -247,14 +266,15 @@ async function main() {
         }
 }*/
 
-function call_main() {   //new 1.2026
+async function call_main() {
     if (Connecting || Connected) {
         adapter.log.debug('call_main skipped (already connecting/connected)');
         return;
     }
     Connecting = true;
+    adapter.log.debug('call_main starting reconnect...');
     try {
-        main();
+        await main();   // WICHTIG: await, damit Fehler gefangen werden
     } catch (err) {
         adapter.log.warn(`Reconnect failed: ${err.message}`);
     } finally {
@@ -269,8 +289,45 @@ function isOn(callback) {
     })
 }
 
+let lastOn = undefined;
+
+function checkPowerOnOff() {  // new 01.2026
+    adapter.log.debug('Checking power on/off state ...');
+
+    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
+
+    isOn(on => {
+        adapter.log.debug(`Power check: on=${on}, lastOn=${lastOn}`);
+
+        if (lastOn !== on) {
+            if (on) {
+                adapter.setState(powerOnOffState, 'ON', true);
+                setStateNe('Power.on', true, true);
+
+                if (!Connected && !ConnectTimer) {
+                    ConnectTimer = setTimeout(() => {
+                        ConnectTimer = null;
+                        call_main();
+                    }, 5000);
+                }
+            } else {
+                adapter.setState(powerOnOffState, 'OFF', true);
+                setStateNe('Power.on', false, true);
+
+                Connected = false;
+                adapter.setState('info.connected', false, true);
+            }
+
+            lastOn = on;
+        }
+
+        // Timer immer weiterlaufen lassen
+        checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
+    });
+}
+
 //var checkOnOffTimer;
-function checkPowerOnOff() {
+function _checkPowerOnOff() {
     adapter.log.debug('Checking power on/off state ...');
     if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
     var cnt = 0, lastOn;
