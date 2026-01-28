@@ -8,6 +8,7 @@ const SamsungRemote = require('samsung-remote');
 const SamsungHJ = require('./lib/H-and-J-Series-lib/SamsungTv');
 const Samsung2016 = require(`${__dirname}/lib/samsung-2016`);
 const SamsungTV = require(`${__dirname}/lib/samsungtv/build/device.js`); //custom compiled version of git+https://github.com/luca-saggese/samsungtv.git cause of ES6
+const SamsungTvEvents = require('./lib/H-and-J-Series-lib/SamsungTvEvents');
 const ping = require(`${__dirname}/lib/ping`);
 const Keys = require('./keys');
 
@@ -171,19 +172,20 @@ async function main() {
             adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
-			
-			remoteHJ.on('CONNECTING', () => {
+
+			// Events kommen über den internen EventEmitter der SamsungTv-Klasse
+			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTING, () => {
     			adapter.log.debug('Websocket reports CONNECTING');
-    			Connected = true;
-    			adapter.setState('info.connected', true, true);
+  			    Connected = true;
+			    adapter.setState('info.connected', true, true);
 			});
 
-			remoteHJ.on('DISCONNECTED', () => {
+			remoteHJ.eventEmitter.on(SamsungTvEvents.DISCONNECTED, () => {
     			adapter.log.warn('Websocket reports DISCONNECTED');
     			Connected = false;
     			adapter.setState('info.connected', false, true);
 
-    		// Reconnect starten, aber nur wenn nicht schon versucht wird
+      		// Reconnect starten, aber nur wenn nicht schon versucht wird
     			if (!Connecting && !ConnectTimer) {
         			ConnectTimer = setTimeout(() => {
             			ConnectTimer = null;
@@ -258,14 +260,6 @@ async function main() {
     }
 }  //  async function main() {
 
-/*function call_main() {
-	try { main(); // NOT await!!
-        } catch (err) {
-            adapter.log.error(`Connection to TV failed(2). Is the TV switched on? Is the IP correct?  ${err.message}`)
-            adapter.log.error(err.stack);
-        }
-}*/
-
 async function call_main() {
     if (Connecting || Connected) {
         adapter.log.debug('call_main skipped (already connecting/connected)');
@@ -324,49 +318,6 @@ function checkPowerOnOff() {  // new 01.2026
         // Timer immer weiterlaufen lassen
         checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
     });
-}
-
-//var checkOnOffTimer;
-function _checkPowerOnOff() {
-    adapter.log.debug('Checking power on/off state ...');
-    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
-    var cnt = 0, lastOn;
-    (function check() {
-        isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
-            if (lastOn !== on) {
-                if (on) {
-                    adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
-                    setStateNe('Power.on', true, true);
-					// acts if TV powered and next switched on only
-		            if( typeof lastOn !== 'undefined' ) {
-		                lastOn = on;	   // MT 12.2024 because call_funct(main) exits here
-			            //setTimeout(call_main, 10000);
-						if (!Connected && !ConnectTimer) {
-							ConnectTimer = setTimeout(() => {
-								ConnectTimer = null;
-								call_main();
-							}, 10000);
-						}
-		            }
-                } else {
-                    cnt = 0;
-                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
-                }
-                lastOn = on;
-            }
-            if (!on) {
-             //   checkOnOffTimer = setTimeout(check, 1000);
-			    checkOnOffTimer = setTimeout(check, 60000); // MT 12.2024
-				Connected = false; //new 1.2026
-                if (cnt > 20) {
-                    adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
-                    setStateNe('Power.on', false, true);
-                }
-            }
-			powerOn = on;  //new 12.2025
-        });
-    })();
 }
 
 //var onOffTimer;
