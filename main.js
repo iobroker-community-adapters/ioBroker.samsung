@@ -207,7 +207,7 @@ async function main() {
 						if (AbortMain) return;
                         await remoteHJ.connect();
 						if (AbortMain) return;
-                        createObjectsAndStates();
+                        //createObjectsAndStates(); // // neu 01.2026
 							
                         remote = { powerKey: 'KEY_POWERON', 
 								   send: (cmd, cb) => {
