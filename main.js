@@ -172,6 +172,7 @@ async function main() {
 		}); 
 		if (!reachable) { 
 			adapter.log.debug('SamsungHJ: TV unreachable → skipping connect attempt'); 
+			if (!checkOnOffTimer) { checkPowerOnOff(); }
 			return; // WICHTIG: main() NICHT ausführen
 		}
 							 
