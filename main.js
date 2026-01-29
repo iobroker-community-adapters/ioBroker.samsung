@@ -54,7 +54,7 @@ var adapter = utils.Adapter({
     },
     stateChange: function (id, state) {
 
-        adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`);
+        !state.ack ? adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`) : null;
         if (state && !state.ack) {
             var as = id.split('.');
             if (`${as[0]}.${as[1]}` !== adapter.namespace) return;
@@ -269,6 +269,7 @@ async function main() {
         }
         remote.powerKey = 'KEY_POWEROFF';
         createObjectsAndStates();
+		if (!checkOnOffTimer) { checkPowerOnOff(); }
     }
 }  //  async function main() {
 
@@ -310,7 +311,7 @@ function checkPowerOnOff() {  // new 01.2026
                 adapter.setState(powerOnOffState, 'ON', true);
                 setStateNe('Power.on', true, true);
 
-                if (!Connected && !ConnectTimer) {
+                if (on && !Connected && !ConnectTimer) {
                     ConnectTimer = setTimeout(() => {
                         ConnectTimer = null;
                         call_main();
@@ -488,7 +489,7 @@ function createObjectsAndStates() {
         }
     }, function (err, obj) {
         adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
-        checkPowerOnOff();
+        //checkPowerOnOff();
     });
 	
 	adapter.setObjectNotExists('info.connected', {
