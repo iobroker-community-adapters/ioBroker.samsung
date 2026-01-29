@@ -52,8 +52,8 @@ var adapter = utils.Adapter({
             callback();
         }
     },
+	
     stateChange: function (id, state) {
-
         !state.ack ? adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`) : null;
         if (state && !state.ack) {
             var as = id.split('.');
@@ -61,53 +61,36 @@ var adapter = utils.Adapter({
             switch (as[2]) {
                 case 'command':
                     send(state.val, function callback(err) {
-                        if (err) {
-                        } else {
-                        }
+                        if (err) { } else { }
                     });
                     break;
-
                 case 'Power':
                     switch (as[3]) {
-                        case 'on':
-                           onOn(true);
-                           return;
-                        case 'off':
-                            onOn(false);
-                            return;
+                        case 'on':      onOn(true);        return;
+                        case 'off':     onOn(false);       return;
                         case 'checkOnOff':
-                        case 'checkOn':
-                            checkPowerOnOff();
-                            return;
+                        case 'checkOn': checkPowerOnOff(); return;
                         default: // let fall through for others
                     }
-
+				break;
                 default:
                     adapter.getObject(id, function (err, obj) {
                         if (!err && obj) {
                             send(obj.native.command, function callback(err) {
-                                if (!err) {
-                                    adapter.setState(id, false, true);
-                                }
+                                if (!err) { adapter.setState(id, false, true); }
                             });
                         }
-                    });
-                    break;
+                    });  
             }
         }
     },
-    ready: function () {
-//#############################
-        main();
-//#############################
-    }
+    ready: function () { main(); }
 });
 
 //#####################################################################################
 //
 //  F U N C T I O N S
 //
-//#####################################################################################
 //##########   M A I N   ##############################################################
 async function main() {
 	AbortMain = false;
@@ -163,6 +146,7 @@ async function main() {
             await remoteSTV.sendKey(cmd);
             cb && cb();
         }};
+		
         createObjectsAndStates();
 		
 //########### TYPE 'SamsungHJ' ######################################################
@@ -291,8 +275,8 @@ async function call_main() {
 }
 
 function isOn(callback) {
- //   ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
-  ping.probe(adapter.config.ip, { timeout: 2000 }, function (err, res) { // MT 12.2024
+//  ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
+  	ping.probe(adapter.config.ip, { timeout: 2000 }, function (err, res) { // MT 12.2024
         callback(!err && res && res.alive);
     })
 }
@@ -301,7 +285,6 @@ let lastOn = undefined;
 
 function checkPowerOnOff() {  // new 01.2026
     adapter.log.debug('Checking power on/off state ...');
-
     if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
 
     isOn(on => {
@@ -312,7 +295,7 @@ function checkPowerOnOff() {  // new 01.2026
                 adapter.setState(powerOnOffState, 'ON', true);
                 setStateNe('Power.on', true, true);
 
-                if (on && !Connected && !ConnectTimer) {
+                if (!Connected && !ConnectTimer) {
                     ConnectTimer = setTimeout(() => {
                         ConnectTimer = null;
                         call_main();
@@ -367,7 +350,6 @@ function onOn(val) {
                     adapter.setState('Power.on', val, true);
                     return;
                 }
-                //if (cnt === 1 && val) adapter.setState ('Power.on', running, true);
                 onOffTimer = setTimeout(doIt, 1000);
             });
         }
@@ -381,8 +363,8 @@ function send(command, callback) {
         return;
     }
     if (!remote) {
-        adapter.log.error('Connection to Samsung device not initialized, no command execution possible.');
-        return;
+        adapter.log.debug('Ignoring command because remote is not initialized yet');
+		return;
     }
     adapter.log.debug(`Executing command: ${command}`);
     try {
@@ -431,7 +413,6 @@ function createObj(name, val, type, role, desc) {
         if (type !== 'channel') adapter.setState(name, false, true);
     });
 }
-
 
 function saveModel2016(val, callback) {
     adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
@@ -489,8 +470,7 @@ function createObjectsAndStates() {
             ts: new Date().getTime()
         }
     }, function (err, obj) {
-        adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
-        //checkPowerOnOff();
+        adapter.setState(powerOnOffState, '', true); //ack: true 
     });
 	
 	adapter.setObjectNotExists('info.connected', {
