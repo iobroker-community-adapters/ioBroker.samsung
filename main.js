@@ -1,6 +1,6 @@
 'use strict';
 
-const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
+// const { KEY_VOLDOWN, KEY_MUTE } = require('./keys'); // Unused imports, kept for potential future use
 
 //const utils = require(`${__dirname}/lib/utils`);
 const utils = require('@iobroker/adapter-core');
@@ -19,16 +19,22 @@ const deviceConfig = {
     ip: null,
     appId: '721b6fce-4ee6-48ba-8045-955a539edadb',
     userId: '654321',
-}
-
+};
 
 function isOn(callback) {
     ping.probe(adapter.config.ip, { timeout: 500 }, function (err, res) {
         callback(!err && res && res.alive);
-    })
+    });
 }
 
 var nodeVersion;
+/**
+ * Check if the current Node.js version meets the minimum required version
+ *
+ * @param {string} minVersion - Minimum version string (e.g., "18.0.0")
+ * @returns {boolean} - True if current version meets minimum
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function minNodeVersion(minVersion) {
     var re = /^v*([0-9]+)\.([0-9]+)\.([0-9]+)/;
     if (nodeVersion === undefined) {
@@ -51,8 +57,11 @@ function setStateNe(id, val, ack) {
 var checkOnOffTimer;
 function checkPowerOnOff() {
     adapter.log.debug('Checking power on/off state ...');
-    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
-    var cnt = 0, lastOn;
+    if (checkOnOffTimer) {
+        clearTimeout(checkOnOffTimer);
+    }
+    var cnt = 0,
+        lastOn;
     (function check() {
         isOn(function (on) {
             adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
@@ -77,10 +86,10 @@ function checkPowerOnOff() {
     })();
 }
 
-
 var onOffTimer;
 function onOn(val) {
-    var timeout = 0, self = this;
+    // var timeout = 0, // Unused variable
+    // var self = this; // Unused variable
     val = !!val;
 
     isOn(function (running) {
@@ -94,7 +103,9 @@ function onOn(val) {
             return;
         }
         send(remote.powerKey);
-        if (onOffTimer) clearTimeout(onOffTimer);
+        if (onOffTimer) {
+            clearTimeout(onOffTimer);
+        }
         var cnt = 0;
 
         function doIt() {
@@ -122,30 +133,29 @@ var adapter = utils.Adapter({
     unload: function (callback) {
         try {
             callback();
-        } catch (e) {
+        } catch {
             callback();
         }
     },
     stateChange: function (id, state) {
-
         adapter.log.debug(`stateChange ${id} = ${JSON.stringify(state)}`);
         if (state && !state.ack) {
             var as = id.split('.');
-            if (`${as[0]}.${as[1]}` !== adapter.namespace) return;
+            if (`${as[0]}.${as[1]}` !== adapter.namespace) {
+                return;
+            }
             switch (as[2]) {
                 case 'command':
-                    send(state.val, function callback(err) {
-                        if (err) {
-                        } else {
-                        }
+                    send(state.val, function callback(_err) {
+                        // Command sent - error handling not required
                     });
                     break;
 
                 case 'Power':
                     switch (as[3]) {
                         case 'on':
-                           onOn(true);
-                           return;
+                            onOn(true);
+                            return;
                         case 'off':
                             onOn(false);
                             return;
@@ -153,14 +163,17 @@ var adapter = utils.Adapter({
                         case 'checkOn':
                             checkPowerOnOff();
                             return;
-                        default: // let fall through for others
+                        default:
+                            // Fall through for other power commands
+                            break;
                     }
+                // Fall through to default case for other power commands
 
                 default:
-                    adapter.getObject(id, function (err, obj) {
-                        if (!err && obj) {
-                            send(obj.native.command, function callback(err) {
-                                if (!err) {
+                    adapter.getObject(id, function (_err, obj) {
+                        if (!_err && obj) {
+                            send(obj.native.command, function callback(_err2) {
+                                if (!_err2) {
                                     adapter.setState(id, false, true);
                                 }
                             });
@@ -172,7 +185,7 @@ var adapter = utils.Adapter({
     },
     ready: function () {
         main();
-    }
+    },
 });
 
 function send(command, callback) {
@@ -186,41 +199,50 @@ function send(command, callback) {
     }
     adapter.log.debug(`Executing command: ${command}`);
     try {
-        remote.send(command, callback || function nop() { });
+        remote.send(command, callback || function nop() {});
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
     }
 }
 
-
 function createObj(name, val, type, role, desc) {
-
-    if (role === undefined) role = type !== 'channel' ? 'button' : '';
-    adapter.setObjectNotExists(name, {
-        type: type,
-        common: {
-            name: name,
-            type: 'boolean',
-            role: role,
-            def: false,
-            read: true,
-            write: true,
-            desc: desc
+    if (role === undefined) {
+        role = type !== 'channel' ? 'button' : '';
+    }
+    adapter.setObjectNotExists(
+        name,
+        {
+            type: type,
+            common: {
+                name: name,
+                type: 'boolean',
+                role: role,
+                def: false,
+                read: true,
+                write: true,
+                desc: desc,
+            },
+            native: { command: val },
         },
-        native: { command: val }
-    }, function (err, obj) {
-        if (type !== 'channel') adapter.setState(name, false, true);
-    });
+        function (_err, _obj) {
+            if (type !== 'channel') {
+                adapter.setState(name, false, true);
+            }
+        },
+    );
 }
 
-
 function saveModel2016(val, callback) {
-    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
-        if (!err && obj && !obj.native) obj['native'] = {};
-        if (obj.native.model2016 === val) return callback && callback();
+    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (_err, obj) {
+        if (!_err && obj && !obj.native) {
+            obj['native'] = {};
+        }
+        if (obj.native.model2016 === val) {
+            return callback && callback();
+        }
         obj.native.model2016 = val;
         adapter.config.model2016 = val;
-        adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
+        adapter.setForeignObject(obj._id, obj, {}, function (_err2, _s_obj) {
             callback && callback('changed');
         });
     });
@@ -233,8 +255,7 @@ function createObjectsAndStates() {
         if (Keys[key] === null) {
             channel = key;
             createObj(key, '', 'channel');
-        }
-        else {
+        } else {
             commandValues.push(key);
             createObj(`${channel}.${Keys[key]}`, key, 'state');
         }
@@ -243,53 +264,57 @@ function createObjectsAndStates() {
     createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
     createObj('Power.on', false, 'state', 'state', 'Indicated power status or turn on if not already turned on');
 
-    adapter.setObjectNotExists('command', {
-        type: 'state',
-        common: {
-            name: 'command',
-            type: 'string',
-            role: 'state',
-            desc: 'KEY_xxx',
-            values: commandValues,
-            states: commandValues
+    adapter.setObjectNotExists(
+        'command',
+        {
+            type: 'state',
+            common: {
+                name: 'command',
+                type: 'string',
+                role: 'state',
+                desc: 'KEY_xxx',
+                values: commandValues,
+                states: commandValues,
+            },
+            native: {},
         },
-        native: {
-        }
-    }, function (err, obj) {
-        adapter.setState('command', '', true/*{ ack: true }*/);
-    });
-    adapter.setObjectNotExists(powerOnOffState, {
-        type: 'state',
-        common: {
-            name: 'Determinant Power state',
-            type: 'string',
-            role: 'state',
-            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
+        function (_err, _obj) {
+            adapter.setState('command', '', true /*{ ack: true }*/);
         },
-        native: {
-            ts: new Date().getTime()
-        }
-    }, function (err, obj) {
-        adapter.setState(powerOnOffState, '', true/*{ ack: true }*/);
+    );
+    adapter.setObjectNotExists(
+        powerOnOffState,
+        {
+            type: 'state',
+            common: {
+                name: 'Determinant Power state',
+                type: 'string',
+                role: 'state',
+                desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status',
+            },
+            native: {
+                ts: new Date().getTime(),
+            },
+        },
+        function (_err, _obj) {
+            adapter.setState(powerOnOffState, '', true /*{ ack: true }*/);
 
-        checkPowerOnOff();
-    });
-
+            checkPowerOnOff();
+        },
+    );
 
     adapter.subscribeStates('*');
 }
 
-
-
 async function main() {
-
     if (adapter.config.apiType === 'Samsung2016') {
         remote2016 = new Samsung2016({ ip: adapter.config.ip, timeout: 2000 });
-        remote2016.onError = function (error) {
-        }.bind(remote2016);
+        remote2016.onError = function (_error) {}.bind(remote2016);
         try {
-            remote2016.send(undefined, function (err, data) {
-                if (adapter.config.model2016 === undefined) saveModel2016(err === 'success');
+            remote2016.send(undefined, function (err, _data) {
+                if (adapter.config.model2016 === undefined) {
+                    saveModel2016(err === 'success');
+                }
                 if (err === 'success' || adapter.config.model2016 === true) {
                     remote = remote2016;
                     remote.powerKey = 'KEY_POWER';
@@ -303,7 +328,7 @@ async function main() {
             adapter.log.error(err.stack);
         }
     } else if (adapter.config.apiType === 'SamsungTV') {
-        var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */adapter.config.mac);
+        var remoteSTV = new SamsungTV(adapter.config.ip, /*adapter.config.token ? undefined : */ adapter.config.mac);
         if (adapter.config.token) {
             remoteSTV.token = adapter.config.token;
         }
@@ -311,7 +336,7 @@ async function main() {
             await remoteSTV.connect('ioBroker');
         } catch (err) {
             adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
-            return
+            return;
         }
         if (!adapter.config.token) {
             adapter.log.info('-----------------------------------------');
@@ -322,70 +347,69 @@ async function main() {
         } else {
             remoteSTV.mac = adapter.config.mac;
         }
-        remote = { powerKey: 'KEY_POWER', send: async (cmd, cb) => {
-            try {
-                await remoteSTV.connect('ioBroker');
-                adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
-            } catch (err) {
-                adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
-                return
-            }
-            await remoteSTV.sendKey(cmd);
-            cb && cb();
-        }};
+        remote = {
+            powerKey: 'KEY_POWER',
+            send: async (cmd, cb) => {
+                try {
+                    await remoteSTV.connect('ioBroker');
+                    adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
+                } catch (err) {
+                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
+                    return;
+                }
+                await remoteSTV.sendKey(cmd);
+                cb && cb();
+            },
+        };
         createObjectsAndStates();
-
     } else if (adapter.config.apiType === 'SamsungHJ') {
-
         if (adapter.config.ip) {
-
             adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
             remoteHJ = new SamsungHJ(deviceConfig);
 
-                try {
-                    var resp = await remoteHJ.init2();
-                    adapter.log.debug(`resp is ${resp}`);
-                    adapter.log.info('Connection to TV initialised');
+            try {
+                var resp = await remoteHJ.init2();
+                adapter.log.debug(`resp is ${resp}`);
+                adapter.log.info('Connection to TV initialised');
 
-                    if (adapter.config.pin) {
+                if (adapter.config.pin) {
+                    try {
+                        await remoteHJ.confirmPin(adapter.config.pin);
+                        await remoteHJ.connect();
 
-                        try {
-                            await remoteHJ.confirmPin(adapter.config.pin);
-                            await remoteHJ.connect();
+                        createObjectsAndStates();
 
-                            createObjectsAndStates();
-
-                            remote = { powerKey: 'KEY_POWER', send: (cmd, cb) => {
+                        remote = {
+                            powerKey: 'KEY_POWER',
+                            send: (cmd, cb) => {
                                 remoteHJ.sendKey(cmd);
                                 cb && cb();
-                            } };
+                            },
+                        };
 
-                            adapter.log.info('Successfully connected to your Samsung HJ TV ');
-                        } catch (err) {
-                            adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
-                        }
-
-                    } else {
-                        adapter.log.debug('remoteHJ conf ');
-                        adapter.log.debug(remoteHJ.pairing);
-
-                        remoteHJ.requestPin();
+                        adapter.log.info('Successfully connected to your Samsung HJ TV ');
+                    } catch (err) {
+                        adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`);
                     }
-                } catch (err) {
-                    adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
-                    adapter.log.error(err.stack);
+                } else {
+                    adapter.log.debug('remoteHJ conf ');
+                    adapter.log.debug(remoteHJ.pairing);
+
+                    remoteHJ.requestPin();
                 }
-
+            } catch (err) {
+                adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`);
+                adapter.log.error(err.stack);
+            }
         } else {
-            adapter.log.error('No IP defined')
+            adapter.log.error('No IP defined');
         }
-
     } else {
         try {
-            remote = new SamsungRemote({ip: adapter.config.ip});
+            remote = new SamsungRemote({ ip: adapter.config.ip });
         } catch (err) {
-            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`)
+            adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on?  ${err.message}`);
             adapter.log.error(err.stack);
             return;
         }
