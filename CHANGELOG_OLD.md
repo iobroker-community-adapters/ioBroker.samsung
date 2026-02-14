@@ -1,4 +1,7 @@
 # Older Changelogs
+## 0.5.9 (2022-05-27)
+* (Apollon77) fix crash when initializing a SamsungTV (Tizen)
+
 ## 0.5.8 (2022-04-23)
 * (Apollon77) Fix crash cases reported by Sentry
 
