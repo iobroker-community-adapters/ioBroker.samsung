@@ -19,9 +19,8 @@ export default [
             'admin/admin.d.ts',
             'admin/blockly.js',
             '**/adapter-config.d.ts',
-            // Exclude third-party library code from linting
-            'lib/H-and-J-Series-lib/**/*.js',
-            'lib/samsungtv/**/*.js',
+            // Exclude entire lib directory from linting
+            'lib/**',
         ],
     },
     {
