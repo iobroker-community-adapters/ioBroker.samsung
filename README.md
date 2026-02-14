@@ -45,8 +45,10 @@ if something does not work, look  in the log.
 -->
 
 ### **WORK IN PROGRESS**
+- (mcm1957) Adapter requires node.js >= 20 now
 - (copilot) Adapter requires js-controller >= 6.0.11 now
 - (copilot) Adapter requires admin >= 7.6.17 now
+* (mcm1957) Dependencies have been updated
 
 ### 0.6.1 (2024-09-28)
 * (marian-t-web-de) Sending a key to TV logged an error [#210]
