@@ -39,13 +39,11 @@ HJ Series tested by me on UE55HU7200.
 Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
-## Changelog
-
-### **WORK IN PROGRESS**
-- (iobroker-bot) Adapter requires node.js >= 20 now.
 <!--
 	Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
 -->
+## Changelog
 
 ### **WORK IN PROGRESS**
 - (copilot) Adapter requires admin >= 7.7.22 now
