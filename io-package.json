@@ -1,16 +1,8 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.6.3",
+    "version": "0.6.1",
     "news": {
-       "0.6.3": {
-        "en": "Connection to Samsung HJ Series TV delay after network connect implemented",
-        "de": "Verbindung mit Samsung HJ Series TV Verzögerung nach Netzwerkanbindung eingebaut"
-      },
-      "0.6.2": {
-        "en": "Connection to Samsung HJ Series TV logged an error `Connection to TV failed. Is the IP correct?', try to reconnect implemented",
-        "de": "Verbindung mit Samsung HJ Series TV protokollierte einen Fehler `Connection to TV failed. Is the IP correct?', ein automatischer Reconnectversuch eingebaut"
-      },
       "0.6.1": {
         "en": "Sending a key to TV logged an error [#210]\nError connecting to Samsung HJ Series TV has been fixed [#202] [#138]\nDependencies have been updated",
         "de": "Senden einer Tastenbedienung an TV protokollierte einen Fehler [#210]\nFehler bei der Verbindung mit Samsung HJ Serie TV wurde behoben [#202] [#138]\nAbhängigkeiten wurden aktualisiert",
