@@ -32,9 +32,9 @@ let AbortMain = false;
 //const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 // --- Connection control (NEW) ---  //new 1.2026
-let Connecting   = false;
-let Connected    = false;
-let ConnectTimer = null;
+let connecting   = false;
+let connected    = false;
+let connectTimer = null;
 
 //######################################################################################
 //
