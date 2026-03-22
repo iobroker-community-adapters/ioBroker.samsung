@@ -92,7 +92,7 @@ var adapter = utils.Adapter({
 //#####################################################################################
 //   M A I N   
 async function main() {
-	AbortMain = false;
+	abortMain = false;
 
 //########### TYPE 'Samsung2016' ######################################################
     if (adapter.config.apiType === 'Samsung2016') {
@@ -183,7 +183,7 @@ async function main() {
     			adapter.log.warn('Websocket reports DISCONNECTED');
     			Connected = false;
     			Connecting = false;
-				AbortMain = true;
+				abortMain = true;
     			adapter.setState('info.connected', false, true);
 
       		// Reconnect starten, aber nur wenn nicht schon versucht wird
@@ -202,9 +202,9 @@ async function main() {
                 if (adapter.config.pin) {
                     try {
                         await remoteHJ.confirmPin(adapter.config.pin);
-						if (AbortMain) return;
+						if (abortMain) return;
                         await remoteHJ.connect();
-						if (AbortMain) return;
+						if (abortMain) return;
                         	
                         remote = { powerKey: 'KEY_POWERON', 
 								   send: (cmd, cb) => {
