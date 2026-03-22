@@ -169,13 +169,21 @@ async function main() {
 			// Events kommen über den internen EventEmitter der SamsungTv-Klasse
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTING, () => {
     			adapter.log.debug('Websocket reports CONNECTING');
-  			    Connected = true;
-			    adapter.setState('info.connected', true, true);
+    			// WebSocket ist offen, aber DUID/Handshake noch nicht abgeschlossen
+    			Connecting = true;
+			});
+
+			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTED, () => {
+    			adapter.log.info('Websocket reports CONNECTED (TV fully ready)');
+    			Connected = true;
+    			Connecting = false;
+    			adapter.setState('info.connected', true, true);
 			});
 
 			remoteHJ.eventEmitter.on(SamsungTvEvents.DISCONNECTED, () => {
     			adapter.log.warn('Websocket reports DISCONNECTED');
     			Connected = false;
+    			Connecting = false;
 				AbortMain = true;
     			adapter.setState('info.connected', false, true);
 
