@@ -28,7 +28,7 @@ var cnt       = 0;        // new 11.2024
 var delayTime = 10000;    // new 11.2025
 let count     = 0;        // new 11.2024
 let powerOn   = false;
-let AbortMain = false;
+let abortMain = false;
 
 // --- Connection control (NEW) ---  //new 1.2026
 let connecting   = false;
