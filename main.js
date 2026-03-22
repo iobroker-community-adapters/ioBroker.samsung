@@ -29,7 +29,6 @@ var delayTime = 10000;    // new 11.2025
 let count     = 0;        // new 11.2024
 let powerOn   = false;
 let AbortMain = false;
-//const delay   = time => new Promise(res=>setTimeout(res,time));  // new 11.2024
 
 // --- Connection control (NEW) ---  //new 1.2026
 let connecting   = false;
