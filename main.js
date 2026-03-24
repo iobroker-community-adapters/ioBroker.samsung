@@ -1,6 +1,6 @@
 'use strict';
 
-const { KEY_VOLDOWN, KEY_MUTE } = require('./keys');
+// const { KEY_VOLDOWN, KEY_MUTE } = require('./keys'); // Unused imports, kept for potential future use
 
 //const utils = require(`${__dirname}/lib/utils`);
 const utils = require('@iobroker/adapter-core');
@@ -298,21 +298,29 @@ let lastOn = undefined;
 
 function checkPowerOnOff() {  // new 01.2026
     adapter.log.debug('Checking power on/off state ...');
-    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
-
-    isOn(on => {
-        adapter.log.debug(`Power check: on=${on}, lastOn=${lastOn}`);
-
-        if (lastOn !== on) {
-            if (on) {
-                adapter.setState(powerOnOffState, 'ON', true);
-                setStateNe('Power.on', true, true);
-
-                if (!Connected && !ConnectTimer) {
-                    ConnectTimer = setTimeout(() => {
-                        ConnectTimer = null;
-                        call_main();
-                    }, 5000);
+    if (checkOnOffTimer) {
+        clearTimeout(checkOnOffTimer);
+    }
+    var cnt = 0,
+        lastOn;
+    (function check() {
+        isOn(function (on) {
+            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
+            if (lastOn !== on) {
+                if (on) {
+                    adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
+                    setStateNe('Power.on', true, true);
+                } else {
+                    cnt = 0;
+                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
+                }
+                lastOn = on;
+            }
+            if (!on) {
+                checkOnOffTimer = setTimeout(check, 1000);
+                if (cnt > 20) {
+                    adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
+                    setStateNe('Power.on', false, true);
                 }
             } else {
                 adapter.setState(powerOnOffState, 'OFF', true);
@@ -349,7 +357,9 @@ function onOn(val) {
             return;
         }
         send(remote.powerKey);
-        if (onOffTimer) clearTimeout(onOffTimer);
+        if (onOffTimer) {
+            clearTimeout(onOffTimer);
+        }
         var cnt = 0;
 
         function doIt() {
@@ -381,7 +391,7 @@ function send(command, callback) {
     }
     adapter.log.debug(`Executing command: ${command}`);
     try {
-        remote.send(command, callback || function nop() { });
+        remote.send(command, callback || function nop() {});
     } catch (e) {
         adapter.log.error(`Error executing command: ${command}: ${e.message}`);
     }
@@ -408,32 +418,43 @@ function setStateNe(id, val, ack) {
 }
 
 function createObj(name, val, type, role, desc) {
-
-    if (role === undefined) role = type !== 'channel' ? 'button' : '';
-    adapter.setObjectNotExists(name, {
-        type: type,
-        common: {
-            name: name,
-            type: 'boolean',
-            role: role,
-            def: false,
-            read: true,
-            write: true,
-            desc: desc
+    if (role === undefined) {
+        role = type !== 'channel' ? 'button' : '';
+    }
+    adapter.setObjectNotExists(
+        name,
+        {
+            type: type,
+            common: {
+                name: name,
+                type: 'boolean',
+                role: role,
+                def: false,
+                read: true,
+                write: true,
+                desc: desc,
+            },
+            native: { command: val },
         },
-        native: { command: val }
-    }, function (err, obj) {
-        if (type !== 'channel') adapter.setState(name, false, true);
-    });
+        function (_err, _obj) {
+            if (type !== 'channel') {
+                adapter.setState(name, false, true);
+            }
+        },
+    );
 }
 
 function saveModel2016(val, callback) {
-    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (err, obj) {
-        if (!err && obj && !obj.native) obj['native'] = {};
-        if (obj.native.model2016 === val) return callback && callback();
+    adapter.getForeignObject(`system.adapter.${adapter.namespace}`, function (_err, obj) {
+        if (!_err && obj && !obj.native) {
+            obj['native'] = {};
+        }
+        if (obj.native.model2016 === val) {
+            return callback && callback();
+        }
         obj.native.model2016 = val;
         adapter.config.model2016 = val;
-        adapter.setForeignObject(obj._id, obj, {}, function (err, s_obj) {
+        adapter.setForeignObject(obj._id, obj, {}, function (_err2, _s_obj) {
             callback && callback('changed');
         });
     });
@@ -446,8 +467,7 @@ function createObjectsAndStates() {
         if (Keys[key] === null) {
             channel = key;
             createObj(key, '', 'channel');
-        }
-        else {
+        } else {
             commandValues.push(key);
             createObj(`${channel}.${Keys[key]}`, key, 'state');
         }
@@ -456,28 +476,22 @@ function createObjectsAndStates() {
     createObj('Power.off', false, 'state', 'state', 'Only if TV is on the power command will be send');
     createObj('Power.on', false, 'state', 'state', 'Indicated power status or turn on if not already turned on');
 
-    adapter.setObjectNotExists('command', {
-        type: 'state',
-        common: {
-            name: 'command',
-            type: 'string',
-            role: 'state',
-            desc: 'KEY_xxx',
-            values: commandValues,
-            states: commandValues
+    adapter.setObjectNotExists(
+        'command',
+        {
+            type: 'state',
+            common: {
+                name: 'command',
+                type: 'string',
+                role: 'state',
+                desc: 'KEY_xxx',
+                values: commandValues,
+                states: commandValues,
+            },
+            native: {},
         },
-        native: {
-        }
-    }, function (err, obj) {
-        adapter.setState('command', '', true/*{ ack: true }*/);
-    });
-    adapter.setObjectNotExists(powerOnOffState, {
-        type: 'state',
-        common: {
-            name: 'Determinant Power state',
-            type: 'string',
-            role: 'state',
-            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
+        function (_err, _obj) {
+            adapter.setState('command', '', true /*{ ack: true }*/);
         },
         native: {
             ts: new Date().getTime()

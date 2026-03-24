@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "samsung",
-    "version": "0.6.1",
+    "version": "0.7.0",
     "news": {
+      "0.7.0": {
+        "en": "Adapter requires node.js >= 20 now\nAdapter requires js-controller >= 6.0.11 now\nAdapter requires admin >= 7.6.17 now\nDependencies have been updated",
+        "de": "Adapter benötigt node.js >= 20 jetzt\nAdapter benötigt jetzt js-controller >= 6.0.11\nAdapter benötigt admin >= 7.6.17 jetzt\nAbhängigkeiten wurden aktualisiert",
+        "ru": "Адаптер требует node.js >= 20 сейчас\nАдаптер требует js-контроллер >= 6.0.11\nАдаптер требует администратора >= 7.6.17\nЗависимости были обновлены",
+        "pt": "Adaptador requer nod.js >= 20 agora\nAdaptador requer js-controlador >= 6.0.11 agora\nAdaptador requer admin >= 7.6.17 agora\nAs dependências foram atualizadas",
+        "nl": "Voor de adapter zijn node.js < 20 now\nAdapter vereist js-controller > 6,0.11 nu\nVoor adapter is admin < 7.6.17 nu nodig\nAfhankelijkheden zijn bijgewerkt",
+        "fr": "Adaptateur nécessite node.js >= 20 maintenant\nAdaptateur nécessite js-controller >= 6.0.11 maintenant\nAdaptateur nécessite admin >= 7.6.17 maintenant\nLes dépendances ont été actualisées",
+        "it": "Adattatore richiede node.js >= 20 ora\nAdattatore richiede js-controller >= 6.0.11 ora\nAdattatore richiede admin >= 7.6.17 ora\nLe dipendenze sono state aggiornate",
+        "es": "Adaptador requiere node.js >= 20 ahora\nAdaptador requiere js-controller >= 6.0.11\nAdaptador requiere administración= 7.6.17 ahora\nSe han actualizado las dependencias",
+        "pl": "Adapter wymaga node.js > = 20\nAdapter wymaga sterownika js- > = 6.0.11\nAdapter wymaga admin > = 7.6.17\nZaktualizowano zależności",
+        "uk": "Адаптер вимагає node.js >= 20 тепер\nАдаптер вимагає js-controller >=6.0.11 тепер\nАдаптер вимагає адмін >= 7.6.17 тепер\nЗалежність було оновлено",
+        "zh-cn": "适配器需要节点.js >= 20 现在\n适配器需要js控制器 现在6.0.11\n适任者需要行政主管 现在7.6.17\n依赖关系已更新"
+      },
       "0.6.1": {
         "en": "Sending a key to TV logged an error [#210]\nError connecting to Samsung HJ Series TV has been fixed [#202] [#138]\nDependencies have been updated",
         "de": "Senden einer Tastenbedienung an TV protokollierte einen Fehler [#210]\nFehler bei der Verbindung mit Samsung HJ Serie TV wurde behoben [#202] [#138]\nAbhängigkeiten wurden aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "Napraw przypadki awarii zgłoszone przez Sentry",
         "zh-cn": "修复 Sentry 报告的崩溃案例",
         "uk": "Виправте випадки збоїв, про які повідомляє Sentry"
-      },
-      "0.5.7": {
-        "en": "Adjust logic to detect if TV is on or off",
-        "de": "Passen Sie die Logik an, um zu erkennen, ob der Fernseher ein- oder ausgeschaltet ist",
-        "ru": "Настройте логику, чтобы определить, включен ли телевизор или выключен",
-        "pt": "Ajuste a lógica para detectar se a TV está ligada ou desligada",
-        "nl": "Pas de logica aan om te detecteren of de tv aan of uit staat",
-        "fr": "Ajustez la logique pour détecter si le téléviseur est allumé ou éteint",
-        "it": "Regola la logica per rilevare se la TV è accesa o spenta",
-        "es": "Ajuste la lógica para detectar si la TV está encendida o apagada",
-        "pl": "Dostosuj logikę, aby wykryć, czy telewizor jest włączony, czy wyłączony",
-        "zh-cn": "调整逻辑以检测电视是打开还是关闭",
-        "uk": "Налаштуйте логіку, щоб визначити, увімкнено чи вимкнено телевізор"
       }
     },
     "titleLang": {
@@ -132,21 +132,17 @@
     },
     "loglevel": "info",
     "keywords": [
-      "ioBroker",
       "samsung",
       "samsung remote",
-      "samsunf tv",
-      "Smart Home",
+      "samsung tv",
       "home automation"
     ],
     "enabled": false,
     "nondeletable": false,
     "type": "multimedia",
     "authors": [
-      {
-        "name": "soef",
-        "email": "soef@gmx.net"
-      }
+      "soef <soef@gmx.net>",
+      "iobroker-community-adapters <iobroker-community-adapters@gmx.de>"
     ],
     "connectionType": "local",
     "dataSource": "poll",
@@ -156,12 +152,12 @@
     },
     "dependencies": [
       {
-        "js-controller": ">=5.0.19"
+        "js-controller": ">=6.0.11"
       }
     ],
     "globalDependencies": [
       {
-        "admin": ">=6.13.16"
+        "admin": ">=7.7.22"
       }
     ],
     "plugins": {

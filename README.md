@@ -40,13 +40,20 @@ again 2024 on UE55HJ8590 (v.0.6.1)
 Support for devices since 2016  experimental
 if something does not work, look  in the log.
 
-## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.6.2 (2024-12-01)
-* (marian-t-web-de) Reconect after Error connecting to Samsung HJ Series TV
+## Changelog
+
+### **WORK IN PROGRESS**
+- (copilot) Adapter requires admin >= 7.7.22 now
+
+### 0.7.0 (2026-02-14)
+- (mcm1957) Adapter requires node.js >= 20 now
+- (copilot) Adapter requires js-controller >= 6.0.11 now
+- (copilot) Adapter requires admin >= 7.6.17 now
+- (mcm1957) Dependencies have been updated
 
 ### 0.6.1 (2024-09-28)
 * (marian-t-web-de) Sending a key to TV logged an error [#210]
@@ -65,16 +72,11 @@ if something does not work, look  in the log.
 ### 0.5.10 (2022-05-27)
 * (Apollon77) Fix crash cases reported by Sentry
 
-### 0.5.9 (2022-05-27)
-* (Apollon77) fix crash when initializing a SamsungTV (Tizen)
-
-### 0.5.8 (2022-04-23)
-* (Apollon77) Fix crash cases reported by Sentry
-
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2023-2024 ioBroker Community Developers <iobroker-community-adapters@gmx.de>  
+
+Copyright (c) 2023-2026 iobroker-community-adapters <iobroker-community-adapters@gmx.de>  
 Copyright (c) 2015-2017 soef <soef@gmx.net>, 2018-2022 ioBroker Community
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
