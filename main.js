@@ -176,27 +176,27 @@ async function main() {
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTING, () => {
     			adapter.log.debug('Websocket reports CONNECTING');
     			// WebSocket opened, but DUID/Handshake not comlpeted yetn
-    			Connecting = true;
+    			connecting = true;
 			});
 
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTED, () => {
     			adapter.log.info('Websocket reports CONNECTED (TV fully ready)');
     			Connected = true;
-    			Connecting = false;
+    			connecting = false;
     			adapter.setState('info.connected', true, true);
 			});
 
 			remoteHJ.eventEmitter.on(SamsungTvEvents.DISCONNECTED, () => {
     			adapter.log.warn('Websocket reports DISCONNECTED');
     			Connected = false;
-    			Connecting = false;
+    			connecting = false;
 				abortMain = true;
     			adapter.setState('info.connected', false, true);
 
       		// Start reconnect, but only if no reconnect attempt is already running
-    			if (!Connecting && !ConnectTimer) {
-        			ConnectTimer = setTimeout(() => {
-            			ConnectTimer = null;
+    			if (!connecting && !connectTimer) {
+        			connectTimer = setTimeout(() => {
+            			connectTimer = null;
             			call_main();
         			}, 5000);
     			}
@@ -245,9 +245,9 @@ async function main() {
 				}else {                                      // new 11.2024
 					adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
 					delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
-					if (!Connected && !ConnectTimer) {  //new 1.2026
-						ConnectTimer = setTimeout(() => {
-							ConnectTimer = null;
+					if (!Connected && !connectTimer) {  //new 1.2026
+						connectTimer = setTimeout(() => {
+							connectTimer = null;
 							call_main();
 						}, delayTime);
 					}
@@ -272,18 +272,18 @@ async function main() {
 }  //  async function main() {
 
 async function call_main() {
-    if (Connecting || Connected) {
+    if (connecting || Connected) {
         adapter.log.debug('call_main skipped (already connecting/connected)');
         return;
     }
-    Connecting = true;
+    connecting = true;
     adapter.log.debug('call_main starting reconnect...');
     try {
         await main();   // WICHTIG: await, damit Fehler gefangen werden
     } catch (err) {
         adapter.log.warn(`Reconnect failed: ${err.message}`);
     } finally {
-        Connecting = false;
+        connecting = false;
     }
 }
 
