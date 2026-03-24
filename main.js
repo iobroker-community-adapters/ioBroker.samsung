@@ -298,44 +298,35 @@ let lastOn = undefined;
 
 function checkPowerOnOff() {  // new 01.2026
     adapter.log.debug('Checking power on/off state ...');
-    if (checkOnOffTimer) {
-        clearTimeout(checkOnOffTimer);
-    }
-    var cnt = 0,
-        lastOn;
-    (function check() {
-        isOn(function (on) {
-            adapter.log.debug(`Power on/off check result: ${on} vs lastOn=${lastOn}`);
-            if (lastOn !== on) {
-                if (on) {
-                    adapter.setState(powerOnOffState, 'ON', true); // uppercase indicates final on state.
-                    setStateNe('Power.on', true, true);
-                } else {
-                    cnt = 0;
-                    adapter.setState(powerOnOffState, on ? 'on' : 'off', true);
-                }
-                lastOn = on;
-            }
-            if (!on) {
-                checkOnOffTimer = setTimeout(check, 1000);
-                if (cnt > 20) {
-                    adapter.setState(powerOnOffState, 'OFF', true); // uppercase indicates final off state.
-                    setStateNe('Power.on', false, true);
+    if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
+
+    isOn(on => {
+        adapter.log.debug(`Power check: on=${on}, lastOn=${lastOn}`);
+
+        if (lastOn !== on) {
+            if (on) {
+                adapter.setState(powerOnOffState, 'ON', true);
+                setStateNe('Power.on', true, true);
+
+                if (!connected && !connectTimer) {
+                    connectTimer = setTimeout(() => {
+                        connectTimer = null;
+                        call_main();
+                    }, 5000);
                 }
             } else {
                 adapter.setState(powerOnOffState, 'OFF', true);
                 setStateNe('Power.on', false, true);
 
-                Connected = false;
+                connected = false;
                 adapter.setState('info.connected', false, true);
             }
             lastOn = on;
         }
         // Timer bei nicht connected weiterlaufen lassen
-        if (!Connected) checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
+        if (!connected) checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
     });
 }
-
 //var onOffTimer;
 function onOn(val) {
 	if (!remoteHJ && adapter.config.apiType === 'SamsungHJ') {
