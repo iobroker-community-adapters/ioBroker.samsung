@@ -280,7 +280,7 @@ async function call_main() {
     connecting = true;
     adapter.log.debug('call_main starting reconnect...');
     try {
-        await main();   // WICHTIG: await, damit Fehler gefangen werden
+        await main();   // IMPORTANT: use await so errors are caught
     } catch (err) {
         adapter.log.warn(`Reconnect failed: ${err.message}`);
     } finally {
