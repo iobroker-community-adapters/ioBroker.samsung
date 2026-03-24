@@ -324,7 +324,7 @@ function checkPowerOnOff() {  // new 01.2026
             }
             lastOn = on;
         }
-        // Timer bei nicht connected weiterlaufen lassen
+        // restart timer by not connected
         if (!connected) checkOnOffTimer = setTimeout(checkPowerOnOff, 15000);
     });
 }
