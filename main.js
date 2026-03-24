@@ -349,9 +349,7 @@ function onOn(val) {
             return;
         }
         send(remote.powerKey);
-        if (onOffTimer) {
-            clearTimeout(onOffTimer);
-        }
+        if (onOffTimer) clearTimeout(onOffTimer);
         var cnt = 0;
 
         function doIt() {
