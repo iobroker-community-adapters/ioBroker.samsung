@@ -45,10 +45,16 @@ var adapter = utils.Adapter({
 
     unload: function (callback) {
         try {
-            callback();
-        } catch (e) {
-            callback();
-        }
+        	if (checkOnOffTimer) clearTimeout(checkOnOffTimer);
+        	if (connectTimer) clearTimeout(connectTimer);
+        	if (onOffTimer) clearTimeout(onOffTimer);
+        	if (remoteHJ?.eventEmitter)  remoteHJ.eventEmitter.removeAllListeners();
+        	if (remoteHJ?.close) remoteHJ.close();
+    	} catch (e) {
+        	adapter.log.error("Error during unload: " + e);
+    	} finally {
+			callback();
+		}
     },
 	
     stateChange: function (id, state) {
@@ -156,19 +162,20 @@ async function main() {
 		if (!reachable) { 
 			adapter.log.debug(`${adapter.config.apiType}: TV unreachable → skipping connect attempt`); 
 			if (!checkOnOffTimer) { checkPowerOnOff(); }
-			return; // WICHTIG: main() NICHT ausführen
+			return; //  IMPORTANT: do NOT execute main()
 		}
 
 		if (adapter.config.ip) {
             adapter.log.debug('Initializing HJ lib');
             deviceConfig.ip = adapter.config.ip;
+			if (remoteHJ?.eventEmitter) remoteHJ.eventEmitter.removeAllListeners();
             remoteHJ = new SamsungHJ(deviceConfig);
 			//createObjectsAndStates();  // neu 01.2026
 			
-			// Events kommen über den internen EventEmitter der SamsungTv-Klasse
+			// Events are received through the internal EventEmitter of the SamsungTv class
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTING, () => {
     			adapter.log.debug('Websocket reports CONNECTING');
-    			// WebSocket ist offen, aber DUID/Handshake noch nicht abgeschlossen
+    			// WebSocket opened, but DUID/Handshake not comlpeted yetn
     			Connecting = true;
 			});
 
@@ -186,7 +193,7 @@ async function main() {
 				abortMain = true;
     			adapter.setState('info.connected', false, true);
 
-      		// Reconnect starten, aber nur wenn nicht schon versucht wird
+      		// Start reconnect, but only if no reconnect attempt is already running
     			if (!Connecting && !ConnectTimer) {
         			ConnectTimer = setTimeout(() => {
             			ConnectTimer = null;
