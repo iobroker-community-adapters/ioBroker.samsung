@@ -490,6 +490,21 @@ function createObjectsAndStates() {
         adapter.setState(powerOnOffState, '', true); //ack: true 
     });
 	
+    adapter.setObjectNotExists(powerOnOffState, {
+        type: 'state',
+        common: {
+            name: 'Determinant Power state',
+            type: 'string',
+            role: 'state',
+            desc: 'checks if powered or not. Can be set to any value (ack=false). If ack becomes true, val holds the status'
+        },
+        native: {
+            ts: new Date().getTime()
+        }
+    }, function (err, obj) {
+        adapter.setState(powerOnOffState, '', true); //ack: true 
+    });
+
 	adapter.setObjectNotExists('info.connected', {
     	type: 'state',
     	common: {
