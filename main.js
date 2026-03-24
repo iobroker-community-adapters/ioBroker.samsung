@@ -144,7 +144,7 @@ async function main() {
         remote = { powerKey: 'KEY_POWER', send: async (cmd, cb) => {
             try {
                 await remoteSTV.connect('ioBroker');
-                adapter.log.debug(`Status after connect ${remoteSTV.isConnected}`);
+                adapter.log.debug(`Status after connect ${remoteSTV.isconnected}`);
             } catch (err) {
                 adapter.log.error(`Connection to TV failed. Is the IP correct? Is the TV switched on? ${err}`);
                 return
@@ -181,14 +181,14 @@ async function main() {
 
 			remoteHJ.eventEmitter.on(SamsungTvEvents.CONNECTED, () => {
     			adapter.log.info('Websocket reports CONNECTED (TV fully ready)');
-    			Connected = true;
+    			connected = true;
     			connecting = false;
     			adapter.setState('info.connected', true, true);
 			});
 
 			remoteHJ.eventEmitter.on(SamsungTvEvents.DISCONNECTED, () => {
     			adapter.log.warn('Websocket reports DISCONNECTED');
-    			Connected = false;
+    			connected = false;
     			connecting = false;
 				abortMain = true;
     			adapter.setState('info.connected', false, true);
@@ -220,12 +220,12 @@ async function main() {
                         } };
                             
 						count = 0;  // reset repeat counter
-						Connected = true;
+						connected = true;
 						adapter.setState('info.connected', true, true);
                         adapter.log.info('Successfully connected to your Samsung HJ TV ');
 						createObjectsAndStates(); // neu 01.2026
                     } catch (err) {
-						Connected = false;
+						connected = false;
 						adapter.setState('info.connected', false, true);
                         adapter.log.error(`Could not connect! Is the Pin correct? ${err.message}`)
                     }
@@ -236,7 +236,7 @@ async function main() {
                     remoteHJ.requestPin();
                     }
             } catch (err) {
-				Connected = false; 
+				connected = false; 
 				adapter.setState('info.connected', false, true);
                 // try 5x to reconnect, then err
 				if( cnt++ > 4 ) {                            // new 11.2024
@@ -245,7 +245,7 @@ async function main() {
 				}else {                                      // new 11.2024
 					adapter.log.debug('Connection to your Samsung(HJ) TV failed, repeat (' +cnt +')');
 					delayTime = adapter.config.delay > 0 ? adapter.config.delay : 10000;  // 11.2025
-					if (!Connected && !connectTimer) {  //new 1.2026
+					if (!connected && !connectTimer) {  //new 1.2026
 						connectTimer = setTimeout(() => {
 							connectTimer = null;
 							call_main();
@@ -272,7 +272,7 @@ async function main() {
 }  //  async function main() {
 
 async function call_main() {
-    if (connecting || Connected) {
+    if (connecting || connected) {
         adapter.log.debug('call_main skipped (already connecting/connected)');
         return;
     }
