@@ -1,13 +1,13 @@
 {
-  "Settings": "Settings",
+  "Settings": "Configuración",
   "IP": "IP",
   "MAC": "MAC",
   "Token": "Token",
-  "ApiType": "ApiType",
-  "Pin": "Pin",
-  "Info": "Info",
-  "on save adapter restarts with new config immediately": "on save adapter restarts with new config immediately",
-  "only needed with SamsungTV API": "only needed with SamsungTV API",
-  "should be in Log after first connect": "should be in Log after first connect",
-  "needed on initial setup with Samsung H and J Series, should be on TV after first connect": "needed on initial setup with Samsung H and J Series, should be on TV after first connect"
+  "ApiType": "Tipo de API",
+  "Pin": "PIN",
+  "Info": "Información",
+  "on save adapter restarts with new config immediately": "Al guardar, el adaptador se reinicia inmediatamente con la nueva configuración",
+  "only needed with SamsungTV API": "necesario solo con la API SamsungTV",
+  "should be in Log after first connect": "debería aparecer en el registro después de la primera conexión",
+  "needed on initial setup with Samsung H and J Series, should be on TV after first connect": "necesario en la configuración inicial de las series Samsung H y J, debería mostrarse en el televisor después de la primera conexión"
 }

@@ -1,13 +1,13 @@
 {
-  "Settings": "Settings",
+  "Settings": "Настройки",
   "IP": "IP",
   "MAC": "MAC",
-  "Token": "Token",
-  "ApiType": "ApiType",
-  "Pin": "Pin",
-  "Info": "Info",
-  "on save adapter restarts with new config immediately": "Сразу после сохранения настроек драйвер перезапуститься с новыми значениями",
-  "only needed with SamsungTV API": "only needed with SamsungTV API",
-  "should be in Log after first connect": "should be in Log after first connect",
-  "needed on initial setup with Samsung H and J Series, should be on TV after first connect": "needed on initial setup with Samsung H and J Series, should be on TV after first connect"
+  "Token": "Токен",
+  "ApiType": "Тип API",
+  "Pin": "PIN",
+  "Info": "Информация",
+  "on save adapter restarts with new config immediately": "Сразу после сохранения настроек драйвер перезапустится с новыми значениями",
+  "only needed with SamsungTV API": "требуется только для API SamsungTV",
+  "should be in Log after first connect": "должен появиться в журнале после первого подключения",
+  "needed on initial setup with Samsung H and J Series, should be on TV after first connect": "нужен при первоначальной настройке телевизоров Samsung серий H и J, должен появиться на ТВ после первого подключения"
 }
