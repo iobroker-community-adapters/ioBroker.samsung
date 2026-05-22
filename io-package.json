@@ -148,7 +148,7 @@
     "dataSource": "poll",
     "tier": 2,
     "adminUI": {
-      "config": "html"
+      "config": "json"
     },
     "dependencies": [
       {

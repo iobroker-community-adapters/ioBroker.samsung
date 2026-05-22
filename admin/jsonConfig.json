@@ -1,0 +1,99 @@
+{
+  "i18n": true,
+  "type": "panel",
+  "items": {
+    "_headerSettings": {
+      "type": "header",
+      "text": "Settings",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "ip": {
+      "type": "text",
+      "label": "IP",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
+    "mac": {
+      "type": "text",
+      "label": "MAC",
+      "help": "only needed with SamsungTV API",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
+    "token": {
+      "type": "text",
+      "label": "Token",
+      "help": "should be in Log after first connect",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
+    "apiType": {
+      "type": "select",
+      "label": "ApiType",
+      "options": [
+        {
+          "label": "SamsungRemote",
+          "value": "SamsungRemote"
+        },
+        {
+          "label": "SamsungHJ",
+          "value": "SamsungHJ"
+        },
+        {
+          "label": "Samsung2016",
+          "value": "Samsung2016"
+        },
+        {
+          "label": "SamsungTV",
+          "value": "SamsungTV"
+        }
+      ],
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
+    "pin": {
+      "type": "text",
+      "label": "Pin",
+      "help": "needed on initial setup with Samsung H and J Series, should be on TV after first connect",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 6,
+      "xl": 6
+    },
+    "_headerInfo": {
+      "type": "header",
+      "text": "Info",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "_infoRestart": {
+      "type": "staticText",
+      "text": "on save adapter restarts with new config immediately",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    }
+  }
+}

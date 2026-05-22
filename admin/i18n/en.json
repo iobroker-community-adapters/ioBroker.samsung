@@ -1,0 +1,13 @@
+{
+  "Settings": "Settings",
+  "IP": "IP",
+  "MAC": "MAC",
+  "Token": "Token",
+  "ApiType": "ApiType",
+  "Pin": "Pin",
+  "Info": "Info",
+  "on save adapter restarts with new config immediately": "on save adapter restarts with new config immediately",
+  "only needed with SamsungTV API": "only needed with SamsungTV API",
+  "should be in Log after first connect": "should be in Log after first connect",
+  "needed on initial setup with Samsung H and J Series, should be on TV after first connect": "needed on initial setup with Samsung H and J Series, should be on TV after first connect"
+}
