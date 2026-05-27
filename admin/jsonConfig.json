@@ -4,7 +4,7 @@
   "items": {
     "_header": {
       "type": "header",
-      "text": "samsung adapter settings",
+      "text": "Samsung adapter settings",
       "size": 2,
       "xs": 12,
       "sm": 12,
@@ -53,7 +53,7 @@
     },
     "apiType": {
       "type": "select",
-      "label": "ApiType",
+      "label": "API type",
       "options": [
         {
           "label": "SamsungRemote",

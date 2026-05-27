@@ -1,5 +1,5 @@
 {
-  "ApiType": "Tipo de API",
+  "API type": "Tipo de API",
   "IP": "IP",
   "Info": "Informações",
   "MAC": "MAC",
@@ -11,7 +11,7 @@
   "SamsungHJ": "SamsungHJ",
   "SamsungRemote": "SamsungRemote",
   "SamsungTV": "SamsungTV",
-  "samsung adapter settings": "Configurações do adaptador Samsung",
+  "Samsung adapter settings": "Configurações do adaptador Samsung",
   "Settings": "Configurações",
   "The adapter restarts automatically after saving the configuration.": "O adaptador reinicia automaticamente após salvar a configuração.",
   "Token": "Token"
