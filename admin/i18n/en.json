@@ -1,0 +1,18 @@
+{
+  "API type": "API type",
+  "IP": "IP",
+  "Info": "Info",
+  "MAC": "MAC",
+  "Needed on initial setup with Samsung H and J Series. The PIN should be shown on the TV after the first connection.": "Needed on initial setup with Samsung H and J Series. The PIN should be shown on the TV after the first connection.",
+  "Only needed with SamsungTV API.": "Only needed with SamsungTV API.",
+  "Only needed with SamsungTV API. The token should appear in the log after the first connection.": "Only needed with SamsungTV API. The token should appear in the log after the first connection.",
+  "Pin": "PIN",
+  "Samsung2016": "Samsung2016",
+  "SamsungHJ": "SamsungHJ",
+  "SamsungRemote": "SamsungRemote",
+  "SamsungTV": "SamsungTV",
+  "Samsung adapter settings": "Samsung adapter settings",
+  "Settings": "Settings",
+  "The adapter restarts automatically after saving the configuration.": "The adapter restarts automatically after saving the configuration.",
+  "Token": "Token"
+}
