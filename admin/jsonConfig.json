@@ -1,0 +1,111 @@
+{
+  "i18n": true,
+  "type": "panel",
+  "items": {
+    "_header": {
+      "type": "header",
+      "text": "Samsung adapter settings",
+      "size": 2,
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "_settings": {
+      "type": "header",
+      "text": "Settings",
+      "size": 3,
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "ip": {
+      "type": "text",
+      "label": "IP",
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
+    },
+    "mac": {
+      "type": "text",
+      "label": "MAC",
+      "help": "Only needed with SamsungTV API.",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 6,
+      "xl": 6
+    },
+    "token": {
+      "type": "text",
+      "label": "Token",
+      "help": "Only needed with SamsungTV API. The token should appear in the log after the first connection.",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 6,
+      "xl": 6
+    },
+    "apiType": {
+      "type": "select",
+      "label": "API type",
+      "options": [
+        {
+          "label": "SamsungRemote",
+          "value": "SamsungRemote"
+        },
+        {
+          "label": "SamsungHJ",
+          "value": "SamsungHJ"
+        },
+        {
+          "label": "Samsung2016",
+          "value": "Samsung2016"
+        },
+        {
+          "label": "SamsungTV",
+          "value": "SamsungTV"
+        }
+      ],
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4
+    },
+    "pin": {
+      "type": "text",
+      "label": "Pin",
+      "help": "Needed on initial setup with Samsung H and J Series. The PIN should be shown on the TV after the first connection.",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 6,
+      "xl": 6
+    },
+    "_infoHeader": {
+      "type": "header",
+      "text": "Info",
+      "size": 3,
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    },
+    "_restartInfo": {
+      "type": "staticText",
+      "text": "The adapter restarts automatically after saving the configuration.",
+      "xs": 12,
+      "sm": 12,
+      "md": 12,
+      "lg": 12,
+      "xl": 12
+    }
+  }
+}
